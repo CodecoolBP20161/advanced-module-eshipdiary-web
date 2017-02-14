@@ -3,6 +3,7 @@ package com.codecool.eshipdiary.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Data
+@ToString(exclude = "passwordHash")
 @Entity
 @Table(name = "`USER`")
 public class User {
