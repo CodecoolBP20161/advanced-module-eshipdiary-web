@@ -1,6 +1,7 @@
 package com.codecool.eshipdiary.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -37,7 +38,7 @@ public class User {
     private String emailAddress;
 
     @Column(nullable = false)
-    private String passwordHash;
+    private @JsonIgnore String passwordHash;
 
     @Column
     private Date birthDate;
