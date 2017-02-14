@@ -2,8 +2,12 @@ package com.codecool.eshipdiary.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.ToString;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -19,6 +23,8 @@ public class User {
     public enum KnowledgeLevel {
         BEGINNER, MEDIUM, ADVANCED
     }
+
+    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,6 +46,7 @@ public class User {
     private String emailAddress;
 
     @Column(nullable = false)
+    @Getter(AccessLevel.PRIVATE)
     private @JsonIgnore String passwordHash;
 
     @Column
@@ -66,6 +73,10 @@ public class User {
     public void setBirthDate(String birthDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         this.birthDate = Date.valueOf(LocalDate.parse(birthDate, formatter));
+    }
+
+    public void setPasswordHash(String rawPassword) {
+        this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
     }
 
 
