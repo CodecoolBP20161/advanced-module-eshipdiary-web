@@ -9,4 +9,9 @@ public class HomeController {
     public String index() {
         return "index";
     }
+
+    @RequestMapping(value = "/admin")
+    public String adminIndex() {
+        return "adminIndex";
+    }
 }
