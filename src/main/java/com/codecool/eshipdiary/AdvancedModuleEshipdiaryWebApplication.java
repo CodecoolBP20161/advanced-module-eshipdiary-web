@@ -1,7 +1,7 @@
-package com.codecool;
+package com.codecool.eshipdiary;
 
-import com.codecool.model.User;
-import com.codecool.repository.UserRepository;
+import com.codecool.eshipdiary.model.User;
+import com.codecool.eshipdiary.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
