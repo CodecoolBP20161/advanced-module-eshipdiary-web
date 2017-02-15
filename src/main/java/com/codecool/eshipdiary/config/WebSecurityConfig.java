@@ -1,4 +1,4 @@
-package com.codecool.eshipdiary;
+package com.codecool.eshipdiary.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
