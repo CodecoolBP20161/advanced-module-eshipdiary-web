@@ -29,6 +29,10 @@ public class UserRepositoryService {
         return userRepository.findOneByUserName(userName);
     }
 
+    public Optional<User> getUserByAPIKey(String APIKey) {
+        return userRepository.findOneByApiKey(APIKey);
+    }
+
     public Collection<User> getAllUsers() {
         return userRepository.findAll();
     }
