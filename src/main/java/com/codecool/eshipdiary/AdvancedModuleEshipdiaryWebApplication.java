@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary;
 
+import com.codecool.eshipdiary.model.Role;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.repository.UserRepository;
 import org.slf4j.Logger;
@@ -9,51 +10,65 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @SpringBootApplication
 public class AdvancedModuleEshipdiaryWebApplication {
-    private static final Logger log = LoggerFactory.getLogger(AdvancedModuleEshipdiaryWebApplication.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AdvancedModuleEshipdiaryWebApplication.class);
 
 
     public static void main(String[] args) {
         SpringApplication.run(AdvancedModuleEshipdiaryWebApplication.class, args);
     }
 
-//    @Bean
-//    public CommandLineRunner demo(UserRepository userRepository) {
-//        return (args) -> {
-//
-//            User ex = new User();
-//            ex.setFirstName("first");
-//            ex.setLastName("rower");
-//            ex.setUserName("rower_1");
-//            ex.setBirthDate("19890101");
-//            ex.setActive(true);
-//            ex.setEmailAddress("firstuser@yahoo.com");
-//            ex.setPasswordHash("jflsfd");
-//            ex.setPhoneNumber(22021043);
-//            ex.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
-//            ex.setWeightInKg(80);
-//            userRepository.save(ex);
-//
-//            User user = new User();
-//            user.setFirstName("second");
-//            user.setLastName("rower");
-//            user.setUserName("rower_2");
-//            user.setBirthDate("19000101");
-//            user.setActive(true);
-//            user.setEmailAddress("seconduser@yahoo.com");
-//            user.setPasswordHash("kdlslsla");
-//            user.setPhoneNumber(62426180);
-//            user.setKnowledgeLevel(User.KnowledgeLevel.ADVANCED);
-//            user.setWeightInKg(90);
-//            userRepository.save(user);
-//
-//
-//            log.info("Users found with findAll():");
-//            log.info("-------------------------------");
-//            for (User u : userRepository.findAll()) {
-//                log.info(u.toString());
-//            }
-//        };
-//    }
+    @Bean
+    public CommandLineRunner demo(UserRepository userRepository) {
+        return (args) -> {
+
+            Role admin = new Role();
+            admin.setName("ADMIN");
+            Set<Role> roles = new HashSet<>();
+            roles.add(admin);
+
+            User ex = new User();
+            ex.setFirstName("first");
+            ex.setLastName("admin");
+            ex.setUserName("admin");
+            ex.setBirthDate("19890101");
+            ex.setActive(true);
+            ex.setEmailAddress("admin@yahoo.com");
+            ex.setPasswordHash("password");
+            ex.setPhoneNumber(22021043);
+            ex.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
+            ex.setWeightInKg(80);
+            ex.setRoles(roles);
+            userRepository.save(ex);
+
+            Role userRole = new Role();
+            userRole.setName("USER");
+            Set<Role> userRoles = new HashSet<>();
+            userRoles.add(userRole);
+            User user = new User();
+            user.setFirstName("first");
+            user.setLastName("user");
+            user.setUserName("user");
+            user.setBirthDate("19000101");
+            user.setActive(true);
+            user.setEmailAddress("user@yahoo.com");
+            user.setPasswordHash("userpwd");
+            user.setPhoneNumber(62426180);
+            user.setKnowledgeLevel(User.KnowledgeLevel.ADVANCED);
+            user.setWeightInKg(90);
+            user.setRoles(userRoles);
+            userRepository.save(user);
+
+
+            LOG.info("Users found with findAll():");
+            LOG.info("-------------------------------");
+            for (User u : userRepository.findAll()) {
+                LOG.info(u.toString());
+            }
+        };
+    }
 }
