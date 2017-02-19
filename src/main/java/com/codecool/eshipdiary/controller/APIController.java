@@ -2,6 +2,8 @@ package com.codecool.eshipdiary.controller;
 
 
 import com.codecool.eshipdiary.model.APIKeyValidator;
+import com.codecool.eshipdiary.model.RemoteLoginResponse;
+import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.service.UserRepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +24,20 @@ public class APIController {
         if(userRepositoryService.getUserByAPIKey(apiKey).isPresent()) {
             return new APIKeyValidator(true);
         }
-
         return new APIKeyValidator(false);
+    }
+
+    @RequestMapping(value = "/remote_login", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public RemoteLoginResponse remoteLogin(@RequestParam("username") String username,
+                                           @RequestParam("password") String password) {
+        RemoteLoginResponse remoteLoginResponse = new RemoteLoginResponse();
+        if (userRepositoryService.getUserByUserName(username).isPresent()) {
+            User user = userRepositoryService.getUserByUserName(username).get();
+            if (User.PASSWORD_ENCODER.matches(password, user.getPasswordHash())) {
+                remoteLoginResponse = new RemoteLoginResponse(user);
+            }
+        }
+        return remoteLoginResponse;
     }
 }
