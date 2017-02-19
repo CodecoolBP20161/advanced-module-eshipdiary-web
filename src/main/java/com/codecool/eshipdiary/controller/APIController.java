@@ -18,19 +18,19 @@ public class APIController {
     @Autowired
     UserRepositoryService userRepositoryService;
 
-    @RequestMapping(value = "/check_api_key", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/validate_api_key", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public APIKeyValidator validateAPIKey(@RequestParam("apikey") String apiKey) {
+    public APIKeyValidator validateAPIKey(@RequestParam("key") String apiKey) {
         if(userRepositoryService.getUserByAPIKey(apiKey).isPresent()) {
             return new APIKeyValidator(true);
         }
         return new APIKeyValidator(false);
     }
 
-    @RequestMapping(value = "/remote_login", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/remote_auth", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public RemoteLoginResponse remoteLogin(@RequestParam("username") String username,
-                                           @RequestParam("password") String password) {
+    public RemoteLoginResponse remoteAuth(@RequestParam("username") String username,
+                                          @RequestParam("password") String password) {
         RemoteLoginResponse remoteLoginResponse = new RemoteLoginResponse();
         if (userRepositoryService.getUserByUserName(username).isPresent()) {
             User user = userRepositoryService.getUserByUserName(username).get();
