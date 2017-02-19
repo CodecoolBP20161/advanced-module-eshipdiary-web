@@ -31,7 +31,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String APIKey;
+    private String apiKey;
 
     @Column(nullable = false)
     private String firstName;
@@ -69,7 +69,7 @@ public class User {
 
     @PrePersist
     private void setAPIKey(){
-        this.APIKey = UUID.randomUUID().toString();
+        this.apiKey = UUID.randomUUID().toString();
     }
 
     public void setBirthDate(String birthDate) {
