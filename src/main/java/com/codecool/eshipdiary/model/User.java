@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(exclude="roles")
@@ -29,7 +30,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String APIKey;
 
     @Column(nullable = false)
@@ -66,6 +67,11 @@ public class User {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @PrePersist
+    private void setAPIKey(){
+        this.APIKey = UUID.randomUUID().toString();
+    }
+
     public void setBirthDate(String birthDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         this.birthDate = Date.valueOf(LocalDate.parse(birthDate, formatter));
@@ -74,5 +80,4 @@ public class User {
     public void setPasswordHash(String rawPassword) {
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
     }
-
 }
