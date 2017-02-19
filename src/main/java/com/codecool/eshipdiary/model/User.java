@@ -2,10 +2,7 @@ package com.codecool.eshipdiary.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -13,11 +10,13 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 
 @Data
-@ToString(exclude = "passwordHash")
+@EqualsAndHashCode(exclude="roles")
+@ToString(exclude = {"roles", "passwordHash"})
 @Entity
-@Table(name = "`USER`")
+@Table(name = "`user`")
 public class User {
 
     public enum KnowledgeLevel {
@@ -28,7 +27,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Column(unique = true)
     private String APIKey;
@@ -46,7 +45,6 @@ public class User {
     private String emailAddress;
 
     @Column(nullable = false)
-    @Getter(AccessLevel.PRIVATE)
     private @JsonIgnore String passwordHash;
 
     @Column
@@ -64,11 +62,9 @@ public class User {
     @Column(nullable = false)
     private boolean isActive;
 
-    private enum role {
-        ADMIN, USER
-    } // separate class instead of enum based on spring security settings
-
-
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public void setBirthDate(String birthDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -78,7 +74,5 @@ public class User {
     public void setPasswordHash(String rawPassword) {
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
     }
-
-
 
 }
