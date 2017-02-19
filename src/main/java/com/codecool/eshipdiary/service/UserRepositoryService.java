@@ -5,11 +5,13 @@ import com.codecool.eshipdiary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserRepositoryService {
 
     @Autowired
@@ -28,8 +30,7 @@ public class UserRepositoryService {
     }
 
     public Collection<User> getAllUsers() {
-        return userRepository.findAll(new Sort("email"));
+        return userRepository.findAll();
     }
-
 
 }
