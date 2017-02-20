@@ -33,13 +33,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/validate-app").permitAll()
                 .antMatchers("/remote-auth").permitAll()
                 .anyRequest().authenticated()
+
                     .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
+
                     .and()
                 .logout()
-                .permitAll();
+                .deleteCookies("remember-me")
+                .permitAll()
+
+                    .and()
+                .rememberMe()
+
+                    .and()
+                .csrf().disable();
 
     }
 

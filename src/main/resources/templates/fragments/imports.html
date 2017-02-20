@@ -3,6 +3,7 @@
 
 <div th:fragment="imports">
 
+    <link href="/css/bg.css" rel="stylesheet" type="text/css"/>
     <!-- Latest compiled and minified Jquery -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -15,6 +16,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+
+    <!-- Imports for DataTables -->
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.css" />
+
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" th:src="@{js/user_datatable.js}"></script>
 
     <meta charset="UTF-8"/>
 </div>
