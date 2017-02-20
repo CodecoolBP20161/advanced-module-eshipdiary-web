@@ -63,7 +63,7 @@ public class User {
     @Column(nullable = false)
     private boolean isActive;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne//(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     private Club club;
 
     @JsonIgnore
