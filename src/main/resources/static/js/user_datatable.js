@@ -1,5 +1,5 @@
 $(document).ready( function () {
-    $('#user-table').DataTable ({
+    var table = $('#user-table').DataTable ({
         ajax: {
             url: '/api/user',
             dataSrc: '_embedded.user',
