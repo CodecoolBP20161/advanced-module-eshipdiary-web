@@ -11,4 +11,9 @@ public class HomeController {
         return "index";
     }
 
+    @RequestMapping(value = "/users")
+    public String getUserTable() {
+        return "users";
+    }
+
 }

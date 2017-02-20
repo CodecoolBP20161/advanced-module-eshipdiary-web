@@ -18,6 +18,10 @@
         <p>This content is only shown to users.</p>
     </div>
 
+    <div th:replace="fragments/user_table :: user-table"></div>
+
+
+
     <form th:action="@{/logout}" method="post">
        <button class="btn btn-primary" type="submit">
            <span class="glyphicon glyphicon-log-out"></span> Kijelentkezés</button>
