@@ -63,6 +63,9 @@ public class User {
     @Column(nullable = false)
     private boolean isActive;
 
+    @ManyToOne(cascade=CascadeType.ALL)
+    private Club club;
+
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
