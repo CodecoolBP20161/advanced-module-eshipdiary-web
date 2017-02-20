@@ -1,7 +1,7 @@
 package com.codecool.eshipdiary.controller;
 
 
-import com.codecool.eshipdiary.model.APIKeyValidator;
+import com.codecool.eshipdiary.model.AppValidator;
 import com.codecool.eshipdiary.model.RemoteLoginResponse;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.service.UserRepositoryService;
@@ -12,28 +12,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Optional;
+
 @Controller
 public class APIController {
 
     @Autowired
     UserRepositoryService userRepositoryService;
 
-    @RequestMapping(value = "/validate_api_key", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/validate-app", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public APIKeyValidator validateAPIKey(@RequestParam("key") String apiKey) {
-        if(userRepositoryService.getUserByAPIKey(apiKey).isPresent()) {
-            return new APIKeyValidator(true);
+    public AppValidator validateAPIKey(@RequestParam("key") String apiKey) {
+        Optional<User> user = userRepositoryService.getUserByAPIKey(apiKey);
+        if(user.isPresent() && user.get().isActive()) {
+            return new AppValidator(true);
         }
-        return new APIKeyValidator(false);
+        return new AppValidator(false);
     }
 
-    @RequestMapping(value = "/remote_auth", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/remote-auth", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public RemoteLoginResponse remoteAuth(@RequestParam("username") String username,
                                           @RequestParam("password") String password) {
         RemoteLoginResponse remoteLoginResponse = new RemoteLoginResponse();
-        if (userRepositoryService.getUserByUserName(username).isPresent()) {
-            User user = userRepositoryService.getUserByUserName(username).get();
+        Optional<User> userOptional = userRepositoryService.getUserByUserName(username);
+        if (userOptional.isPresent() && userOptional.get().isActive()) {
+            User user = userOptional.get();
             if (User.PASSWORD_ENCODER.matches(password, user.getPasswordHash())) {
                 remoteLoginResponse = new RemoteLoginResponse(user);
             }

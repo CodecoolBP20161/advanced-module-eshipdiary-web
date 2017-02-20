@@ -30,8 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/images/**").permitAll()
-                .antMatchers("/validate_api_key").permitAll()
-                .antMatchers("/remote_auth").permitAll()
+                .antMatchers("/validate-app").permitAll()
+                .antMatchers("/remote-auth").permitAll()
                 .anyRequest().authenticated()
 
                     .and()

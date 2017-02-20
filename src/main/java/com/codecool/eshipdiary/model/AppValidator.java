@@ -3,10 +3,10 @@ package com.codecool.eshipdiary.model;
 import lombok.Data;
 
 @Data
-public class APIKeyValidator {
+public class AppValidator {
     private boolean valid;
 
-    public APIKeyValidator(boolean isValid) {
+    public AppValidator(boolean isValid) {
         this.valid = isValid;
     }
 
