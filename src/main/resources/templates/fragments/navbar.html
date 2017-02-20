@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="navbar">
+    <form id="logout" th:action="@{/logout}" method="post"></form>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div sec:authorize="hasAuthority('ADMIN')">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Foglalás</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Tagok</a></li>
+                        <li><a href="#">Csónakok</a></li>
+                        <li><a href="#">Csónaktípusok</a></li>
+                        <li><a href="#">Csónakkategóriák</a></li>
+                        <li><a href="#">Evezők</a></li>
+                    </ul>
+                </li>
+            </ul>
+            </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li th:inline="text">
+                <a href="#">
+                    <span class="glyphicon glyphicon-user"></span> [[${#httpServletRequest.remoteUser}]]
+                </a>
+            </li>
+            <li>
+                <a href="#" onclick="document.getElementById('logout').submit()">
+                    <span class="glyphicon glyphicon-log-out"></span> Kijelentkezés
+                </a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+
+</div>
+</html>
