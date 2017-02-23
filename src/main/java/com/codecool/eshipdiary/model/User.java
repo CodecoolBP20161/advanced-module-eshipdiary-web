@@ -61,7 +61,7 @@ public class User {
     private int weightInKg;
 
     @Column(nullable = false)
-    private boolean isActive;
+    private boolean active;
 
     @ManyToOne//(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     private Club club;
