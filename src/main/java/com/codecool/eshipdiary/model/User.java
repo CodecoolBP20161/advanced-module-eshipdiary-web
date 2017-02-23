@@ -3,11 +3,13 @@ package com.codecool.eshipdiary.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -49,6 +51,8 @@ public class User {
     private @JsonIgnore String passwordHash;
 
     @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
     private Date birthDate;
 
     @Column(nullable = false)
@@ -61,9 +65,9 @@ public class User {
     private int weightInKg;
 
     @Column(nullable = false)
-    private boolean isActive;
+    private boolean active;
 
-    @ManyToOne//(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     private Club club;
 
     @JsonIgnore
@@ -74,11 +78,6 @@ public class User {
     @PrePersist
     private void setAPIKey(){
         this.apiKey = UUID.randomUUID().toString();
-    }
-
-    public void setBirthDate(String birthDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        this.birthDate = Date.valueOf(LocalDate.parse(birthDate, formatter));
     }
 
     public void setPasswordHash(String rawPassword) {
