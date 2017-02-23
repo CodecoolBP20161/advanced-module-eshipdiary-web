@@ -37,4 +37,6 @@ public class UserRepositoryService {
         return userRepository.findAll();
     }
 
+    public void create(User user) { userRepository.save(user); }
+
 }
