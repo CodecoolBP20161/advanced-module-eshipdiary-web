@@ -4,12 +4,18 @@ import com.codecool.eshipdiary.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.sql.Date;
+
 @Projection(name="userOverview", types={User.class})
 public interface UserOverviewProjection {
-    @Value("#{target.firstName} #{target.lastName}")
+    @Value("#{target.lastName} #{target.firstName}")
     String getName();
-//    String getAge();
+    @Value("#{T(java.time.Period).between(target.birthDate.toLocalDate(), T(java.time.LocalDate).now()).getYears()}")
+    String getAge();
     String getKnowledgeLevel();
+    @Value("#{target.active?'Aktív':'Inaktív'}")
     String getIsActive();
 
 
