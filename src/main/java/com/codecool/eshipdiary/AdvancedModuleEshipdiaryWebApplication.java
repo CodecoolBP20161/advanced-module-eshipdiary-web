@@ -12,6 +12,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +43,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
             ex.setFirstName("first");
             ex.setLastName("admin");
             ex.setUserName("admin");
-            ex.setBirthDate("19890101");
+            ex.setBirthDate(Date.valueOf("1989-01-01"));
             ex.setActive(true);
             ex.setEmailAddress("admin@yahoo.com");
             ex.setPasswordHash("password");
@@ -60,7 +62,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
             user.setFirstName("first");
             user.setLastName("user");
             user.setUserName("user");
-            user.setBirthDate("19000101");
+            user.setBirthDate(Date.valueOf("1900-01-01"));
             user.setActive(true);
             user.setEmailAddress("user@yahoo.com");
             user.setPasswordHash("userpwd");
