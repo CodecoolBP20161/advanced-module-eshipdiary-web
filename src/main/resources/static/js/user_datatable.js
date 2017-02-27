@@ -1,18 +1,12 @@
 $(document).ready( function () {
-    loadUserTable();
-});
-
-function loadUserTable(){
     var table = $('#user-table').DataTable ({
-        "language": {
+        language: {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
         },
-
         ajax: {
             url: '/api/user',
             dataSrc: '_embedded.user'
         },
-
         columns: [
             {data: 'firstName'},
             {data: 'lastName'},
@@ -29,7 +23,7 @@ function loadUserTable(){
             }
         ]
     });
-}
+});
 
 function loadUserDetails(link, name){
     document.getElementById('userModalLabel').innerHTML = name + ' adatai';
@@ -48,16 +42,12 @@ function loadUserDetails(link, name){
 
 function deleteModal(link, name){
     document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
-    document.getElementById('user-delete').setAttribute('onclick', 'deleteUser("' + link + '")');
-}
-
-function deleteUser(link){
-    $.ajax({
-        type: "DELETE",
-        url: link,
-        success: function(msg){
-            location.reload();
-        }
+    document.getElementById('user-delete').addEventListener('click', function(){
+        $.ajax({
+            type: "DELETE",
+            url: link,
+            success: function(msg){location.reload()}
+        });
     });
 }
 
