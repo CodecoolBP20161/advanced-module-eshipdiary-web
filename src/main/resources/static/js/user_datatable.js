@@ -17,9 +17,10 @@ $(document).ready( function () {
             {data: 'active'},
             {
                 sortable: false,
-                render: function ( data, type, full, meta ) {
-                    var link = full._links.self.href;
-                    return '<a class="btn btn-warning rescindBtn" role="button" onclick="loadUserDetails(link, full.lastName)">Szerkesztés</a>';
+                render: function ( data, type, row ) {
+                    console.log(row._links.self.href);
+                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#userModal" role="button" onclick="loadUserDetails(\''+row._links.self.href+'\', \''+row.userName+'\');">Szerkesztés</a>' +
+                        ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteUser(\''+row._links.self.href+'\');">Törlés</a>';
                 }
             }
         ]
@@ -41,4 +42,7 @@ function loadUserDetails(link, name){
     });
 }
 
+function deleteUser(link, name){
+    return null;
+}
 
