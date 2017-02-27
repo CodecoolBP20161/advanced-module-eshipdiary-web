@@ -2,18 +2,21 @@ package com.codecool.eshipdiary.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-//import java.sql.Date;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.UUID;
+
 
 @Data
 @EqualsAndHashCode(exclude="roles")
@@ -35,23 +38,30 @@ public class User {
     @Column(nullable = false, unique = true)
     private String apiKey;
 
+    @NotEmpty
     @Column(nullable = false)
     private String firstName;
 
+    @NotEmpty
     @Column(nullable = false)
     private String lastName;
 
+    @NotEmpty
+    @Size(min = 3)
     @Column(nullable = false, unique = true)
     private String userName;
 
+    @NotEmpty
     @Column(nullable = false, unique = true)
     private String emailAddress;
 
+    @NotEmpty
     @Column(nullable = false)
     private @JsonIgnore String passwordHash;
 
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
