@@ -16,7 +16,6 @@ $(document).ready( function () {
             {
                 sortable: false,
                 render: function ( data, type, row ) {
-                    console.log(row._links.self.href);
                     return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#userModal" role="button" onclick="loadUserDetails(\''+row._links.self.href+'\', \''+row.userName+'\');">Részletek</a>' +
                         ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
                 }
