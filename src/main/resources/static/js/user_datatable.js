@@ -12,7 +12,16 @@ $(document).ready( function () {
             {data: 'lastName'},
             {data: 'birthDate'},
             {data: 'knowledgeLevel'},
-            {data: 'active'},
+            {
+                data: 'active',
+                render:
+                    function (data, type, row) {
+                        if (data === true) {
+                            return 'Aktív';
+                        }
+                        return 'Inaktív'
+                    }
+            },
             {
                 sortable: false,
                 render: function ( data, type, row ) {
