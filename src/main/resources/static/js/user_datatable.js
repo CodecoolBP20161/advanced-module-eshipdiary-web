@@ -24,10 +24,7 @@ $(document).ready( function () {
             },
             {
                 sortable: false,
-                render: function ( data, type, row ) {
-                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.userName+'\');">Részletek</a>' +
-                        ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
-                }
+                render: userActionButtons
             }
         ]
     });
@@ -53,5 +50,38 @@ function updateModal(link, name){
             document.getElementById("user-update").innerHTML = result;
         }
     });
+}
+
+function setUserStatus(link, shouldBeActive) {
+    $.ajax({
+        headers : {
+            'Accept' : 'application/json',
+            'Content-Type' : 'application/json'
+        },
+        url: link,
+        type: 'PATCH',
+        data: JSON.stringify({"active": shouldBeActive}),
+        success: function (msg) {location.reload()}
+    })
+}
+
+function userActionButtons( data, type, row ) {
+    var shouldBeActive;
+    var activationLabel;
+    var buttonType;
+    if (row.active) {
+        activationLabel = 'Inaktiválás';
+        shouldBeActive = false;
+        buttonType = 'warning'
+    } else {
+        activationLabel = 'Aktiválás';
+        shouldBeActive = true;
+        buttonType = 'success'
+    }
+
+    var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.userName+'\');">Részletek</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
+    var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-sm" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
+    return detailsButton + deleteButton + statusChangeButton;
 }
 
