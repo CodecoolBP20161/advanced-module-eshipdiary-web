@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <div th:replace="fragments/imports :: imports"></div>
     <title>Elektronikus hajónapló</title>
@@ -8,33 +8,12 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
     <h1>Tagok</h1>
-
-    <div>
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#create_new_modal">Új tag felvétele</button>
-
-        <div id="create_new_modal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Új tag hozzáadása</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div th:replace="fragments/form :: create-form"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Bezárás</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal"
+    onclick="updateModal('/users/0');">Új tag felvétele</button>
     <br />
-    <div th:replace="fragments/user_table :: user-table"></div>
-    <div th:replace="fragments/user_modal :: user-modal"></div>
-    <div th:replace="fragments/user_delete :: user-delete"></div>
+    <div th:replace="users/user_table :: user-table"></div>
+    <div th:replace="users/user_delete :: user-delete"></div>
+    <div th:replace="users/user_update :: user-update"></div>
 </div>
 
 </body>

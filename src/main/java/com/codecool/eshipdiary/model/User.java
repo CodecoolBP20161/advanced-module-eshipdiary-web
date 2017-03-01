@@ -8,10 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-//import java.sql.Date;
 import java.util.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,6 +26,7 @@ public class User {
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -47,7 +45,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String emailAddress;
 
-    @Column(nullable = false)
+    @Column
     private @JsonIgnore String passwordHash;
 
     @Column

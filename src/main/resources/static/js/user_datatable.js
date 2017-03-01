@@ -16,28 +16,13 @@ $(document).ready( function () {
             {
                 sortable: false,
                 render: function ( data, type, row ) {
-                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#userModal" role="button" onclick="loadUserDetails(\''+row._links.self.href+'\', \''+row.userName+'\');">Részletek</a>' +
+                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.userName+'\');">Részletek</a>' +
                         ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
                 }
             }
         ]
     });
 });
-
-function loadUserDetails(link, name){
-    document.getElementById('userModalLabel').innerHTML = name + ' adatai';
-    $.getJSON(link, function(data) {
-        document.getElementById('first-name').innerHTML = data.firstName;
-        document.getElementById('last-name').innerHTML = data.lastName;
-        document.getElementById('user-name').innerHTML = data.userName;
-        document.getElementById('email-address').innerHTML = data.emailAddress;
-        document.getElementById('birth-date').innerHTML = data.birthDate;
-        document.getElementById('phone-number').innerHTML = data.phoneNumber;
-        document.getElementById('knowledge-level').innerHTML = data.knowledgeLevel;
-        document.getElementById('weight').innerHTML = data.weightInKg;
-        document.getElementById('active').innerHTML = data.active;
-    });
-}
 
 function deleteModal(link, name){
     document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
@@ -47,6 +32,17 @@ function deleteModal(link, name){
             url: link,
             success: function(msg){location.reload()}
         });
+    });
+}
+
+function updateModal(link, name){
+    name = (typeof name !== 'undefined') ?  name : "Új tag";
+    document.getElementById('updateModalLabel').innerHTML = name + ' adatai';
+    $.ajax({
+        url: link,
+        success: function(result){
+            document.getElementById("user-update").innerHTML = result;
+        }
     });
 }
 
