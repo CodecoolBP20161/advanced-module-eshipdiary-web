@@ -32,6 +32,7 @@ public class User {
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

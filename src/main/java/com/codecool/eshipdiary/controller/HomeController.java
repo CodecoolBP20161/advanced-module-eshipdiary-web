@@ -7,8 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -25,4 +31,30 @@ public class HomeController {
         }
         return "index";
     }
+
+
+    @RequestMapping(value = "/users")
+    public String getUserTable(Model model) {
+        return "users";
+    }
+
+    @RequestMapping(value = "/users" , method = RequestMethod.POST)
+    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            // todo: frontend input error handling
+            LOG.error("Error while trying to create a new user", bindingResult);
+            return "users";
+        } else {
+            LOG.info("User: ", user);
+            userRepositoryService.save(user);
+            return "users";
+        }
+    }
+
+    @RequestMapping(value = "/users/{usersId}")
+    public String updateUser(@PathVariable("usersId") Long id, Model model){
+        model.addAttribute("user", id == 0 ? new User() : userRepositoryService.getUserById(id));
+        return "users/user_form";
+    }
+
 }

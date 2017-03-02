@@ -1,44 +1,87 @@
 $(document).ready( function () {
     var table = $('#user-table').DataTable ({
-        "language": {
+        language: {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
         },
-
         ajax: {
             url: '/api/user',
             dataSrc: '_embedded.user'
         },
-
         columns: [
             {data: 'firstName'},
             {data: 'lastName'},
             {data: 'birthDate'},
             {data: 'knowledgeLevel'},
-            {data: 'active'},
+            {
+                data: 'active',
+                render:
+                    function (data, type, row) {
+                        if (data === true) {
+                            return 'Aktív';
+                        }
+                        return 'Inaktív'
+                    }
+            },
             {
                 sortable: false,
-                render: function ( data, type, full, meta ) {
-                    var link = full._links.self.href;
-                    return '<a class="btn btn-warning rescindBtn" role="button" onclick="loadUserDetails(link, full.lastName)">Szerkesztés</a>';
-                }
+                render: userActionButtons
             }
         ]
     });
 });
 
-function loadUserDetails(link, name){
-    document.getElementById('userModalLabel').innerHTML = name + ' adatai';
-    $.getJSON(link, function(data) {
-        document.getElementById('first-name').innerHTML = data.firstName;
-        document.getElementById('last-name').innerHTML = data.lastName;
-        document.getElementById('user-name').innerHTML = data.userName;
-        document.getElementById('email-address').innerHTML = data.emailAddress;
-        document.getElementById('birth-date').innerHTML = data.birthDate;
-        document.getElementById('phone-number').innerHTML = data.phoneNumber;
-        document.getElementById('knowledge-level').innerHTML = data.knowledgeLevel;
-        document.getElementById('weight').innerHTML = data.weightInKg;
-        document.getElementById('active').innerHTML = data.active;
+function deleteModal(link, name){
+    document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
+    document.getElementById('user-delete').addEventListener('click', function(){
+        $.ajax({
+            type: "DELETE",
+            url: link,
+            success: function(msg){location.reload()}
+        });
     });
 }
 
+function updateModal(link, name){
+    name = (typeof name !== 'undefined') ?  name : "Új tag";
+    document.getElementById('updateModalLabel').innerHTML = name + ' adatai';
+    $.ajax({
+        url: link,
+        success: function(result){
+            document.getElementById("user-update").innerHTML = result;
+        }
+    });
+}
+
+function setUserStatus(link, shouldBeActive) {
+    $.ajax({
+        headers : {
+            'Accept' : 'application/json',
+            'Content-Type' : 'application/json'
+        },
+        url: link,
+        type: 'PATCH',
+        data: JSON.stringify({"active": shouldBeActive}),
+        success: function (msg) {location.reload()}
+    })
+}
+
+function userActionButtons( data, type, row ) {
+    var shouldBeActive;
+    var activationLabel;
+    var buttonType;
+    if (row.active) {
+        activationLabel = 'Inaktiválás';
+        shouldBeActive = false;
+        buttonType = 'warning'
+    } else {
+        activationLabel = 'Aktiválás';
+        shouldBeActive = true;
+        buttonType = 'success'
+    }
+
+    var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.userName+'\');">Részletek</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
+    var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-sm" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
+    return detailsButton + deleteButton + statusChangeButton;
+}
 
