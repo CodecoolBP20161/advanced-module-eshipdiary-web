@@ -1,7 +1,7 @@
 $(document).ready( function () {
     var table = $('#user-table').DataTable ({
         language: {
-            "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
+            'url': 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json'
         },
         ajax: {
             url: '/api/user',
@@ -34,7 +34,7 @@ function deleteModal(link, name){
     document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
     document.getElementById('user-delete').addEventListener('click', function(){
         $.ajax({
-            type: "DELETE",
+            type: 'DELETE',
             url: link,
             success: function(msg){location.reload()}
         });
@@ -42,14 +42,39 @@ function deleteModal(link, name){
 }
 
 function updateModal(link, name){
-    name = (typeof name !== 'undefined') ?  name : "Új tag";
+    name = (typeof name !== 'undefined') ?  name : 'Új tag';
     document.getElementById('updateModalLabel').innerHTML = name + ' adatai';
     $.ajax({
         url: link,
         success: function(result){
-            document.getElementById("user-update").innerHTML = result;
+            document.getElementById('user-update').innerHTML = result;
+            if(name !== 'Új tag') {
+                disableModal();
+            } else {
+                enableModal();
+            }
         }
     });
+}
+
+function disableModal(){
+    var form = document.getElementById('userForm');
+    var elements = form.elements;
+    for (var i = 0, len = elements.length; i < len; ++i) {
+        elements[i].disabled = true;
+    }
+    document.getElementById('userEdit').style.display = 'inline';
+    document.getElementById('userSubmit').style.display = 'none';
+}
+
+function enableModal(){
+    var form = document.getElementById('userForm');
+    var elements = form.elements;
+    for (var i = 0, len = elements.length; i < len; ++i) {
+        elements[i].disabled = false;
+    }
+    document.getElementById('userEdit').style.display = 'none';
+    document.getElementById('userSubmit').style.display = 'inline';
 }
 
 function setUserStatus(link, shouldBeActive) {
@@ -88,12 +113,12 @@ function userActionButtons( data, type, row ) {
 function submitForm(id){
     var data = $("#userForm").serializeObject();
     $.ajax({
-        type: id == 0 ? "POST" : "PATCH",
-        url: id == 0 ? "/api/user" : "api/user/" + id,
+        type: id == 0 ? 'POST' : 'PATCH',
+        url: id == 0 ? '/api/user' : 'api/user/' + id,
         data: JSON.stringify(data),
         success: function (msg) {location.reload()},
-        dataType: "json",
-        contentType : "application/json"
+        dataType: 'json',
+        contentType : 'application/json'
     });
     return false;
 }
