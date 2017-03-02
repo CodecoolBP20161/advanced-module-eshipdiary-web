@@ -4,10 +4,9 @@ import lombok.Data;
 
 @Data
 public class AppValidator {
-    private boolean valid;
+    private String apiKey;
 
-    public AppValidator(boolean isValid) {
-        this.valid = isValid;
+    public AppValidator(String apiKey) {
+        this.apiKey = apiKey;
     }
-
 }
