@@ -5,12 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -39,33 +41,34 @@ public class User {
     @Column(nullable = false, unique = true)
     private String apiKey;
 
-    @NotEmpty
+    @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false)
     private String firstName;
 
-    @NotEmpty
+    @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false)
     private String lastName;
 
-    @NotEmpty
-    @Size(min = 3)
+    @NotEmpty(message = "A mező nem lehet üres")
+    @Size(min = 3, message = "A felhasználónév legalább 3 karakter")
     @Column(nullable = false, unique = true)
     private String userName;
 
-    @NotEmpty
+    @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false, unique = true)
     private String emailAddress;
 
-    @NotEmpty
+    @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false)
     private @JsonIgnore String passwordHash;
 
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Past
+    @Past(message = "Nem megfelelő dátum")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
+    @NotNull(message = "A mező nem lehet üres")
     @Column(nullable = false)
     private int phoneNumber;
 
