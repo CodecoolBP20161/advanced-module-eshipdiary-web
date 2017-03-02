@@ -73,20 +73,23 @@
             </div>
         </div>
 
-        <div class="form-check">
+        <div class="form-group">
             <label class="control-label col-sm-4" for="active">Státusz</label>
-            <label class="col-sm-4 form-check-label">
-                <input th:field="*{active}" type="radio" class="form-check-input"
-                       id="active" th:value="true" />Aktív
-            </label>
-            <label class="col-sm-4 form-check-label">
-                <input th:field="*{active}" type="radio" class="form-check-input"
-                       id="inactive" th:value="false" />Inaktív
-            </label>
+            <div class="col-sm-8">
+                <div class="checkbox">
+                    <input th:field="*{active}" type="radio" class="form-check-input"
+                           id="active" th:value="true" /> Aktív
+                </div>
+            </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-8">
+                <div class="checkbox">
+                    <input th:field="*{active}" type="radio" class="form-check-input"
+                           id="inactive" th:value="false" /> Inaktív
+                </div>
+            </div>
         </div>
-        <div class="col-sm-4"></div>
-        <button type="submit" class="btn btn-primary">Mentés</button>
     </form>
-
+    
 </div>
 </html>

@@ -8,9 +8,8 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
     <h1>Tagok</h1>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal"
+    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#updateModal"
     onclick="updateModal('/users/0');">Új tag felvétele</button>
-    <br />
     <div th:replace="users/user_table :: user-table"></div>
     <div th:replace="users/user_delete :: user-delete"></div>
     <div th:replace="users/user_update :: user-update"></div>

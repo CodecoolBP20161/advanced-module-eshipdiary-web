@@ -3,6 +3,7 @@ package com.codecool.eshipdiary.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,6 +41,7 @@ public class User {
     private String lastName;
 
     @Column(nullable = false, unique = true)
+    @Length(min = 3)
     private String userName;
 
     @Column(nullable = false, unique = true)

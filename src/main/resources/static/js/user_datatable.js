@@ -87,11 +87,10 @@ function userActionButtons( data, type, row ) {
 
 function submitForm(){
     var data = $("#userForm").serializeObject();
-    var formData = JSON.stringify(data);
     $.ajax({
         type: data.id == 0 ? "POST" : "PATCH",
         url: data.id == 0 ? "/api/user" : "api/user/" + data.id,
-        data: formData,
+        data: JSON.stringify(data),
         success: function (msg) {location.reload()},
         dataType: "json",
         contentType : "application/json"
