@@ -30,16 +30,16 @@ $(document).ready( function () {
     });
 });
 
-function deleteModal(link, name){
-    document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
-    document.getElementById('user-delete').addEventListener('click', function(){
-        $.ajax({
-            type: "DELETE",
-            url: link,
-            success: function(msg){location.reload()}
-        });
-    });
-}
+// function deleteModal(link, name){
+//     document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
+//     document.getElementById('user-delete').addEventListener('click', function(){
+//         $.ajax({
+//             type: "DELETE",
+//             url: link,
+//             success: function(msg){location.reload()}
+//         });
+//     });
+// }
 
 function updateModal(link, name){
     name = (typeof name !== 'undefined') ?  name : "Új tag";
@@ -80,7 +80,8 @@ function userActionButtons( data, type, row ) {
     }
 
     var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.userName+'\');">Részletek</a>';
-    var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
+    // var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-sm" href="users/delete/' + row.userName + '">Törlés</a>'; //TODO: confirmation before delete
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-sm" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
     return detailsButton + deleteButton + statusChangeButton;
 }
