@@ -1,106 +1,79 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<div th:fragment="create-new-user-modal" id="create-new-user-modal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<div th:fragment="create-new-user-form" class="col-md-4">
 
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Új tag hozzáadása</h4>
+    <form th:action="@{/users/new}" th:object="${user}" method="post">
+
+        <div class="form-group">
+            <label th:for="last_name">Vezetéknév</label>
+            <input th:field="*{lastName}" type="text" class="form-control" placeholder="Vezetéknév" autofocus=""/>
+            <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
         </div>
 
-        <div class="modal-body">
-            <!--<form th:action="@{/user}" th:object="${user}" method="post">-->
-            <form th:object="${user}" id="user-form">
-            <div class="form-group">
-                <label th:for="last_name">Vezetéknév</label>
-                <input th:field="*{lastName}" type="text" class="form-control" placeholder="Vezetéknév" autofocus=""
-                       required="" />
-            </div>
-
-            <div class="form-group">
-                <label th:for="first_name">Keresztnév</label>
-                <input th:field="*{firstName}" type="text" class="form-control" placeholder="Keresztnév" autofocus=""
-                       required="" />
-            </div>
-
-            <div class="form-group">
-                <label th:for="username">Felhasználónév</label>
-                <input th:field="*{userName}" type="text" class="form-control" placeholder="Felhasználónév" autofocus=""
-                       required="" />
-                <input th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Username Error</input>
-            </div>
-
-            <div class="form-group">
-                <label th:for="email_address">Email-cím</label>
-                <input th:field="*{emailAddress}" type="email" class="form-control" placeholder="Email-cím" autofocus=""
-                       required="" />
-                <input th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}">Email Error</input>
-
-            </div>
-
-            <div class="form-group">
-                <label th:for="password">Jelszó</label>
-                <input th:field="*{passwordHash}" type="password" class="form-control" placeholder="Jelszó" autofocus=""
-                       required="" />
-            </div>
-
-            <div class="form-group">
-                <label th:for="birth_date">Születési idő</label>
-                <input th:field="*{birthDate}" type="date" class="form-control" placeholder="Születési idő (hónap, nap, év)" autofocus="" />
-            </div>
-
-            <div class="form-group">
-                <label th:for="phone_number">Telefonszám</label>
-                <input th:field="*{phoneNumber}" type="tel" class="form-control" placeholder="Telefonszám" autofocus=""
-                       required="" />
-            </div>
-
-            <div class="form-group">
-                <label th:for="knowledge_level">Tapasztalat</label>
-                <select th:field="*{knowledgeLevel}" class="form-control" autofocus="">
-                    <option th:each="knowledgeLevel : ${T(com.codecool.eshipdiary.model.User.KnowledgeLevel).values()}"
-                            th:value="${knowledgeLevel}"
-                            th:text="${knowledgeLevel}" />
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label th:for="weight_in_kg">Súly</label>
-                <input th:field="*{weightInKg}" type="number" class="form-control" placeholder="Súly (kg)" autofocus="" />
-            </div>
-
-            <div class="form-check">
-                <label for="active">Státusz</label>
-                <br />
-                <label class="form-check-label">
-                    <input th:field="*{active}" type="radio" class="form-check-input" id="active" th:value="true" />
-                    Aktív
-                </label>
-            </div>
-            <div class="form-check">
-                <label class="form-check-label">
-                    <input th:field="*{active}" type="radio" class="form-check-input" id="inactive" th:value="false" />
-                    Inaktív
-                </label>
-            </div>
-            <br />
-            <br />
-
-            <div id="error-message"></div>
-            <br />
-
-            <button id="create-new" type="submit" class="btn btn-lg btn-primary">Mentés</button>
-            </form>
-        </div> <!-- .modal-body -->
-
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Bezárás</button>
+        <div class="form-group">
+            <label th:for="first_name">Keresztnév</label>
+            <input th:field="*{firstName}" type="text" class="form-control" placeholder="Keresztnév" autofocus=""/>
+            <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
         </div>
 
-        </div> <!-- .modal-content -->
-    </div> <!-- .modal-dialog -->
-</div> <!-- fragment:create-new-user-modal -->
+        <div class="form-group">
+            <label th:for="username">Felhasználónév</label>
+            <input th:field="*{userName}" type="text" class="form-control" placeholder="Felhasználónév" autofocus=""/>
+            <div th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Username Error</div>
+        </div>
 
+        <div class="form-group">
+            <label th:for="email_address">Email-cím</label>
+            <input th:field="*{emailAddress}" type="email" class="form-control" placeholder="Email-cím" autofocus=""/>
+            <div th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}">Email Error</div>
+        </div>
+
+        <div class="form-group">
+            <label th:for="birth_date">Születési idő</label>
+            <input th:field="*{birthDate}" type="date" class="form-control" placeholder="Születési idő (hónap, nap, év)" autofocus="" />
+            <div th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
+        </div>
+
+        <div class="form-group">
+            <label th:for="phone_number">Telefonszám</label>
+            <input th:field="*{phoneNumber}" type="tel" class="form-control" placeholder="Telefonszám" autofocus=""/>
+            <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+        </div>
+
+        <div class="form-group">
+            <label th:for="knowledge_level">Tapasztalat</label>
+            <select th:field="*{knowledgeLevel}" class="form-control" autofocus="">
+                <option th:each="knowledgeLevel : ${T(com.codecool.eshipdiary.model.User.KnowledgeLevel).values()}"
+                        th:value="${knowledgeLevel}"
+                        th:text="${knowledgeLevel}" />
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label th:for="weight_in_kg">Súly</label>
+            <input th:field="*{weightInKg}" type="number" class="form-control" placeholder="Súly (kg)" autofocus="" />
+            <div th:if="${#fields.hasErrors('weightInKg')}" th:errors="*{weightInKg}"></div>
+        </div>
+
+        <div class="form-check">
+            <label for="active">Státusz</label>
+            <br />
+            <label class="form-check-label">
+                <input th:field="*{active}" type="radio" class="form-check-input" id="active" th:value="true" />
+                Aktív
+            </label>
+        </div>
+
+        <div class="form-check">
+            <label class="form-check-label">
+                <input th:field="*{active}" type="radio" class="form-check-input" id="inactive" th:value="false" />
+                Inaktív
+            </label>
+        </div>
+        <br />
+        <br />
+        <button id="create-new" type="submit" class="btn btn-lg btn-primary">Mentés</button>
+    </form>
+</div>
 </html>

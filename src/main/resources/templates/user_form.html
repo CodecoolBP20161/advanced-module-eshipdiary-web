@@ -7,15 +7,9 @@
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
-    <h1>Tagok</h1>
 
-    <div id="create-new-user">
-        <a th:href="@{/users/new}" type="button" class="btn btn-info btn-lg">Új tag felvétele</a>
-    </div>
-
-    <div id="users-table">
-        <div th:replace="users/user_table :: user-table"></div>
-    </div>
+    <!-- Form for creating new users -->
+    <div th:replace="fragments/create_new_user :: create-new-user-form"></div>
 
 </div>
 
