@@ -8,12 +8,23 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
     <h1>Tagok</h1>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal"
-    onclick="updateModal('/users/0');">Új tag felvétele</button>
+
+    <div id="create-new-user">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#create-new-user-modal"
+                data-backdrop="static">Új tag felvétele</button>
+
+        <!-- Modal for creating new users -->
+        <div th:replace="fragments/create_new_user :: create-new-user-modal"></div>
+
+    </div>
     <br />
-    <div th:replace="users/user_table :: user-table"></div>
-    <div th:replace="users/user_delete :: user-delete"></div>
-    <div th:replace="users/user_update :: user-update"></div>
+
+    <div id="users-table">
+        <div th:replace="fragments/user_table :: user-table"></div>
+    </div>
+
+    <div th:replace="fragments/user_modal :: user-modal"></div>
+
 </div>
 
 </body>

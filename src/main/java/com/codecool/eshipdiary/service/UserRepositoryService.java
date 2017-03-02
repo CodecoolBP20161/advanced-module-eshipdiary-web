@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -37,6 +38,6 @@ public class UserRepositoryService {
         return userRepository.findAll();
     }
 
-    public void save(User user) { userRepository.save(user); }
-
+    public void create(User user) throws SQLException { userRepository.save(user); }
+  
 }
