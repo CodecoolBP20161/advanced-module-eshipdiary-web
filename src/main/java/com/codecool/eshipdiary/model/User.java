@@ -58,8 +58,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String emailAddress;
 
-    @NotEmpty(message = "A mező nem lehet üres")
-    @Column(nullable = false)
+    @Column
     private @JsonIgnore String passwordHash;
 
     @Column
@@ -95,6 +94,9 @@ public class User {
     }
 
     public void setPasswordHash(String rawPassword) {
+        if (rawPassword == null) {
+            rawPassword = UUID.randomUUID().toString(); //TODO: implement email thingy for setting first pw
+        }
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
     }
 }
