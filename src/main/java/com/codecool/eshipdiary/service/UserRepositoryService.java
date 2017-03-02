@@ -38,6 +38,8 @@ public class UserRepositoryService {
         return userRepository.findAll();
     }
 
-    public void create(User user) throws SQLException { userRepository.save(user); }
-  
+    public void create(User user) { userRepository.save(user); }
+
+    public void deleteUserByUserName(User user) { userRepository.delete(user); }
+
 }
