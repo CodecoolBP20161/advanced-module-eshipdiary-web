@@ -85,3 +85,32 @@ function userActionButtons( data, type, row ) {
     return detailsButton + deleteButton + statusChangeButton;
 }
 
+function submitForm(){
+    var data = $("#userForm").serializeObject();
+    var formData = JSON.stringify(data);
+    $.ajax({
+        type: data.id == 0 ? "POST" : "PATCH",
+        url: data.id == 0 ? "/api/user" : "api/user/" + data.id,
+        data: formData,
+        success: function (msg) {location.reload()},
+        dataType: "json",
+        contentType : "application/json"
+    });
+    return false;
+}
+
+$.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};

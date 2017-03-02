@@ -3,7 +3,7 @@
 
 <div th:fragment="create-form">
 
-    <form th:href="@{/users}" th:object="${user}" method="post" class="form-horizontal">
+    <form th:object="${user}" onsubmit="return submitForm();" class="form-horizontal" id="userForm">
         <input type="hidden" th:field="*{id}" />
         <input type="hidden" th:field="*{apiKey}" />
         <div class="form-group">
@@ -84,9 +84,6 @@
                        id="inactive" th:value="false" />Inaktív
             </label>
         </div>
-        <br />
-        <br />
-
         <div class="col-sm-4"></div>
         <button type="submit" class="btn btn-primary">Mentés</button>
     </form>

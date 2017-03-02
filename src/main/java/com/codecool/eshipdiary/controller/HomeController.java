@@ -39,18 +39,18 @@ public class HomeController {
         return "users";
     }
 
-    @RequestMapping(value = "/users" , method = RequestMethod.POST)
-    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            // todo: frontend input error handling
-            LOG.error("Error while trying to create a new user", bindingResult);
-            return "users";
-        } else {
-            LOG.info("User: ", user);
-            userRepositoryService.save(user);
-            return "users";
-        }
-    }
+//    @RequestMapping(value = "/users" , method = RequestMethod.POST)
+//    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            // todo: frontend input error handling
+//            LOG.error("Error while trying to create a new user", bindingResult);
+//            return "users";
+//        } else {
+//            LOG.info("User: ", user);
+//            userRepositoryService.save(user);
+//            return "users";
+//        }
+//    }
 
     @RequestMapping(value = "/users/{usersId}")
     public String updateUser(@PathVariable("usersId") Long id, Model model){
