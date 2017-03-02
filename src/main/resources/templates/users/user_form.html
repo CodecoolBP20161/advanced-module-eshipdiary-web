@@ -3,9 +3,7 @@
 
 <div th:fragment="create-form">
 
-    <form th:object="${user}" onsubmit="return submitForm();" class="form-horizontal" id="userForm">
-        <input type="hidden" th:field="*{id}" />
-        <input type="hidden" th:field="*{apiKey}" />
+    <form th:object="${user}" th:onsubmit="${submit}" class="form-horizontal" id="userForm">
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="last_name">Vezetéknév</label>
             <div class="col-sm-8">
@@ -90,6 +88,6 @@
             </div>
         </div>
     </form>
-    
+
 </div>
 </html>

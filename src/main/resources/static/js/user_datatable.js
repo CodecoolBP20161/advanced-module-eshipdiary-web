@@ -85,11 +85,11 @@ function userActionButtons( data, type, row ) {
     return detailsButton + deleteButton + statusChangeButton;
 }
 
-function submitForm(){
+function submitForm(id){
     var data = $("#userForm").serializeObject();
     $.ajax({
-        type: data.id == 0 ? "POST" : "PATCH",
-        url: data.id == 0 ? "/api/user" : "api/user/" + data.id,
+        type: id == 0 ? "POST" : "PATCH",
+        url: id == 0 ? "/api/user" : "api/user/" + id,
         data: JSON.stringify(data),
         success: function (msg) {location.reload()},
         dataType: "json",

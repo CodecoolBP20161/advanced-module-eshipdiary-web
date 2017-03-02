@@ -55,6 +55,7 @@ public class HomeController {
     @RequestMapping(value = "/users/{usersId}")
     public String updateUser(@PathVariable("usersId") Long id, Model model){
         model.addAttribute("user", id == 0 ? new User() : userRepositoryService.getUserById(id));
+        model.addAttribute("submit", "return submitForm(" + id + ")");
         return "users/user_form";
     }
 
