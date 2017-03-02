@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -42,10 +43,17 @@ public class UserController {
     @RequestMapping(value = "/users/new", method = RequestMethod.POST)
     public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult result) {
         if(result.hasErrors()) {
-            LOG.info("result" + result.getFieldErrors());
+            LOG.error("Error while trying to create a new user: " + result.getFieldErrors());
             return "user_form";
         }
-        return "users";
+        userRepositoryService.create(user);
+        return "redirect:/users";
+    }
+
+    @RequestMapping(value = "/users/delete/{userName}", method = RequestMethod.GET)
+    public String deleteUser(@PathVariable("userName") String userName) {
+        userRepositoryService.deleteUserByUserName(userRepositoryService.getUserByUserName(userName).get());
+        return "redirect:/users";
     }
     
 }
