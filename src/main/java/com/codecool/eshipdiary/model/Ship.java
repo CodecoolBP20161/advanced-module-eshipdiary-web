@@ -6,17 +6,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 
-/**
- * Created by hamargyuri on 2017. 03. 03..
- */
 
 @Entity
 @Data
-public class ShipType {
-
-    private enum RecommendedOars {
-        KAYAK, CANOE, SCULL, SWEEP, DRAGON
-    }
+public class Ship {
 
     @Id
     @Column
@@ -40,5 +33,24 @@ public class ShipType {
     private boolean isCoxed;
 
     @Column
-    private RecommendedOars recommendedOars;
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Type shipType;
+
+    @ManyToOne
+    private User owner;
+
+    @Column
+    private String place;
+
+    @Column
+    private String notes;
+
+    public enum Category {
+        TRAINING, COMPETITION, TOP, TEACHING
+    }
+
 }
