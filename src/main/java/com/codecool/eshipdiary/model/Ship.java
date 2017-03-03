@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -37,6 +38,7 @@ public class Ship {
     private Category category;
 
     @Column
+    @NotNull(message = "A mező nem lehet üres")
     @Enumerated(EnumType.STRING)
     private Type shipType;
 
