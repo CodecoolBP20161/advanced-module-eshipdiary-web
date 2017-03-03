@@ -3,7 +3,7 @@
 
 <div th:fragment="create-form">
 
-    <form th:object="${user}" th:onsubmit="${submit}" class="form-horizontal" id="userForm">
+    <form th:object="${user}" th:onsubmit="${validate}" class="form-horizontal" id="userForm">
 
         <div class="form-group" th:classappend="${#fields.hasErrors('lastName')} ? 'has-error has-feedback'">
             <label class="control-label col-sm-4" th:for="last_name">Vezetéknév</label>
@@ -112,6 +112,7 @@
             </div>
         </div>
     </form>
+    <button type="button" hidden="hidden" th:onclick="${submit}" id="userPost"></button>
 
 </div>
 </html>

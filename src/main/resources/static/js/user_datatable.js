@@ -4,24 +4,14 @@ $(document).ready( function () {
             'url': 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json'
         },
         ajax: {
-            url: '/api/user',
+            url: '/api/user?projection=userOverview',
             dataSrc: '_embedded.user'
         },
         columns: [
-            {data: 'firstName'},
-            {data: 'lastName'},
-            {data: 'birthDate'},
+            {data: 'name'},
+            {data: 'age'},
             {data: 'knowledgeLevel'},
-            {
-                data: 'active',
-                render:
-                    function (data, type, row) {
-                        if (data === true) {
-                            return 'Aktív';
-                        }
-                        return 'Inaktív'
-                    }
-            },
+            {data: 'isActive'},
             {
                 sortable: false,
                 render: userActionButtons
@@ -94,7 +84,7 @@ function userActionButtons( data, type, row ) {
     var shouldBeActive;
     var activationLabel;
     var buttonType;
-    if (row.active) {
+    if (row.isActive === "Aktív") {
         activationLabel = 'Inaktiválás';
         shouldBeActive = false;
         buttonType = 'warning'
@@ -110,6 +100,19 @@ function userActionButtons( data, type, row ) {
     return detailsButton + deleteButton + statusChangeButton;
 }
 
+function validateForm(id){
+    $.ajax({
+        url:'/users/' + id,
+        type:'post',
+        data:$('#userForm').serialize(),
+        success:function(result){
+            document.getElementById('user-update').innerHTML = result;
+            $('#userPost').click();
+        }
+    });
+    return false;
+}
+
 function submitForm(id){
     var data = $("#userForm").serializeObject();
     $.ajax({
@@ -117,47 +120,10 @@ function submitForm(id){
         url: id == 0 ? '/api/user' : 'api/user/' + id,
         data: JSON.stringify(data),
         success: function (msg) {location.reload()},
-        statusCode: {
-            500: function() {
-                $.ajax({
-                    url:'/users/' + id,
-                    type:'post',
-                    data:$('#userForm').serialize(),
-                    success:function(result){
-                        document.getElementById('user-update').innerHTML = result;
-                    }
-                });
-            }
-        },
         dataType: 'json',
         contentType : 'application/json'
     });
-    return false;
 }
-
-// function submitForm(id){
-//     $.ajax({
-//         url: '/users/' + id,
-//         type: 'post',
-//         data: $('#userForm').serialize(),
-//         success: function (result) {
-//             if (result !== "success") {
-//                 document.getElementById('user-update').innerHTML = result;
-//             } else {
-//                 var data = $("#userForm").serializeObject();
-//                 $.ajax({
-//                     type: id == 0 ? 'POST' : 'PATCH',
-//                     url: id == 0 ? '/api/user' : 'api/user/' + id,
-//                     data: JSON.stringify(data),
-//                     success: function (msg) {location.reload()},
-//                     dataType: 'json',
-//                     contentType: 'application/json'
-//                 });
-//             }
-//         }
-//     });
-//     return false;
-// };
 
 $.fn.serializeObject = function() {
     var o = {};

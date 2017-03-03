@@ -85,14 +85,18 @@ public class User {
     private Set<Role> roles;
 
     @PrePersist
-    private void setAPIKey(){
+    private void validate(){
         this.apiKey = UUID.randomUUID().toString();
+        if(this.passwordHash == null){
+            this.setPasswordHash(this.userName);
+        }
     }
 
     public void setPasswordHash(String rawPassword) {
-        if (rawPassword == null) {
-            rawPassword = UUID.randomUUID().toString(); //TODO: implement email thingy for setting first pw
+        if(rawPassword == ""){
+            rawPassword = this.userName;
         }
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
     }
+
 }

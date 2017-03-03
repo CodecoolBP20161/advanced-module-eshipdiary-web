@@ -65,7 +65,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
             user.setBirthDate(Date.valueOf("1900-01-01"));
             user.setActive(true);
             user.setEmailAddress("user@yahoo.com");
-            user.setPasswordHash("userpwd");
+            user.setPasswordHash("");
             user.setPhoneNumber(62426180);
             user.setKnowledgeLevel(User.KnowledgeLevel.ADVANCED);
             user.setWeightInKg(90);

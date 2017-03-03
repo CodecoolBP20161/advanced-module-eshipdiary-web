@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -42,14 +41,18 @@ public class HomeController {
     @RequestMapping(value = "/users/{usersId}")
     public String updateUser(@PathVariable("usersId") Long id, Model model){
         model.addAttribute("user", id == 0 ? new User() : userRepositoryService.getUserById(id));
-        model.addAttribute("submit", "return submitForm(" + id + ")");
+        model.addAttribute("validate", "return validateForm(" + id + ")");
         return "users/user_form";
     }
 
     @RequestMapping(value = "/users/{usersId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("usersId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
-        LOG.error("Error while trying to create a new user: " + result.getFieldErrors());
-        model.addAttribute("submit", "return submitForm(" + id + ")");
+        if(result.hasErrors()) {
+            LOG.error("Error while trying to create a new user: " + result.getFieldErrors());
+            model.addAttribute("validate", "return validateForm(" + id + ")");
+        } else {
+            model.addAttribute("submit", "return submitForm(" + id + ")");
+        }
         return "users/user_form";
     }
 }

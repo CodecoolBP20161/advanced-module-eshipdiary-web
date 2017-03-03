@@ -1,8 +1,8 @@
 body {
     padding-top: 70px;
-    background: url("../images/boat.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+}
+
+.navbar-default .navbar-fixed-top {
+    background-color: #E62117;
+    border-color: #E62117;
 }

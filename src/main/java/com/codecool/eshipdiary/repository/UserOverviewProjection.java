@@ -10,6 +10,7 @@ import java.sql.Date;
 
 @Projection(name="userOverview", types={User.class})
 public interface UserOverviewProjection {
+    String getId();
     @Value("#{target.lastName} #{target.firstName}")
     String getName();
     @Value("#{T(java.time.Period).between(target.birthDate.toLocalDate(), T(java.time.LocalDate).now()).getYears()}")
