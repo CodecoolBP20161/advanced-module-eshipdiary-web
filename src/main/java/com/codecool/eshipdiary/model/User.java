@@ -3,12 +3,15 @@ package com.codecool.eshipdiary.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -34,16 +37,20 @@ public class User {
     @Column(nullable = false, unique = true)
     private String apiKey;
 
+    @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false)
     private String firstName;
 
+    @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false)
     private String lastName;
 
+    @NotEmpty(message = "A mező nem lehet üres")
+    @Size(min = 3, message = "A felhasználónév legalább 3 karakter")
     @Column(nullable = false, unique = true)
-    @Length(min = 3)
     private String userName;
 
+    @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false, unique = true)
     private String emailAddress;
 
@@ -52,9 +59,11 @@ public class User {
 
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "Nem megfelelő dátum")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
+    @NotNull(message = "A mező nem lehet üres")
     @Column(nullable = false)
     private int phoneNumber;
 
@@ -81,6 +90,9 @@ public class User {
     }
 
     public void setPasswordHash(String rawPassword) {
+        if (rawPassword == null) {
+            rawPassword = UUID.randomUUID().toString(); //TODO: implement email thingy for setting first pw
+        }
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
     }
 }

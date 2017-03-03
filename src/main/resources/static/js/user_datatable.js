@@ -117,11 +117,47 @@ function submitForm(id){
         url: id == 0 ? '/api/user' : 'api/user/' + id,
         data: JSON.stringify(data),
         success: function (msg) {location.reload()},
+        statusCode: {
+            500: function() {
+                $.ajax({
+                    url:'/users/' + id,
+                    type:'post',
+                    data:$('#userForm').serialize(),
+                    success:function(result){
+                        document.getElementById('user-update').innerHTML = result;
+                    }
+                });
+            }
+        },
         dataType: 'json',
         contentType : 'application/json'
     });
     return false;
 }
+
+// function submitForm(id){
+//     $.ajax({
+//         url: '/users/' + id,
+//         type: 'post',
+//         data: $('#userForm').serialize(),
+//         success: function (result) {
+//             if (result !== "success") {
+//                 document.getElementById('user-update').innerHTML = result;
+//             } else {
+//                 var data = $("#userForm").serializeObject();
+//                 $.ajax({
+//                     type: id == 0 ? 'POST' : 'PATCH',
+//                     url: id == 0 ? '/api/user' : 'api/user/' + id,
+//                     data: JSON.stringify(data),
+//                     success: function (msg) {location.reload()},
+//                     dataType: 'json',
+//                     contentType: 'application/json'
+//                 });
+//             }
+//         }
+//     });
+//     return false;
+// };
 
 $.fn.serializeObject = function() {
     var o = {};
