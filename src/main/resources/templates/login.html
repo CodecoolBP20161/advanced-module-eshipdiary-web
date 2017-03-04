@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="fragments/imports :: imports"></div>
-    <link href="/css/login.css" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css"/>
     <title>E Ship Diary</title>
 </head>
 <body>
@@ -33,6 +33,6 @@
     </form>
 
 </div>
-<script src="js/login.js"></script>
+<script th:src="@{js/login.js}"></script>
 </body>
 </html>

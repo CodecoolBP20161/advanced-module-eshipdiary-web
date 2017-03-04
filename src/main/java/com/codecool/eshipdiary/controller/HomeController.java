@@ -47,9 +47,9 @@ public class HomeController {
 
     @RequestMapping(value = "/users/{usersId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("usersId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
+        model.addAttribute("validate", "return validateForm(" + id + ")");
         if(result.hasErrors()) {
             LOG.error("Error while trying to create a new user: " + result.getFieldErrors());
-            model.addAttribute("validate", "return validateForm(" + id + ")");
         } else {
             model.addAttribute("submit", "return submitForm(" + id + ")");
         }

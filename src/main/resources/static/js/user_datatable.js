@@ -1,4 +1,8 @@
 $(document).ready( function () {
+    loadTable();
+});
+
+function loadTable(){
     var table = $('#user-table').DataTable ({
         language: {
             'url': 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json'
@@ -16,9 +20,10 @@ $(document).ready( function () {
                 sortable: false,
                 render: userActionButtons
             }
-        ]
+        ],
+        bDestroy: true
     });
-});
+}
 
 function deleteModal(link, name){
     document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
@@ -26,7 +31,7 @@ function deleteModal(link, name){
         $.ajax({
             type: 'DELETE',
             url: link,
-            success: function(msg){location.reload()}
+            success: function(msg){loadTable();}
         });
     });
 }
@@ -76,7 +81,7 @@ function setUserStatus(link, shouldBeActive) {
         url: link,
         type: 'PATCH',
         data: JSON.stringify({"active": shouldBeActive}),
-        success: function (msg) {location.reload()}
+        success: function (msg) {loadTable();}
     })
 }
 
@@ -119,7 +124,10 @@ function submitForm(id){
         type: id == 0 ? 'POST' : 'PATCH',
         url: id == 0 ? '/api/user' : 'api/user/' + id,
         data: JSON.stringify(data),
-        success: function (msg) {location.reload()},
+        success: function (msg) {
+            $('#updateModal').modal('hide');
+            loadTable();
+        },
         dataType: 'json',
         contentType : 'application/json'
     });
