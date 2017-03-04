@@ -27,11 +27,14 @@ function loadTable(){
 
 function deleteModal(link, name){
     document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
-    document.getElementById('user-delete').addEventListener('click', function(){
+    document.getElementById('userDelete').addEventListener('click', function(){
         $.ajax({
             type: 'DELETE',
             url: link,
-            success: function(msg){loadTable();}
+            success: function(msg){
+                $('#deleteModal').modal('hide');
+                loadTable();
+            }
         });
     });
 }
@@ -42,12 +45,8 @@ function updateModal(link, name){
     $.ajax({
         url: link,
         success: function(result){
-            document.getElementById('user-update').innerHTML = result;
-            if(name !== 'Új tag') {
-                disableModal();
-            } else {
-                enableModal();
-            }
+            document.getElementById('userUpdate').innerHTML = result;
+            name !== 'Új tag' ? disableModal() : enableModal();
         }
     });
 }
@@ -74,14 +73,12 @@ function enableModal(){
 
 function setUserStatus(link, shouldBeActive) {
     $.ajax({
-        headers : {
-            'Accept' : 'application/json',
-            'Content-Type' : 'application/json'
-        },
         url: link,
         type: 'PATCH',
         data: JSON.stringify({"active": shouldBeActive}),
-        success: function (msg) {loadTable();}
+        success: function (msg) {loadTable();},
+        dataType: 'json',
+        contentType : 'application/json'
     })
 }
 
@@ -111,7 +108,7 @@ function validateForm(id){
         type:'post',
         data:$('#userForm').serialize(),
         success:function(result){
-            document.getElementById('user-update').innerHTML = result;
+            document.getElementById('userUpdate').innerHTML = result;
             $('#userPost').click();
         }
     });
