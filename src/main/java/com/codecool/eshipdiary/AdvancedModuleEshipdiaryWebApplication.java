@@ -2,8 +2,11 @@ package com.codecool.eshipdiary;
 
 import com.codecool.eshipdiary.model.Club;
 import com.codecool.eshipdiary.model.Role;
+import com.codecool.eshipdiary.model.Ship;
 import com.codecool.eshipdiary.model.User;
+import com.codecool.eshipdiary.model.Type;
 import com.codecool.eshipdiary.repository.ClubRepository;
+import com.codecool.eshipdiary.repository.ShipRepository;
 import com.codecool.eshipdiary.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +30,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository userRepository, ClubRepository clubRepository) {
+    public CommandLineRunner demo(UserRepository userRepository, ClubRepository clubRepository, ShipRepository shipRepository) {
         return (args) -> {
 
             Role admin = new Role();
@@ -72,6 +75,15 @@ public class AdvancedModuleEshipdiaryWebApplication {
             user.setRoles(userRoles);
             user.setClub(bee);
             userRepository.save(user);
+
+            Ship ship = new Ship();
+            ship.setName("Atlanta");
+            ship.setCategory(Ship.Category.TRAINING);
+            ship.setCode("4x+");
+            ship.setCoxed(true);
+            ship.setMaxSeat(4);
+            ship.setShipType(Type.SCULL);
+            shipRepository.save(ship);
 
 
             LOG.info("Users found with findAll():");

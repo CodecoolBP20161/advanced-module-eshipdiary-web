@@ -26,7 +26,7 @@ public class Ship {
     private String code;
 
     @Column
-    @NotEmpty(message = "A mező nem lehet üres")
+    @NotNull(message = "A mező nem lehet üres")
     @Min(message = "Nem lehet kisebb, mint egy", value = 1)
     private int maxSeat;
 
