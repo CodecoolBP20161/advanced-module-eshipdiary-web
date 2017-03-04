@@ -81,20 +81,21 @@ function deleteModal(link, name){
 }
 
 function updateModal(link, name){
-    name = (typeof name !== 'undefined') ?  name : 'Új tag';
-    document.getElementById('updateModalLabel').innerHTML = name + ' adatai';
-    $.ajax({
-        url: link,
-        success: function(result){
-            document.getElementById('userUpdate').innerHTML = result;
-            name !== 'Új tag' ? disableModal() : enableModal();
-        },
-        statusCode: {
-            403: function() {
-                location.reload();
+    if(name !== 'Új tag' || document.getElementById('updateModalLabel').innerHTML !== 'Új tag adatai') {
+        document.getElementById('updateModalLabel').innerHTML = name + ' adatai';
+        $.ajax({
+            url: link,
+            success: function (result) {
+                document.getElementById('userUpdate').innerHTML = result;
+                name !== 'Új tag' ? disableModal() : enableModal();
+            },
+            statusCode: {
+                403: function () {
+                    location.reload();
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 function disableModal(){
@@ -144,6 +145,7 @@ function submitForm(id){
         url: id == 0 ? '/api/user' : 'api/user/' + id,
         data: JSON.stringify(data),
         success: function (msg) {
+            document.getElementById('updateModalLabel').innerHTML = "";
             $('#updateModal').modal('hide');
             loadTable();
         },
