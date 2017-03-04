@@ -39,8 +39,8 @@ function userActionButtons( data, type, row ) {
         buttonType = 'success'
     }
 
-    var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.userName+'\');">Részletek</a>';
-    var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
+    var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-sm" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
     return detailsButton + deleteButton + statusChangeButton;
 }
