@@ -64,7 +64,7 @@ function deleteModal(link, name){
             url: link,
             success: function(msg){
                 $('#deleteModal').modal('hide');
-                $('#user-table').DataTable().ajax.reload();
+                $('#user-table').DataTable().ajax.reload( null, false );
             },
             statusCode: {
                 403: function() {
