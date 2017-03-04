@@ -25,6 +25,42 @@ function loadTable(){
     });
 }
 
+function userActionButtons( data, type, row ) {
+    var shouldBeActive;
+    var activationLabel;
+    var buttonType;
+    if (row.isActive === "Aktív") {
+        activationLabel = 'Inaktiválás';
+        shouldBeActive = false;
+        buttonType = 'warning'
+    } else {
+        activationLabel = 'Aktiválás';
+        shouldBeActive = true;
+        buttonType = 'success'
+    }
+
+    var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.userName+'\');">Részletek</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
+    var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-sm" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
+    return detailsButton + deleteButton + statusChangeButton;
+}
+
+function setUserStatus(link, shouldBeActive) {
+    $.ajax({
+        url: link,
+        type: 'PATCH',
+        data: JSON.stringify({"active": shouldBeActive}),
+        success: function (msg) {loadTable();},
+        statusCode: {
+            403: function() {
+                location.reload();
+            }
+        },
+        dataType: 'json',
+        contentType : 'application/json'
+    })
+}
+
 function deleteModal(link, name){
     document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
     document.getElementById('userDelete').addEventListener('click', function(){
@@ -34,6 +70,11 @@ function deleteModal(link, name){
             success: function(msg){
                 $('#deleteModal').modal('hide');
                 loadTable();
+            },
+            statusCode: {
+                403: function() {
+                    location.reload();
+                }
             }
         });
     });
@@ -47,6 +88,11 @@ function updateModal(link, name){
         success: function(result){
             document.getElementById('userUpdate').innerHTML = result;
             name !== 'Új tag' ? disableModal() : enableModal();
+        },
+        statusCode: {
+            403: function() {
+                location.reload();
+            }
         }
     });
 }
@@ -71,36 +117,7 @@ function enableModal(){
     document.getElementById('userSubmit').style.display = 'inline';
 }
 
-function setUserStatus(link, shouldBeActive) {
-    $.ajax({
-        url: link,
-        type: 'PATCH',
-        data: JSON.stringify({"active": shouldBeActive}),
-        success: function (msg) {loadTable();},
-        dataType: 'json',
-        contentType : 'application/json'
-    })
-}
 
-function userActionButtons( data, type, row ) {
-    var shouldBeActive;
-    var activationLabel;
-    var buttonType;
-    if (row.isActive === "Aktív") {
-        activationLabel = 'Inaktiválás';
-        shouldBeActive = false;
-        buttonType = 'warning'
-    } else {
-        activationLabel = 'Aktiválás';
-        shouldBeActive = true;
-        buttonType = 'success'
-    }
-
-    var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.userName+'\');">Részletek</a>';
-    var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
-    var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-sm" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
-    return detailsButton + deleteButton + statusChangeButton;
-}
 
 function validateForm(id){
     $.ajax({
@@ -110,6 +127,11 @@ function validateForm(id){
         success:function(result){
             document.getElementById('userUpdate').innerHTML = result;
             $('#userPost').click();
+        },
+        statusCode: {
+            403: function() {
+                location.reload();
+            }
         }
     });
     return false;
@@ -124,6 +146,11 @@ function submitForm(id){
         success: function (msg) {
             $('#updateModal').modal('hide');
             loadTable();
+        },
+        statusCode: {
+            403: function() {
+                location.reload();
+            }
         },
         dataType: 'json',
         contentType : 'application/json'
