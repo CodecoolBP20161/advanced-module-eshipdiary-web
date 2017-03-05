@@ -11,7 +11,7 @@ $(document).ready( function () {
             {data: 'name'},
             {data: 'shipType'},
             {data: 'maxSeat'},
-            {data: 'category'}//,
+            {data: 'category'},
 
             {
                 sortable: false,
@@ -24,7 +24,6 @@ $(document).ready( function () {
 
 function shipActionButtons( data, type, row ) {
     var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/ships/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
-    // var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
     var deleteButton = ' <a class="btn btn-danger btn-sm" href="ships/delete/' + row.id + '">Törlés</a>'; //TODO: confirmation before delete
 
     return deleteButton;

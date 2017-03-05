@@ -5,7 +5,6 @@ import com.codecool.eshipdiary.service.ShipRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,6 +46,27 @@ public class ShipController {
         }
         LOG.info("Creating a new ship: " + ship);
         shipRepositoryService.create(ship);
+        return "redirect:/ships";
+    }
+
+    @RequestMapping("/ships/view/{shipId}")
+    public String viewShip(@PathVariable("shipId") Long id, Model model) {
+        model.addAttribute("ship", shipRepositoryService.getShipById(id));
+        return "ships/ship_form";
+    }
+
+    @RequestMapping(value = "ships/update/{shipId}", method = RequestMethod.PUT)
+    public String updateShip(@PathVariable("shipId") Long id, @ModelAttribute("ship") @Valid Ship ship, BindingResult result) {
+        if(result.hasErrors()) {
+            LOG.error("Error while trying to create a new ship: " + result.getFieldErrors());
+            return "redirect:/ships/view/" + id;
+        }
+        return "redirect:/ships";
+    }
+
+    @RequestMapping(value = "/ships/delete/{shipId}", method = RequestMethod.GET)
+    public String deleteShip(@PathVariable("shipId") Long id) {
+        shipRepositoryService.deleteShipById(id);
         return "redirect:/ships";
     }
 
