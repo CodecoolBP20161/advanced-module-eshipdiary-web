@@ -25,6 +25,6 @@ public class OarRepositoryService {
 
     public void create(Oar oar) { oarRepository.save(oar); }
 
-    public void deleteOarById(Long id) { oarRepository.delete(oarRepository.findOne(id)); }
+    public void deleteOarById(Long id) { oarRepository.delete(oarRepository.findOneById(id)); }
 
 }

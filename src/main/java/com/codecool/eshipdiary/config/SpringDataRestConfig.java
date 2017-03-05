@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary.config;
 
+import com.codecool.eshipdiary.model.Oar;
 import com.codecool.eshipdiary.model.Ship;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.repository.UserOverviewProjection;
@@ -20,7 +21,8 @@ public class SpringDataRestConfig {
             public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
                 config.exposeIdsFor(
                         User.class,
-                        Ship.class
+                        Ship.class,
+                        Oar.class
                 )
                         .getProjectionConfiguration()
                         .addProjection(UserOverviewProjection.class);

@@ -22,7 +22,21 @@ $(document).ready( function () {
 
 function oarActionButtons( data, type, row ) {
 
-    var editButton = '<a class="btn btn-info btn-sm" role="button" href="oars/update/'+row.id+'">Szerkesztés</a>';
-    var deleteButton = '<a class="btn btn-danger btn-sm" role="button" href="oars/delete/'+row.id+'">Törlés</a>';
+    var editButton = ' <a class="btn btn-info btn-sm" role="button" href="oars/update/'+row.id+'">Szerkesztés</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\'/oars/delete/'+row.id+'\', \''+row.name+'\');">Törlés</a>';
     return editButton + deleteButton;
+}
+
+function deleteModal(link, name){
+    document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
+    document.getElementById('oarDelete').addEventListener('click', function(){
+        $.ajax({
+            type: 'GET',
+            url: link,
+            success: function(msg){
+                $('#deleteModal').modal('hide');
+                $('#oar-table').DataTable().ajax.reload( null, false );
+            }
+        });
+    });
 }
