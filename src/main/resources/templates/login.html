@@ -3,16 +3,20 @@
 <head>
     <div th:replace="fragments/imports :: imports"></div>
     <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css"/>
-    <title>E Ship Diary</title>
+    <title>Elektronikus hajónapló</title>
 </head>
 <body>
 <div class="container">
-    <div th:if="${param.error}">
-        Invalid username and password.
+
+    <div class="col-md-4">
+        <div class="alert alert-danger" role="alert" th:if="${param.error}">
+            <strong>Hibás felhasználónév vagy jelszó.</strong>
+        </div>
+        <div  class="alert alert-success" role="alert" th:if="${param.logout}">
+            <strong>Sikeres kijelentkezés.</strong>
+        </div>
     </div>
-    <div th:if="${param.logout}">
-        You have been logged out.
-    </div>
+
     <form class="form-signin" th:action="@{/login}" method="post">
         <h2 class="form-signin-heading">Bejelentkezés</h2>
 
@@ -33,6 +37,5 @@
     </form>
 
 </div>
-<script th:src="@{js/login.js}"></script>
 </body>
 </html>

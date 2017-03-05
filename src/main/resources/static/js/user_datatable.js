@@ -144,6 +144,7 @@ function submitForm(id){
             $('#updateModal').modal('hide');
             $('#user-table').DataTable().ajax.reload( null, false );
         },
+
         statusCode: {
             403: function() {
                 location.reload();

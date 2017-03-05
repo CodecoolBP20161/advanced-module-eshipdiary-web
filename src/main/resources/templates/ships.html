@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="fragments/imports :: imports"></div>
+    <title>Elektronikus hajónapló</title>
+    <script type="text/javascript" th:src="@{js/ship_datatable.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container">
+    <h1>Hajók</h1>
+
+    <!--<div id="create-new-ship">-->
+        <!--<a th:href="@{/users/new}" type="button" class="btn btn-info btn-lg">Új tag felvétele</a>-->
+    <!--</div>-->
+
+    <div id="ships-table">
+        <div th:replace="ships/ship_table :: ship-table"></div>
+    </div>
+
+</div>
+
+</body>
+</html>
