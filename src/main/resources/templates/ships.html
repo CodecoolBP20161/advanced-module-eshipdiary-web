@@ -10,9 +10,9 @@
 <div class="container">
     <h1>Hajók</h1>
 
-    <!--<div id="create-new-ship">-->
-        <!--<a th:href="@{/users/new}" type="button" class="btn btn-info btn-lg">Új tag felvétele</a>-->
-    <!--</div>-->
+    <div id="create-new-ship">
+        <a th:href="@{/ships/new}" type="button" class="btn btn-info btn-sm">Új hajó felvétele</a>
+    </div>
 
     <div id="ships-table">
         <div th:replace="ships/ship_table :: ship-table"></div>

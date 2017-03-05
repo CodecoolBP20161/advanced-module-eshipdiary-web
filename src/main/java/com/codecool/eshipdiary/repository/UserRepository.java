@@ -16,8 +16,4 @@ public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findOneByEmailAddress(String email);
     Optional<User> findOneByUserName(String userName);
     Optional<User> findOneByApiKey(String APIKey);
-    Collection<User> findAllByUserNameContainingIgnoreCase(@Param("search") String search);
-    Collection<User> findAllByEmailAddressContainingIgnoreCase(@Param("search") String search);
-    Collection<User> findAllByFirstNameContainingIgnoreCase(@Param("search") String search);
-    Collection<User> findAllByLastNameContainingIgnoreCase(@Param("search") String search);
 }

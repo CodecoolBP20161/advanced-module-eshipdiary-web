@@ -68,7 +68,7 @@ public class User {
 
     @NotNull(message = "A mező nem lehet üres")
     @Column(nullable = false)
-    private int phoneNumber;
+    private String phoneNumber;
 
     @Column
     private KnowledgeLevel knowledgeLevel;
