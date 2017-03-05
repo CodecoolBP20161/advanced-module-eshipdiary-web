@@ -102,4 +102,8 @@ public class User {
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
     }
 
+    public User(){
+        this.active = true;
+    }
+
 }
