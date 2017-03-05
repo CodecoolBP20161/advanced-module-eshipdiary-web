@@ -28,17 +28,17 @@
         </div>
 
         <div class="form-check">
-            <label th:for="is_coxed">Kormányos</label>
+            <label th:for="coxed">Kormányos</label>
             <br />
             <label class="form-check-label">
-                <input th:field="*{isCoxed}" type="radio" class="form-check-input" id="coxed" th:value="true" />
+                <input th:field="*{coxed}" type="radio" class="form-check-input" id="coxed" th:value="true" />
                 Kormányos
             </label>
         </div>
 
         <div class="form-check">
             <label class="form-check-label">
-                <input th:field="*{isCoxed}" type="radio" class="form-check-input" id="coxless" th:value="false" />
+                <input th:field="*{coxed}" type="radio" class="form-check-input" id="coxless" th:value="false" />
                 Kormányos nélküli
             </label>
         </div>

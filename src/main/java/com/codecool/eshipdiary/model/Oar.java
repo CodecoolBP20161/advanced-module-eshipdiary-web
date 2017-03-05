@@ -17,7 +17,7 @@ public class Oar {
 
     @Column(nullable = false)
     @NotNull(message = "A mező nem lehet üres")
-    private Type oarType;
+    private Type type;
 
     @Column(nullable = false)
     @NotNull(message = "A mező nem lehet üres")
