@@ -35,6 +35,7 @@ public class OarController {
     public String updateOar(@PathVariable("oarsId") Long id, Model model){
         Optional<Oar> oar = oarRepositoryService.getOarById(id);
         model.addAttribute("oar", oar.isPresent() ? oar.get() : new Oar());
+        model.addAttribute("title", oar.map(Oar::getName).orElse("Új evező"));
         return "oars/oar_form";
     }
 
