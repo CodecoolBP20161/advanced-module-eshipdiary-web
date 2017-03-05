@@ -9,22 +9,20 @@ $(document).ready( function () {
         },
         columns: [
             {data: 'name'},
-            {data: 'oarType'}//,
+            {data: 'type'},
 
-            // {
-            //     sortable: false,
-            //     render: shipActionButtons
-            // }
+            {
+                sortable: false,
+                render: oarActionButtons
+            }
         ]
     });
 });
 
 
-// function shipActionButtons( data, type, row ) {
-//     var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/ships/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
-//     // var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
-//     var deleteButton = ' <a class="btn btn-danger btn-sm" href="ships/delete/' + row.name + '">Törlés</a>'; //TODO: confirmation before delete
-//
-//     return detailsButton + deleteButton;
-// }
+function oarActionButtons( data, type, row ) {
 
+    var editButton = '<a class="btn btn-info btn-sm" role="button" href="oars/edit'+row.id+'">Szerkesztés</a>';
+    var deleteButton = '<a class="btn btn-danger btn-sm" role="button" href="oars/delete'+row.id+'">Törlés</a>';
+    return editButton + deleteButton;
+}
