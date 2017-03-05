@@ -111,6 +111,7 @@ function enableModal(){
     }
     document.getElementById('userEdit').style.display = 'none';
     document.getElementById('userSubmit').style.display = 'inline';
+    elements[0].focus();
 }
 
 
@@ -170,3 +171,7 @@ $.fn.serializeObject = function() {
     });
     return o;
 };
+
+$('.modal').on('shown.bs.modal', function() {
+    $(this).find('[autofocus]').focus();
+});
