@@ -96,7 +96,7 @@ public class User {
     }
 
     public void setPasswordHash(String rawPassword) {
-        if(rawPassword == ""){
+        if(rawPassword.equals("")){
             rawPassword = this.userName;
         }
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
