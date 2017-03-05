@@ -49,6 +49,21 @@ public class ShipController {
         return "redirect:/ships";
     }
 
+    @RequestMapping("/ships/view/{shipId}")
+    public String viewShip(@PathVariable("shipId") Long id, Model model) {
+        model.addAttribute("ship", shipRepositoryService.getShipById(id));
+        return "ships/ship_form";
+    }
+
+    @RequestMapping(value = "ships/update/{shipId}", method = RequestMethod.PUT)
+    public String updateShip(@PathVariable("shipId") Long id, @ModelAttribute("ship") @Valid Ship ship, BindingResult result) {
+        if(result.hasErrors()) {
+            LOG.error("Error while trying to create a new ship: " + result.getFieldErrors());
+            return "redirect:/ships/view/" + id;
+        }
+        return "redirect:/ships";
+    }
+
     @RequestMapping(value = "/ships/delete/{shipId}", method = RequestMethod.GET)
     public String deleteShip(@PathVariable("shipId") Long id) {
         shipRepositoryService.deleteShipById(id);
