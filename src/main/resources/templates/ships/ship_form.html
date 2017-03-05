@@ -28,7 +28,7 @@
 
             <div class="form-group" th:classappend="${#fields.hasErrors('maxSeat')} ? 'has-error has-feedback'">
                 <label th:for="maxSeat">Beülők száma</label>
-                <input th:field="*{maxSeat}" type="number" min="1" max="25" class="form-control" placeholder="Beülők száma" autofocus=""/>
+                <input th:field="*{maxSeat}" type="number" min="1" max="25" class="form-control" placeholder="1" autofocus=""/>
                 <div th:if="${#fields.hasErrors('maxSeat')}" th:errors="*{maxSeat}">Username Error</div>
             </div>
 
@@ -68,9 +68,12 @@
 
             <div class="form-group">
                 <label th:for="owner">Hajó tulajdonosa</label>
-                <!--Should be drop down list of all users???-->
-                <input th:field="*{owner}" type="text" class="form-control" placeholder="Hajó tulajdonosa" autofocus=""/>
-                <div th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></div>
+                <select th:field="*{owner}" class="form-control" autofocus="">
+                    <option th:value="0">Klub tulajdona</option>
+                    <option th:each="owner : ${users}"
+                            th:value="${owner.getId()}"
+                            th:text="${owner.getLastName() + ' ' + owner.getFirstName()}" />
+                </select>
             </div>
 
             <div class="form-group">

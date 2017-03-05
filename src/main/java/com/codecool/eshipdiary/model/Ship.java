@@ -54,4 +54,8 @@ public class Ship {
         TRAINING, COMPETITION, TOP, TEACHING
     }
 
+    public Ship() {
+        this.setMaxSeat(1);
+    }
+
 }

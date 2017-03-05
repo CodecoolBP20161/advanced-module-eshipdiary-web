@@ -1,7 +1,9 @@
 package com.codecool.eshipdiary.controller;
 
 import com.codecool.eshipdiary.model.Ship;
+import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.service.ShipRepositoryService;
+import com.codecool.eshipdiary.service.UserRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class ShipController {
@@ -22,9 +25,17 @@ public class ShipController {
     @Autowired
     ShipRepositoryService shipRepositoryService;
 
+    @Autowired
+    UserRepositoryService userRepositoryService;
+
     @ModelAttribute("ship")
     public Ship Ship() {
         return new Ship();
+    }
+
+    @ModelAttribute("users")
+    public List<User> listUsers() {
+        return (List<User>) userRepositoryService.getAllUsers();
     }
 
     @RequestMapping("/ships")
