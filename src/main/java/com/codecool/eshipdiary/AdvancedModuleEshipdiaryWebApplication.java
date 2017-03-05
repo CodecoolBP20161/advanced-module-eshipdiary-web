@@ -50,7 +50,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
             ex.setActive(true);
             ex.setEmailAddress("admin@yahoo.com");
             ex.setPasswordHash("password");
-            ex.setPhoneNumber(22021043);
+            ex.setPhoneNumber("22021043");
             ex.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
             ex.setWeightInKg(80);
             ex.setRoles(roles);
@@ -69,7 +69,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
             user.setActive(true);
             user.setEmailAddress("user@yahoo.com");
             user.setPasswordHash("");
-            user.setPhoneNumber(62426180);
+            user.setPhoneNumber("62426180");
             user.setKnowledgeLevel(User.KnowledgeLevel.ADVANCED);
             user.setWeightInKg(90);
             user.setRoles(userRoles);
