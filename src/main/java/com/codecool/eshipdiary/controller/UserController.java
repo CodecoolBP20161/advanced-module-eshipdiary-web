@@ -24,36 +24,28 @@ public class UserController {
     @Autowired
     UserRepositoryService userRepositoryService;
 
-    @ModelAttribute("user")
-    public User User() {
-        return new User();
-    }
 
-    @RequestMapping("/users")
-    public String getUserTable(Model model) {
-        model.addAttribute("user");
+    @RequestMapping(value = "/users")
+    public String getUserTable() {
         return "users";
     }
 
-    @RequestMapping(value = "users/new", method = RequestMethod.GET)
-    public String userForm() {
-        return "user_form";
+    @RequestMapping(value = "/users/{usersId}")
+    public String updateUser(@PathVariable("usersId") Long id, Model model){
+        model.addAttribute("user", id == 0 ? new User() : userRepositoryService.getUserById(id));
+        model.addAttribute("validate", "return validateForm(" + id + ")");
+        return "users/user_form";
     }
 
-    @RequestMapping(value = "/users/new", method = RequestMethod.POST)
-    public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult result) {
+    @RequestMapping(value = "/users/{usersId}", method = RequestMethod.POST)
+    public String saveUser(@PathVariable("usersId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
+        model.addAttribute("validate", "return validateForm(" + id + ")");
         if(result.hasErrors()) {
             LOG.error("Error while trying to create a new user: " + result.getFieldErrors());
-            return "user_form";
+        } else {
+            model.addAttribute("submit", "return submitForm(" + id + ")");
         }
-        userRepositoryService.create(user);
-        return "redirect:/users";
-    }
-
-    @RequestMapping(value = "/users/delete/{userName}", method = RequestMethod.GET)
-    public String deleteUser(@PathVariable("userName") String userName) {
-        userRepositoryService.deleteUserByUserName(userRepositoryService.getUserByUserName(userName).get());
-        return "redirect:/users";
+        return "users/user_form";
     }
     
 }

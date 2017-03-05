@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -89,14 +88,18 @@ public class User {
     private Set<Role> roles;
 
     @PrePersist
-    private void setAPIKey(){
+    private void validate(){
         this.apiKey = UUID.randomUUID().toString();
+        if(this.passwordHash == null){
+            this.setPasswordHash(this.userName);
+        }
     }
 
     public void setPasswordHash(String rawPassword) {
-        if (rawPassword == null) {
-            rawPassword = UUID.randomUUID().toString(); //TODO: implement email thingy for setting first pw
+        if(rawPassword == ""){
+            rawPassword = this.userName;
         }
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
     }
+
 }

@@ -3,23 +3,17 @@
 <head>
     <div th:replace="fragments/imports :: imports"></div>
     <title>Elektronikus hajónapló</title>
-    <script type="text/javascript" th:src="@{js/user_datatable.js}"></script>
-    <script type="text/javascript" th:src="@{js/create_new_user_validation.js}"></script>
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
     <h1>Tagok</h1>
-
-    <div id="create-new-user">
-        <a th:href="@{/users/new}" type="button" class="btn btn-info btn-lg">Új tag felvétele</a>
-    </div>
-
-    <div id="users-table">
-        <div th:replace="users/user_table :: user-table"></div>
-    </div>
-
+    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#updateModal"
+    onclick="updateModal('/users/0', 'Új tag');">Új tag felvétele</button>
+    <div th:replace="users/user_table :: user-table"></div>
+    <div th:replace="users/user_delete :: user-delete"></div>
+    <div th:replace="users/user_update :: user-update"></div>
 </div>
-
+<script type="text/javascript" th:src="@{js/user_datatable.js}"></script>
 </body>
 </html>
