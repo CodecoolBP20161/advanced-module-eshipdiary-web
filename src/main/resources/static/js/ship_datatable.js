@@ -13,20 +13,20 @@ $(document).ready( function () {
             {data: 'maxSeat'},
             {data: 'category'}//,
 
-            // {
-            //     sortable: false,
-            //     render: shipActionButtons
-            // }
+            {
+                sortable: false,
+                render: shipActionButtons
+            }
         ]
     });
 });
 
 
-// function shipActionButtons( data, type, row ) {
-//     var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/ships/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
-//     // var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
-//     var deleteButton = ' <a class="btn btn-danger btn-sm" href="ships/delete/' + row.name + '">Törlés</a>'; //TODO: confirmation before delete
-//
-//     return detailsButton + deleteButton;
-// }
+function shipActionButtons( data, type, row ) {
+    var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/ships/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
+    // var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.userName+'\');">Törlés</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-sm" href="ships/delete/' + row.id + '">Törlés</a>'; //TODO: confirmation before delete
+
+    return deleteButton;
+}
 
