@@ -1,5 +1,5 @@
 $(document).ready( function () {
-    var table = $('#user-table').DataTable ({
+    $('#user-table').DataTable ({
         language: {
             'url': 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json'
         },
@@ -46,11 +46,6 @@ function setUserStatus(link, shouldBeActive) {
         type: 'PATCH',
         data: JSON.stringify({"active": shouldBeActive}),
         success: function (msg) {$('#user-table').DataTable().ajax.reload( null, false );},
-        statusCode: {
-            403: function() {
-                location.reload();
-            }
-        },
         dataType: 'json',
         contentType : 'application/json'
     })
@@ -65,11 +60,6 @@ function deleteModal(link, name){
             success: function(msg){
                 $('#deleteModal').modal('hide');
                 $('#user-table').DataTable().ajax.reload( null, false );
-            },
-            statusCode: {
-                403: function() {
-                    location.reload();
-                }
             }
         });
     });
@@ -83,11 +73,6 @@ function updateModal(link, name){
             success: function (result) {
                 document.getElementById('userUpdate').innerHTML = result;
                 name !== 'Új tag' ? disableModal() : enableModal();
-            },
-            statusCode: {
-                403: function () {
-                    location.reload();
-                }
             }
         });
     }
@@ -124,11 +109,6 @@ function validateForm(id){
         success:function(result){
             document.getElementById('userUpdate').innerHTML = result;
             $('#userPost').click();
-        },
-        statusCode: {
-            403: function() {
-                location.reload();
-            }
         }
     });
     return false;
@@ -144,12 +124,6 @@ function submitForm(id){
             document.getElementById('updateModalLabel').innerHTML = "";
             $('#updateModal').modal('hide');
             $('#user-table').DataTable().ajax.reload( null, false );
-        },
-
-        statusCode: {
-            403: function() {
-                location.reload();
-            }
         },
         dataType: 'json',
         contentType : 'application/json'
@@ -174,4 +148,8 @@ $.fn.serializeObject = function() {
 
 $('.modal').on('shown.bs.modal', function() {
     $(this).find('[autofocus]').focus();
+});
+
+$.ajaxSetup({
+    statusCode: { 403: function(XHR, statusCode, msg) { location.reload(); }}
 });
