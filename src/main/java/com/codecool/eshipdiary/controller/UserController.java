@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 
 @Controller
@@ -32,7 +33,8 @@ public class UserController {
 
     @RequestMapping(value = "/users/{usersId}")
     public String updateUser(@PathVariable("usersId") Long id, Model model){
-        model.addAttribute("user", id == 0 ? new User() : userRepositoryService.getUserById(id));
+        Optional<User> match = userRepositoryService.getUserById(id);
+        model.addAttribute("user", match.isPresent() ? match.get() : new User());
         model.addAttribute("validate", "return validateForm(" + id + ")");
         return "users/user_form";
     }
