@@ -11,11 +11,12 @@
     <h1>Hajók</h1>
 
     <div id="create-new-ship">
-        <a th:href="@{/ships/new}" type="button" class="btn btn-info btn-sm">Új hajó felvétele</a>
+        <a th:href="@{/ships/new}" type="button" class="btn btn-md btn-primary">Új hajó felvétele</a>
     </div>
 
     <div id="ships-table">
         <div th:replace="ships/ship_table :: ship-table"></div>
+        <div th:replace="ships/ship_delete :: ship-delete"></div>
     </div>
 
 </div>

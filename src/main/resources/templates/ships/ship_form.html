@@ -1,90 +1,96 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="fragments/imports :: imports"></div>
     <title>Elektronikus hajónapló</title>
 </head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container">
+    <div class="col-md-4">
+        <h4>Új hajó adatai</h4>
 
-<div th:fragment="create-new-ship-form" class="col-md-4">
+        <form th:object="${ship}" th:action="@{/ships/new}" method="post" class="form-horizontal" id="oarForm">
 
-    <form th:action="@{/ships/new}" th:object="${ship}" method="post">
+            <input type="hidden" th:field="*{id}" />
 
-        <div class="form-group">
-            <label th:for="name">Hajó neve</label>
-            <input th:field="*{name}" type="text" class="form-control" placeholder="Hajó neve" autofocus=""/>
-            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-        </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error has-feedback'">
+                <label th:for="name">Hajó neve</label>
+                <input th:field="*{name}" type="text" class="form-control" placeholder="Hajó neve" autofocus=""/>
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            </div>
 
-        <div class="form-group">
-            <label th:for="code">Hajó kódja</label>
-            <input th:field="*{code}" type="text" class="form-control" placeholder="pl. 2x-" autofocus=""/>
-            <div th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
-        </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('code')} ? 'has-error has-feedback'">
+                <label th:for="code">Hajó kódja</label>
+                <input th:field="*{code}" type="text" class="form-control" placeholder="pl. 2x-" autofocus=""/>
+                <div th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
+            </div>
 
-        <div class="form-group">
-            <label th:for="maxSeat">Beülők száma</label>
-            <input th:field="*{maxSeat}" type="number" min="1" max="25" class="form-control" placeholder="Beülők száma" autofocus=""/>
-            <div th:if="${#fields.hasErrors('maxSeat')}" th:errors="*{maxSeat}">Username Error</div>
-        </div>
+            <div class="form-group" th:classappend="${#fields.hasErrors('maxSeat')} ? 'has-error has-feedback'">
+                <label th:for="maxSeat">Beülők száma</label>
+                <input th:field="*{maxSeat}" type="number" min="1" max="25" class="form-control" placeholder="Beülők száma" autofocus=""/>
+                <div th:if="${#fields.hasErrors('maxSeat')}" th:errors="*{maxSeat}">Username Error</div>
+            </div>
 
-        <div class="form-check">
-            <label th:for="coxed">Kormányos</label>
-            <br />
-            <label class="form-check-label">
-                <input th:field="*{coxed}" type="radio" class="form-check-input" id="coxed" th:value="true" />
-                Kormányos
-            </label>
-        </div>
+            <div class="form-check">
+                <label th:for="coxed">Kormányos</label>
+                <br />
+                <label class="form-check-label">
+                    <input th:field="*{coxed}" type="radio" class="form-check-input" id="coxed" th:value="true" />
+                    Kormányos
+                </label>
+            </div>
 
-        <div class="form-check">
-            <label class="form-check-label">
-                <input th:field="*{coxed}" type="radio" class="form-check-input" id="coxless" th:value="false" />
-                Kormányos nélküli
-            </label>
-        </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input th:field="*{coxed}" type="radio" class="form-check-input" id="coxless" th:value="false" />
+                    Kormányos nélküli
+                </label>
+            </div>
 
-        <div class="form-group">
-            <label th:for="category">Kategória</label>
-            <select th:field="*{category}" class="form-control" autofocus="">
-                <option th:each="category : ${T(com.codecool.eshipdiary.model.Ship.Category).values()}"
-                        th:value="${category}"
-                        th:text="${category}" />
-            </select>
-        </div>
+            <div class="form-group">
+                <label th:for="category">Kategória</label>
+                <select th:field="*{category}" class="form-control" autofocus="">
+                    <option th:each="category : ${T(com.codecool.eshipdiary.model.Ship.Category).values()}"
+                            th:value="${category}"
+                            th:text="${category}" />
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label th:for="ship_type">Típus</label>
-            <select th:field="*{shipType}" class="form-control" autofocus="">
-                <option th:each="shipType : ${T(com.codecool.eshipdiary.model.Type).values()}"
-                        th:value="${shipType}"
-                        th:text="${shipType}" />
-            </select>
-        </div>
+            <div class="form-group">
+                <label th:for="ship_type">Típus</label>
+                <select th:field="*{shipType}" class="form-control" autofocus="">
+                    <option th:each="shipType : ${T(com.codecool.eshipdiary.model.Type).values()}"
+                            th:value="${shipType}"
+                            th:text="${shipType}" />
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label th:for="owner">Hajó tulajdonosa</label>
-            <!--Should be drop down list of all users???-->
-            <input th:field="*{owner}" type="text" class="form-control" placeholder="Hajó helye" autofocus=""/>
-            <div th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></div>
-        </div>
+            <div class="form-group">
+                <label th:for="owner">Hajó tulajdonosa</label>
+                <!--Should be drop down list of all users???-->
+                <input th:field="*{owner}" type="text" class="form-control" placeholder="Hajó tulajdonosa" autofocus=""/>
+                <div th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></div>
+            </div>
 
-        <div class="form-group">
-            <label th:for="place">Hajó helye</label>
-            <input th:field="*{place}" type="text" class="form-control" placeholder="Hajó helye" autofocus=""/>
-            <div th:if="${#fields.hasErrors('place')}" th:errors="*{place}"></div>
-        </div>
+            <div class="form-group">
+                <label th:for="place">Hajó helye</label>
+                <input th:field="*{place}" type="text" class="form-control" placeholder="Hajó helye" autofocus=""/>
+                <div th:if="${#fields.hasErrors('place')}" th:errors="*{place}"></div>
+            </div>
 
-        <div class="form-group">
-            <label th:for="notes">Megjegyzések</label>
-            <input th:field="*{notes}" type="text" class="form-control" autofocus=""/>
-            <div th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></div>
-        </div>
+            <div class="form-group">
+                <label th:for="notes">Megjegyzések</label>
+                <input th:field="*{notes}" type="text" class="form-control" autofocus=""/>
+                <div th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></div>
+            </div>
 
 
 
-        <br />
-        <br />
-        <button id="create-new" type="submit" class="btn btn-lg btn-primary">Mentés</button>
-    </form>
+            <div class="col-sm-4"></div>
+            <button type="submit" class="btn btn-md btn-default">Mentés</button>
+        </form>
+    </div>
 </div>
+</body>
 </html>

@@ -34,7 +34,8 @@ public class ShipController {
     }
 
     @RequestMapping("/ships/new")
-    public String getShipForm() {
+    public String getShipForm(Model model) {
+        model.addAttribute("ship", new Ship());
         return "ships/ship_form";
     }
 
@@ -49,18 +50,20 @@ public class ShipController {
         return "redirect:/ships";
     }
 
-    @RequestMapping("/ships/view/{shipId}")
-    public String viewShip(@PathVariable("shipId") Long id, Model model) {
+    @RequestMapping(value = "/ships/update/{shipId}")
+    public String updateShipForm(@PathVariable("shipId") Long id, Model model){
         model.addAttribute("ship", shipRepositoryService.getShipById(id));
         return "ships/ship_form";
     }
 
-    @RequestMapping(value = "ships/update/{shipId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "ships/update/{shipId}", method = RequestMethod.POST)
     public String updateShip(@PathVariable("shipId") Long id, @ModelAttribute("ship") @Valid Ship ship, BindingResult result) {
         if(result.hasErrors()) {
             LOG.error("Error while trying to create a new ship: " + result.getFieldErrors());
-            return "redirect:/ships/view/" + id;
+//            return "redirect:/ships/view/" + id;
+            return "ships/ship_form";
         }
+        shipRepositoryService.create(ship);
         return "redirect:/ships";
     }
 

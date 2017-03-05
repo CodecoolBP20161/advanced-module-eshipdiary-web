@@ -22,7 +22,6 @@ public class Ship {
     private String name;
 
     @Column(nullable = false)
-    @NotEmpty(message = "A mező nem lehet üres")
     private String code;
 
     @Column
