@@ -1,7 +1,12 @@
 body {
-    background: url("../images/boat.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    padding-top: 70px;
+}
+
+.navbar-default {
+    background-color: #E62117;
+    border-color: #E62117;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #FFFFFF;
 }

@@ -48,6 +48,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
 
                     .and()
+                .exceptionHandling().authenticationEntryPoint(new AjaxAwareAuthenticationEntryPoint("/login"))
+
+                    .and()
                 .csrf().disable();
 
     }

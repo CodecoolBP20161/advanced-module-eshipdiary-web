@@ -33,8 +33,10 @@ public class UserRepositoryService {
         return userRepository.findOneByApiKey(APIKey);
     }
 
-    public Collection<User> getAllUsers() {
+    public Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    public void save(User user) { userRepository.save(user); }
 
 }
