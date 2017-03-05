@@ -31,7 +31,7 @@ public class Ship {
     private int maxSeat;
 
     @Column
-    private boolean isCoxed;
+    private boolean coxed;
 
     @Column
     @Enumerated(EnumType.STRING)
