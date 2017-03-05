@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class OarController {
@@ -30,35 +31,20 @@ public class OarController {
         return "oars";
     }
 
-    @RequestMapping(value = "/oars/new")
-    public String createOar(Model model){
-        model.addAttribute("oar", new Oar());
-        return "oars/oar_form";
-    }
-
-    @RequestMapping(value = "/oars/new", method = RequestMethod.POST)
-    public String saveNewOar(@ModelAttribute("oar") @Valid Oar oar, BindingResult result){
-        if(result.hasErrors()) {
-            LOG.error("Error while trying to create new oar: " + result.getFieldErrors());
-            return "oars/oar_form";
-        }
-        oarRepositoryService.create(oar);
-        return "redirect:/oars";
-    }
-
     @RequestMapping(value = "/oars/update/{oarsId}")
     public String updateOar(@PathVariable("oarsId") Long id, Model model){
-        model.addAttribute("oar", oarRepositoryService.getOarById(id));
+        Optional<Oar> oar = oarRepositoryService.getOarById(id);
+        model.addAttribute("oar", oar.isPresent() ? oar.get() : new Oar());
         return "oars/oar_form";
     }
 
-    @RequestMapping(value = "/oars/update/{oarsId}", method = RequestMethod.POST)
-    public String saveOar(@PathVariable("oarsId") Long id, @ModelAttribute("oar") @Valid Oar oar, BindingResult result) {
+    @RequestMapping(value = "/oars/update", method = RequestMethod.POST)
+    public String saveOar(@ModelAttribute("oar") @Valid Oar oar, BindingResult result) {
         if(result.hasErrors()) {
             LOG.error("Error while trying to update oar: " + result.getFieldErrors());
             return "oars/oar_form";
         }
-        oarRepositoryService.create(oar);
+        oarRepositoryService.save(oar);
         return "redirect:/oars";
     }
 

@@ -23,8 +23,11 @@ public class OarRepositoryService {
         return oarRepository.findAll();
     }
 
-    public void create(Oar oar) { oarRepository.save(oar); }
+    public void save(Oar oar) { oarRepository.save(oar); }
 
-    public void deleteOarById(Long id) { oarRepository.delete(oarRepository.findOneById(id)); }
+    public void deleteOarById(Long id) {
+        Optional<Oar> oar = oarRepository.findOneById(id);
+        if(oar.isPresent()) oarRepository.delete(id);
+    }
 
 }
