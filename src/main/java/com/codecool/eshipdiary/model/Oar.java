@@ -23,4 +23,7 @@ public class Oar {
     @Column(nullable = false)
     @NotEmpty(message = "A mező nem lehet üres")
     private String name;
+
+    @ManyToOne
+    private User owner;
 }

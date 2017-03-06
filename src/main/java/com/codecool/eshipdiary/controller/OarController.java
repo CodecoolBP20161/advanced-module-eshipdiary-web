@@ -1,7 +1,9 @@
 package com.codecool.eshipdiary.controller;
 
 import com.codecool.eshipdiary.model.Oar;
+import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.service.OarRepositoryService;
+import com.codecool.eshipdiary.service.UserRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,6 +27,14 @@ public class OarController {
 
     @Autowired
     OarRepositoryService oarRepositoryService;
+
+    @Autowired
+    UserRepositoryService userRepositoryService;
+
+    @ModelAttribute("users")
+    public List<User> listUsers() {
+        return (List<User>) userRepositoryService.getAllUsers();
+    }
 
     @RequestMapping("/oars")
     public String getOarTable(Model model) {
