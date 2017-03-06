@@ -16,7 +16,7 @@ public class OarRepositoryService {
     private OarRepository oarRepository;
 
     public Optional<Oar> getOarById(long id) {
-        return Optional.ofNullable(oarRepository.findOne(id));
+        return oarRepository.findOneById(id);
     }
 
     public Iterable<Oar> getAllOars() {
@@ -26,8 +26,7 @@ public class OarRepositoryService {
     public void save(Oar oar) { oarRepository.save(oar); }
 
     public void deleteOarById(Long id) {
-        Optional<Oar> oar = oarRepository.findOneById(id);
-        if(oar.isPresent()) oarRepository.delete(id);
+        if(oarRepository.findOneById(id).isPresent()) oarRepository.delete(id);
     }
 
 }
