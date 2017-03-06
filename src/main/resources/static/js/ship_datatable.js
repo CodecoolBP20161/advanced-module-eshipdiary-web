@@ -1,5 +1,5 @@
 $(document).ready( function () {
-    var table = $('#ship-table').DataTable ({
+    $('#ship-table').DataTable ({
         language: {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
         },

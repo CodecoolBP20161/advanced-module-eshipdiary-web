@@ -1,5 +1,5 @@
 $(document).ready( function () {
-    var table = $('#oar-table').DataTable ({
+    $('#oar-table').DataTable ({
         language: {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
         },
@@ -21,7 +21,6 @@ $(document).ready( function () {
 
 
 function oarActionButtons( data, type, row ) {
-
     var editButton = ' <a class="btn btn-info btn-sm" role="button" href="oars/update/'+row.id+'">Szerkesztés</a>';
     var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\'/oars/delete/'+row.id+'\', \''+row.name+'\');">Törlés</a>';
     return editButton + deleteButton;

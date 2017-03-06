@@ -21,19 +21,9 @@ $(document).ready( function () {
 });
 
 function userActionButtons( data, type, row ) {
-    var shouldBeActive;
-    var activationLabel;
-    var buttonType;
-    if (row.isActive === "Aktív") {
-        activationLabel = 'Inaktiválás';
-        shouldBeActive = false;
-        buttonType = 'warning'
-    } else {
-        activationLabel = 'Aktiválás';
-        shouldBeActive = true;
-        buttonType = 'success'
-    }
-
+    var shouldBeActive = row.isActive === "Inaktív";
+    var activationLabel = shouldBeActive ? 'Aktiválás' : 'Inaktiválás';
+    var buttonType = shouldBeActive ? 'success' : 'warning';
     var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-sm" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
@@ -129,27 +119,3 @@ function submitForm(id){
         contentType : 'application/json'
     });
 }
-
-$.fn.serializeObject = function() {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
-
-$('.modal').on('shown.bs.modal', function() {
-    $(this).find('[autofocus]').focus();
-});
-
-$.ajaxSetup({
-    statusCode: { 403: function(XHR, statusCode, msg) { location.reload(); }}
-});

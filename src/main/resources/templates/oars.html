@@ -9,12 +9,10 @@
 <div class="container">
     <h1>Evezők</h1>
 
-    <div id="create-new-ship">
-        <a th:href="@{/oars/update/0}" type="button" class="btn btn-md btn-primary">Új evező</a>
+    <div>
+        <a th:href="@{/oars/update/0}" type="button" class="btn btn-md btn-primary">Új evező felvétele</a>
     </div>
-
     <br />
-
     <div id="oars-table">
         <div th:replace="oars/oar_table :: oar-table"></div>
         <div th:replace="oars/oar_delete :: oar-delete"></div>
@@ -22,5 +20,6 @@
 
 </div>
 <script type="text/javascript" th:src="@{/js/oar_datatable.js}"></script>
+<script type="text/javascript" th:src="@{/js/scripts.js}"></script>
 </body>
 </html>
