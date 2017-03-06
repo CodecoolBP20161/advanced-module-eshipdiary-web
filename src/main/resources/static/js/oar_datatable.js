@@ -21,8 +21,8 @@ $(document).ready( function () {
 
 
 function oarActionButtons( data, type, row ) {
-    var editButton = ' <a class="btn btn-info btn-sm" role="button" href="oars/update/'+row.id+'">Szerkesztés</a>';
-    var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\'/oars/delete/'+row.id+'\', \''+row.name+'\');">Törlés</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" role="button" href="oars/update/'+row.id+'">Szerkesztés</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\'/oars/delete/'+row.id+'\', \''+row.name+'\');">Törlés</a>';
     return editButton + deleteButton;
 }
 
