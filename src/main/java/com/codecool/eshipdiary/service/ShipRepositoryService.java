@@ -20,26 +20,14 @@ public class ShipRepositoryService {
         return Optional.ofNullable(shipRepository.findOne(id));
     }
 
-    public Optional<Ship> getShipByName(String name) {
-        return shipRepository.findOneByName(name);
-    }
-
-    public Optional<Ship> getShipByType(String type) {
-        return shipRepository.findOneByShipType(type);
-    }
-
-    public Optional<Ship> getShipByCategory(String category) {
-        return shipRepository.findOneByCategory(category);
-    }
-
     public Iterable<Ship> getAllShips() {
         return shipRepository.findAll();
     }
 
-    public void create(Ship ship) { shipRepository.save(ship); }
+    public void save(Ship ship) { shipRepository.save(ship); }
 
     public void deleteShipById(Long id) {
-        shipRepository.delete(shipRepository.findOne(id));
+        if(shipRepository.findOneById(id).isPresent()) shipRepository.delete(id);
     }
 
 }

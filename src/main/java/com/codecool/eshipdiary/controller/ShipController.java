@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ShipController {
@@ -44,37 +45,21 @@ public class ShipController {
         return "ships";
     }
 
-    @RequestMapping("/ships/new")
-    public String getShipForm(Model model) {
-        model.addAttribute("ship", new Ship());
-        return "ships/ship_form";
-    }
-
-    @RequestMapping(value = "/ships/new", method = RequestMethod.POST)
-    public String saveShip(@ModelAttribute("ship") @Valid Ship ship, BindingResult result) {
-        if(result.hasErrors()) {
-            LOG.error("Error while trying to create a new ship: " + result.getFieldErrors());
-            return "ships/ship_form";
-        }
-        LOG.info("Creating a new ship: " + ship);
-        shipRepositoryService.create(ship);
-        return "redirect:/ships";
-    }
-
     @RequestMapping(value = "/ships/update/{shipId}")
     public String updateShipForm(@PathVariable("shipId") Long id, Model model){
-        model.addAttribute("ship", shipRepositoryService.getShipById(id));
+        Optional<Ship> ship = shipRepositoryService.getShipById(id);
+        model.addAttribute("ship", ship.isPresent() ? ship.get() : new Ship());
+        model.addAttribute("title", ship.map(Ship::getName).orElse("Új hajó"));
         return "ships/ship_form";
     }
 
-    @RequestMapping(value = "ships/update/{shipId}", method = RequestMethod.POST)
-    public String updateShip(@PathVariable("shipId") Long id, @ModelAttribute("ship") @Valid Ship ship, BindingResult result) {
+    @RequestMapping(value = "ships/update", method = RequestMethod.POST)
+    public String updateShip(@ModelAttribute("ship") @Valid Ship ship, BindingResult result) {
         if(result.hasErrors()) {
             LOG.error("Error while trying to create a new ship: " + result.getFieldErrors());
-//            return "redirect:/ships/view/" + id;
             return "ships/ship_form";
         }
-        shipRepositoryService.create(ship);
+        shipRepositoryService.save(ship);
         return "redirect:/ships";
     }
 

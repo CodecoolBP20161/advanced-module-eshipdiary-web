@@ -8,9 +8,9 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
     <div class="col-md-4">
-        <h4>Új hajó adatai</h4>
+        <h4 th:text="${title} + ' adatai'">Új hajó adatai</h4>
 
-        <form th:object="${ship}" th:action="@{/ships/new}" method="post" class="form-horizontal" id="oarForm">
+        <form th:object="${ship}" th:action="@{/ships/update}" method="post" class="form-horizontal" id="oarForm">
 
             <input type="hidden" th:field="*{id}" />
 
@@ -91,7 +91,8 @@
 
 
             <div class="col-sm-4"></div>
-            <button type="submit" class="btn btn-md btn-default">Mentés</button>
+            <button type="submit" class="btn btn-md btn-primady">Mentés</button>
+            <a role="button" class="btn btn-default" th:href="@{/ships}">Mégse</a>
         </form>
     </div>
 </div>

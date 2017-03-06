@@ -11,7 +11,5 @@ import java.util.Optional;
 @Repository
 @RepositoryRestResource(collectionResourceRel = "ship", path = "ship")
 public interface ShipRepository extends CrudRepository<Ship, Long> {
-    Optional<Ship> findOneByName(String name);
-    Optional<Ship> findOneByShipType(String shipType);
-    Optional<Ship> findOneByCategory(String category);
+    Optional<Ship> findOneById(Long id);
 }
