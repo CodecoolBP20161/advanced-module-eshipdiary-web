@@ -7,12 +7,9 @@
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
-    <h1>Hajók</h1>
-
-    <div>
+    <h2>Hajók
         <a th:href="@{/ships/update/0}" type="button" class="btn btn-md btn-primary">Új hajó felvétele</a>
-    </div>
-    <br />
+    </h2>
     <div id="ships-table">
         <div th:replace="ships/ship_table :: ship-table"></div>
         <div th:replace="ships/ship_delete :: ship-delete"></div>
