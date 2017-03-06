@@ -12,6 +12,9 @@
         <div class="alert alert-danger" role="alert" th:if="${param.error}">
             <strong>Hibás felhasználónév vagy jelszó.</strong>
         </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.error2}">
+            <strong>Inaktív felhasználó.</strong>
+        </div>
         <div  class="alert alert-success" role="alert" th:if="${param.logout}">
             <strong>Sikeres kijelentkezés.</strong>
         </div>

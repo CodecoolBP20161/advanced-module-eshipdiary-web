@@ -68,7 +68,7 @@ public class User {
 
     @NotNull(message = "A mező nem lehet üres")
     @Column(nullable = false)
-    private int phoneNumber;
+    private String phoneNumber;
 
     @Column
     private KnowledgeLevel knowledgeLevel;
@@ -96,10 +96,14 @@ public class User {
     }
 
     public void setPasswordHash(String rawPassword) {
-        if(rawPassword == ""){
+        if(rawPassword.equals("")){
             rawPassword = this.userName;
         }
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
+    }
+
+    public User(){
+        this.active = true;
     }
 
 }

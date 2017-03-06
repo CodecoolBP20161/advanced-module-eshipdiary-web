@@ -11,6 +11,5 @@ import java.util.Optional;
 @Repository
 @RepositoryRestResource(collectionResourceRel = "oar", path = "oar")
 public interface OarRepository extends CrudRepository<Oar, Long> {
-    Optional<Oar> findOneByName(String name);
-    Optional<Oar> findOneByOarType(String oarType);
+    Optional<Oar> findOneById(Long id);
 }

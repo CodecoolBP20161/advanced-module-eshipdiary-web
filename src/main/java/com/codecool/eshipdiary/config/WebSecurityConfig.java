@@ -18,6 +18,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private AuthFailureHandler authFailureHandler;
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -32,10 +35,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/validate-app").permitAll()
                 .antMatchers("/remote-auth").permitAll()
+                .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
 
                     .and()
                 .formLogin()
+                .failureHandler(authFailureHandler)
                 .loginPage("/login")
                 .permitAll()
 
@@ -61,4 +66,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder());
     }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return userDetailsService;
+    }
+
+    @Bean
+    AuthFailureHandler authenticationHandler() {
+        return new AuthFailureHandler();
+    }
+
 }

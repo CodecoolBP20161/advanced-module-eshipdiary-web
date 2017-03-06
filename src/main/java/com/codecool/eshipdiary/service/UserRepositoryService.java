@@ -22,10 +22,6 @@ public class UserRepositoryService {
         return Optional.ofNullable(userRepository.findOne(id));
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.findOneByEmailAddress(email);
-    }
-
     public Optional<User> getUserByUserName(String userName) {
         return userRepository.findOneByUserName(userName);
     }
@@ -39,7 +35,4 @@ public class UserRepositoryService {
     }
 
     public void create(User user) { userRepository.save(user); }
-
-    public void deleteUserByUserName(User user) { userRepository.delete(user); }
-
 }

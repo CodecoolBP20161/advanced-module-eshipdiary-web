@@ -3,22 +3,21 @@
 <head>
     <div th:replace="fragments/imports :: imports"></div>
     <title>Elektronikus hajónapló</title>
-    <script type="text/javascript" th:src="@{js/ship_datatable.js}"></script>
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
-    <h1>Hajók</h1>
-
-    <!--<div id="create-new-ship">-->
-        <!--<a th:href="@{/users/new}" type="button" class="btn btn-info btn-lg">Új tag felvétele</a>-->
-    <!--</div>-->
-
+    <h2>Hajók
+        <a th:href="@{/ships/update/0}" type="button" class="btn btn-md btn-primary">Új hajó felvétele</a>
+    </h2>
     <div id="ships-table">
         <div th:replace="ships/ship_table :: ship-table"></div>
+        <div th:replace="ships/ship_delete :: ship-delete"></div>
     </div>
 
 </div>
 
+<script type="text/javascript" th:src="@{/js/ship_datatable.js}"></script>
+<script type="text/javascript" th:src="@{/js/scripts.js}"></script>
 </body>
 </html>
