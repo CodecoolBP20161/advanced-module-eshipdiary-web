@@ -39,28 +39,30 @@ public class ShipController {
         return (List<User>) userRepositoryService.getAllUsers();
     }
 
-    @RequestMapping("/ships")
+    @RequestMapping(value = {"/ships", "/ships/**"})
     public String getShipTable(Model model) {
         model.addAttribute("ship");
         return "ships";
     }
 
-    @RequestMapping(value = "/ships/update/{shipId}")
+    @RequestMapping(value = "/ships/update/{shipId}", method = RequestMethod.OPTIONS)
     public String updateShipForm(@PathVariable("shipId") Long id, Model model){
         Optional<Ship> ship = shipRepositoryService.getShipById(id);
         model.addAttribute("ship", ship.isPresent() ? ship.get() : new Ship());
-        model.addAttribute("title", ship.map(Ship::getName).orElse("Új hajó"));
+        model.addAttribute("validate", "return validateForm()");
         return "ships/ship_form";
     }
 
     @RequestMapping(value = "ships/update", method = RequestMethod.POST)
-    public String updateShip(@ModelAttribute("ship") @Valid Ship ship, BindingResult result) {
+    public String updateShip(@ModelAttribute("ship") @Valid Ship ship, BindingResult result, Model model) {
+        model.addAttribute("validate", "return validateForm()");
         if(result.hasErrors()) {
             LOG.error("Error while trying to create a new ship: " + result.getFieldErrors());
-            return "ships/ship_form";
+        } else {
+            model.addAttribute("submit", "return submitForm()");
+            shipRepositoryService.save(ship);
         }
-        shipRepositoryService.save(ship);
-        return "redirect:/ships";
+        return "ships/ship_form";
     }
 
     @RequestMapping(value = "/ships/delete/{shipId}", method = RequestMethod.GET)
