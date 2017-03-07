@@ -14,6 +14,7 @@ $(document).ready( function () {
             {data: 'isActive'},
             {
                 sortable: false,
+                searchable: false,
                 render: userActionButtons
             }
         ]

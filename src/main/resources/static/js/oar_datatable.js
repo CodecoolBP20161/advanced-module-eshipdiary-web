@@ -13,6 +13,7 @@ $(document).ready( function () {
 
             {
                 sortable: false,
+                searchable: false,
                 render: oarActionButtons
             }
         ]
