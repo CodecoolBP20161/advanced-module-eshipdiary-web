@@ -68,6 +68,7 @@ function validateForm(){
 }
 
 function submitForm(){
+    document.getElementById('updateModalLabel').innerHTML = "";
     $('#updateModal').modal('hide');
     $('#oar-table').DataTable().ajax.reload( null, false );
 }

@@ -50,12 +50,16 @@ public class Ship {
     @Column
     private String notes;
 
+    @Column(nullable = false)
+    private boolean active;
+
     public enum Category {
         TRAINING, COMPETITION, TOP, TEACHING
     }
 
     public Ship() {
         this.setMaxSeat(1);
+        this.setActive(true);
     }
 
 }
