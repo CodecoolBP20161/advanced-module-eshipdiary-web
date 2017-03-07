@@ -25,7 +25,7 @@ function userActionButtons( data, type, row ) {
     var shouldBeActive = row.isActive === "Inaktív";
     var activationLabel = shouldBeActive ? 'Aktiválás' : 'Inaktiválás';
     var buttonType = shouldBeActive ? 'success' : 'warning';
-    var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
+    var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
     var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
     return detailsButton + deleteButton + statusChangeButton;
@@ -63,34 +63,10 @@ function updateModal(link, name){
             url: link,
             success: function (result) {
                 document.getElementById('userUpdate').innerHTML = result;
-                name !== 'Új tag' ? disableModal() : enableModal();
             }
         });
     }
 }
-
-function disableModal(){
-    var form = document.getElementById('userForm');
-    var elements = form.elements;
-    for (var i = 0, len = elements.length; i < len; ++i) {
-        elements[i].disabled = true;
-    }
-    document.getElementById('userEdit').style.display = 'inline';
-    document.getElementById('userSubmit').style.display = 'none';
-}
-
-function enableModal(){
-    var form = document.getElementById('userForm');
-    var elements = form.elements;
-    for (var i = 0, len = elements.length; i < len; ++i) {
-        elements[i].disabled = false;
-    }
-    document.getElementById('userEdit').style.display = 'none';
-    document.getElementById('userSubmit').style.display = 'inline';
-    elements[0].focus();
-}
-
-
 
 function validateForm(id){
     $.ajax({
