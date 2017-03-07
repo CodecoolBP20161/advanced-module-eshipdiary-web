@@ -1,16 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <div th:replace="fragments/imports :: imports"></div>
-    <title>Elektronikus hajónapló</title>
-</head>
-<body>
-<div th:replace="fragments/navbar :: navbar"></div>
-<div class="container">
-    <div class="col-md-4">
-        <h4 th:text="${title} + ' adatai'">Új evező adatai</h4>
 
-        <form th:object="${oar}" th:action="@{/oars/update}" method="post" class="form-horizontal" id="oarForm">
+<div th:fragment="oar-form">
+
+    <form th:object="${oar}" th:onsubmit="${validate}" class="form-horizontal" id="oarForm">
 
             <input type="hidden" th:field="*{id}" />
             <div class="form-group">
@@ -47,13 +40,9 @@
                     </select>
                 </div>
             </div>
+     </form>
 
-            <div class="col-sm-4"></div>
-            <button type="submit" class="btn btn-primary">Mentés</button>
-            <a role="button" th:href="@{/oars}" class="btn btn-default">Mégse</a>
-        </form>
+    <button type="button" hidden="hidden" th:onclick="${submit}" id="oarPost"></button>
 
-    </div>
 </div>
-</body>
 </html>

@@ -29,11 +29,6 @@ public class ShipController {
     @Autowired
     UserRepositoryService userRepositoryService;
 
-    @ModelAttribute("ship")
-    public Ship Ship() {
-        return new Ship();
-    }
-
     @ModelAttribute("users")
     public List<User> listUsers() {
         return (List<User>) userRepositoryService.getAllUsers();

@@ -5,9 +5,11 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
     <h2>Evezők
-        <a th:href="@{/oars/update/0}" type="button" class="btn btn-md btn-primary">Új evező felvétele</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal"
+                onclick="updateModal('/oars/update/0', 'Új evező');">Új evező felvétele</button>
     </h2>
     <div id="oars-table">
+        <div th:replace="oars/oar_update:: oar-update"></div>
         <div th:replace="oars/oar_table :: oar-table"></div>
         <div th:replace="oars/oar_delete :: oar-delete"></div>
     </div>
