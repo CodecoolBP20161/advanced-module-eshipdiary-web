@@ -22,9 +22,24 @@ $(document).ready( function () {
 
 
 function oarActionButtons( data, type, row ) {
+    var shouldBeActive = !(row.active);
+    var activationLabel = shouldBeActive ? 'Aktiválás' : 'Inaktiválás';
+    var buttonType = shouldBeActive ? 'success' : 'warning';
     var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/oars/update/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
     var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\'/oars/delete/'+row.id+'\', \''+row.name+'\');">Törlés</a>';
-    return editButton + deleteButton;
+    var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
+    return editButton + deleteButton + statusChangeButton;
+}
+
+function setStatus(link, shouldBeActive) {
+    $.ajax({
+        url: link,
+        type: 'PATCH',
+        data: JSON.stringify({"active": shouldBeActive}),
+        success: function (msg) {$('#oar-table').DataTable().ajax.reload( null, false );},
+        dataType: 'json',
+        contentType : 'application/json'
+    })
 }
 
 function deleteModal(link, name){

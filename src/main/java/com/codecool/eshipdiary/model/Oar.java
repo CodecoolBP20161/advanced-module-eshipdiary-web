@@ -26,4 +26,11 @@ public class Oar {
 
     @ManyToOne
     private User owner;
+
+    @Column(nullable = false)
+    private boolean active;
+
+    public Oar() {
+        this.setActive(true);
+    }
 }
