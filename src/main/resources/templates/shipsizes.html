@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/imports :: imports"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container">
+    <h2>Hajóméretek
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipSizeModal"
+                onclick="shipSizeModal('/shipsizes/update/0', 'Új');">Új méret felvétele</button>
+    </h2>
+    <div id="shipsizes-table">
+        <div th:replace="shipsizes/shipsize_update:: shipsize-update"></div>
+        <div th:replace="shipsizes/shipsize_table :: shipsize-table"></div>
+        <div th:replace="shipsizes/shipsize_delete :: shipsize-delete"></div>
+    </div>
+
+</div>
+<script type="text/javascript" th:src="@{/js/shipsize_datatable.js}"></script>
+<script type="text/javascript" th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

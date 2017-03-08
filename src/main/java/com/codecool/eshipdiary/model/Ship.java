@@ -24,6 +24,9 @@ public class Ship {
     @Column(nullable = false)
     private String code;
 
+    @ManyToOne
+    private ShipSize size;
+
     @Column
     @NotNull(message = "A mező nem lehet üres")
     @Min(message = "Nem lehet kisebb, mint egy", value = 1)

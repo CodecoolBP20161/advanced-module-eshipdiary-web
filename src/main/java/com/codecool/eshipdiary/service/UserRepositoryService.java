@@ -30,9 +30,23 @@ public class UserRepositoryService {
         return userRepository.findOneByApiKey(APIKey);
     }
 
+    public Optional<User> getUserByEmailAddress(String emailAddress) {
+        return userRepository.findOneByEmailAddress(emailAddress);
+    }
+
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     public void create(User user) { userRepository.save(user); }
+
+    public boolean isEmailAddressTaken(String emailAddress, Long id){
+        Optional<User> match = getUserByEmailAddress(emailAddress);
+        return match.isPresent() && !match.get().getId().equals(id);
+    }
+
+    public boolean isUserNameTaken(String userName, Long id){
+        Optional<User> match = getUserByUserName(userName);
+        return match.isPresent() && !match.get().getId().equals(id);
+    }
 }

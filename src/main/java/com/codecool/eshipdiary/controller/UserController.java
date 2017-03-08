@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,26 @@ public class UserController {
     @RequestMapping(value = "/users/{usersId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("usersId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateForm(" + id + ")");
+        if(userRepositoryService.isUserNameTaken(user.getUserName(), id)){
+            result.addError(new FieldError(
+                    "user",
+                    "userName",
+                    user.getUserName(),
+                    true,
+                    null,
+                    null,
+                    "A megadott felhasználónév már foglalt"));
+        }
+        if(userRepositoryService.isEmailAddressTaken(user.getEmailAddress(), id)){
+            result.addError(new FieldError(
+                    "user",
+                    "emailAddress",
+                    user.getEmailAddress(),
+                    true,
+                    null,
+                    null,
+                    "A megadott email cím már foglalt"));
+        }
         if(result.hasErrors()) {
             LOG.error("Error while trying to update user: " + result.getFieldErrors());
         } else {
@@ -49,5 +70,4 @@ public class UserController {
         }
         return "users/user_form";
     }
-    
 }
