@@ -46,17 +46,27 @@ public class OarController {
     public String updateOar(@PathVariable("oarsId") Long id, Model model){
         Optional<Oar> oar = oarRepositoryService.getOarById(id);
         model.addAttribute("oar", oar.isPresent() ? oar.get() : new Oar());
-        model.addAttribute("validate", "return validateForm()");
+        model.addAttribute("validate", "return validateOar()");
+        return "oars/oar_form";
+    }
+
+    @RequestMapping(value = "/oars/user/{userId}", method = RequestMethod.OPTIONS)
+    public String createOar(@PathVariable("userId") Long id, Model model){
+        Optional<User> user = userRepositoryService.getUserById(id);
+        Oar oar = new Oar();
+        oar.setOwner(user.isPresent() ? user.get() : new User());
+        model.addAttribute("oar", oar);
+        model.addAttribute("validate", "return validateOar()");
         return "oars/oar_form";
     }
 
     @RequestMapping(value = "/oars/update", method = RequestMethod.POST)
     public String saveOar(@ModelAttribute("oar") @Valid Oar oar, BindingResult result, Model model) {
-        model.addAttribute("validate", "return validateForm()");
+        model.addAttribute("validate", "return validateOar()");
         if(result.hasErrors()) {
             LOG.error("Error while trying to update oar: " + result.getFieldErrors());
         } else {
-            model.addAttribute("submit", "return submitForm()");
+            model.addAttribute("submit", "return submitOar()");
             oarRepositoryService.save(oar);
         }
         return "oars/oar_form";

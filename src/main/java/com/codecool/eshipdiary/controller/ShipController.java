@@ -44,17 +44,27 @@ public class ShipController {
     public String updateShipForm(@PathVariable("shipId") Long id, Model model){
         Optional<Ship> ship = shipRepositoryService.getShipById(id);
         model.addAttribute("ship", ship.isPresent() ? ship.get() : new Ship());
-        model.addAttribute("validate", "return validateForm()");
+        model.addAttribute("validate", "return validateShip()");
+        return "ships/ship_form";
+    }
+
+    @RequestMapping(value = "/ships/user/{userId}", method = RequestMethod.OPTIONS)
+    public String createShip(@PathVariable("userId") Long id, Model model){
+        Optional<User> user = userRepositoryService.getUserById(id);
+        Ship ship = new Ship();
+        ship.setOwner(user.isPresent() ? user.get() : new User());
+        model.addAttribute("ship", ship);
+        model.addAttribute("validate", "return validateShip()");
         return "ships/ship_form";
     }
 
     @RequestMapping(value = "ships/update", method = RequestMethod.POST)
     public String updateShip(@ModelAttribute("ship") @Valid Ship ship, BindingResult result, Model model) {
-        model.addAttribute("validate", "return validateForm()");
+        model.addAttribute("validate", "return validateShip()");
         if(result.hasErrors()) {
-            LOG.error("Error while trying to create a new ship: " + result.getFieldErrors());
+            LOG.error("Error while trying to update ship: " + result.getFieldErrors());
         } else {
-            model.addAttribute("submit", "return submitForm()");
+            model.addAttribute("submit", "return submitShip()");
             shipRepositoryService.save(ship);
         }
         return "ships/ship_form";

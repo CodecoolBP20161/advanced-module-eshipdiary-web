@@ -43,7 +43,7 @@ public class UserController {
     public String saveUser(@PathVariable("usersId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateForm(" + id + ")");
         if(result.hasErrors()) {
-            LOG.error("Error while trying to create a new user: " + result.getFieldErrors());
+            LOG.error("Error while trying to update user: " + result.getFieldErrors());
         } else {
             model.addAttribute("submit", "return submitForm(" + id + ")");
         }

@@ -25,13 +25,13 @@ function oarActionButtons( data, type, row ) {
     var shouldBeActive = !(row.active);
     var activationLabel = shouldBeActive ? 'Aktiválás' : 'Inaktiválás';
     var buttonType = shouldBeActive ? 'success' : 'warning';
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/oars/update/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
-    var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\'/oars/delete/'+row.id+'\', \''+row.name+'\');">Törlés</a>';
-    var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/update/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#oarDeleteModal" role="button" onclick="oarDeleteModal(\'/oars/delete/'+row.id+'\', \''+row.name+'\');">Törlés</a>';
+    var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setOarStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
     return editButton + deleteButton + statusChangeButton;
 }
 
-function setStatus(link, shouldBeActive) {
+function setOarStatus(link, shouldBeActive) {
     $.ajax({
         url: link,
         type: 'PATCH',
@@ -42,34 +42,32 @@ function setStatus(link, shouldBeActive) {
     })
 }
 
-function deleteModal(link, name){
-    document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
+function oarDeleteModal(link, name){
+    document.getElementById('oarDeleteModalLabel').innerHTML = name + ' törlése';
     document.getElementById('oarDelete').addEventListener('click', function(){
         $.ajax({
             type: 'GET',
             url: link,
             success: function(msg){
-                $('#deleteModal').modal('hide');
+                $('#oarDeleteModal').modal('hide');
                 $('#oar-table').DataTable().ajax.reload( null, false );
             }
         });
     });
 }
 
-function updateModal(link, name){
-    if(name !== 'Új evező' || document.getElementById('updateModalLabel').innerHTML !== 'Új evező adatai') {
-        document.getElementById('updateModalLabel').innerHTML = name + ' adatai';
-        $.ajax({
-            url: link,
-            type: "OPTIONS",
-            success: function (result) {
-                document.getElementById('oarUpdate').innerHTML = result;
-            }
-        });
-    }
+function oarModal(link, name){
+    document.getElementById('oarModalLabel').innerHTML = name + ' adatai';
+    $.ajax({
+        url: link,
+        type: "OPTIONS",
+        success: function (result) {
+            document.getElementById('oarUpdate').innerHTML = result;
+        }
+    });
 }
 
-function validateForm(){
+function validateOar(){
     $.ajax({
         url:'/oars/update',
         type:'POST',
@@ -82,8 +80,8 @@ function validateForm(){
     return false;
 }
 
-function submitForm(){
-    document.getElementById('updateModalLabel').innerHTML = "";
-    $('#updateModal').modal('hide');
+function submitOar(){
+    document.getElementById('oarModalLabel').innerHTML = "";
+    $('#oarModal').modal('hide');
     $('#oar-table').DataTable().ajax.reload( null, false );
 }
