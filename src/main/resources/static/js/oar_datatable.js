@@ -4,13 +4,13 @@ $(document).ready( function () {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
         },
         ajax: {
-            url: '/api/oar',
+            url: '/api/oar?projection=oarOverview',
             dataSrc: '_embedded.oar'
         },
         columns: [
             {data: 'name'},
             {data: 'type'},
-
+            {data: 'owner'},
             {
                 sortable: false,
                 searchable: false,
@@ -32,6 +32,7 @@ function oarActionButtons( data, type, row ) {
 }
 
 function setOarStatus(link, shouldBeActive) {
+    console.log(shouldBeActive);
     $.ajax({
         url: link,
         type: 'PATCH',

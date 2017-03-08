@@ -4,7 +4,7 @@ $(document).ready( function () {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
         },
         ajax: {
-            url: '/api/ship',
+            url: '/api/ship?projection=shipOverview',
             dataSrc: '_embedded.ship'
         },
         columns: [
@@ -12,7 +12,7 @@ $(document).ready( function () {
             {data: 'shipType'},
             {data: 'maxSeat'},
             {data: 'category'},
-
+            {data: 'owner'},
             {
                 sortable: false,
                 searchable: false,
