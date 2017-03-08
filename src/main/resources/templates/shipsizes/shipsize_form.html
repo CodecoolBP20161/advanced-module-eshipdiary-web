@@ -21,7 +21,7 @@
         <div class="form-group" th:classappend="${#fields.hasErrors('minKg')} ? 'has-error has-feedback'">
             <label class="control-label col-sm-4" th:for="minKg">Minimális súly</label>
             <div class="col-sm-8">
-                <input th:field="*{minKg}" type="number" min="1" class="form-control" placeholder="Minimális súly" />
+                <input th:field="*{minKg}" type="number" class="form-control" placeholder="Minimális súly" />
                 <div th:if="${#fields.hasErrors('minKg')}">
                     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                 </div>
@@ -32,7 +32,7 @@
         <div class="form-group" th:classappend="${#fields.hasErrors('maxKg')} ? 'has-error has-feedback'">
             <label class="control-label col-sm-4" th:for="maxKg">Maximális súly</label>
             <div class="col-sm-8">
-                <input th:field="*{maxKg}" type="number" min="1" class="form-control" placeholder="Maximális súly" />
+                <input th:field="*{maxKg}" type="number" class="form-control" placeholder="Maximális súly" />
                 <div th:if="${#fields.hasErrors('maxKg')}">
                     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                 </div>
