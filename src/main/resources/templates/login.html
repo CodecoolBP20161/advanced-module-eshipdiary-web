@@ -7,21 +7,20 @@
 <body>
 <div class="container">
 
-    <div class="col-md-4">
+    <form class="form-signin" th:action="@{/login}" method="post">
+        <h2 class="form-signin-heading">Bejelentkezés</h2>
         <div class="alert alert-danger" role="alert" th:if="${param.error}">
             <strong>Hibás felhasználónév vagy jelszó.</strong>
         </div>
         <div class="alert alert-danger" role="alert" th:if="${param.error2}">
             <strong>Inaktív felhasználó.</strong>
         </div>
-        <div  class="alert alert-success" role="alert" th:if="${param.logout}">
+        <div class="alert alert-success" role="alert" th:if="${param.logout}">
             <strong>Sikeres kijelentkezés.</strong>
         </div>
-    </div>
-
-    <form class="form-signin" th:action="@{/login}" method="post">
-        <h2 class="form-signin-heading">Bejelentkezés</h2>
-
+        <div class="alert alert-warning" role="alert" th:if="${param.error3}">
+            <strong>Bejelentkezés szükséges.</strong>
+        </div>
         <label for="inputUsername" class="sr-only">Felhasználónév</label>
         <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Felhasználónév"
                required="required" autofocus="autofocus"/>
