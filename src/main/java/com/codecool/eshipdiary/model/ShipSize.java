@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -29,4 +30,8 @@ public class ShipSize {
     @Min(message = "Nem lehet kisebb, mint egy", value = 1)
     @Column(nullable = false)
     private int maxKg;
+
+    @JsonIgnore
+    @ManyToOne
+    private Club club;
 }

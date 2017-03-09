@@ -6,6 +6,7 @@ import com.codecool.eshipdiary.model.Ship;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.model.Type;
 import com.codecool.eshipdiary.repository.ClubRepository;
+import com.codecool.eshipdiary.repository.RoleRepository;
 import com.codecool.eshipdiary.repository.ShipRepository;
 import com.codecool.eshipdiary.repository.UserRepository;
 import org.slf4j.Logger;
@@ -30,20 +31,23 @@ public class AdvancedModuleEshipdiaryWebApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository userRepository, ClubRepository clubRepository, ShipRepository shipRepository) {
+    public CommandLineRunner demo(UserRepository userRepository, ClubRepository clubRepository, ShipRepository shipRepository, RoleRepository roleRepository) {
         return (args) -> {
 
             Role admin = new Role();
             admin.setName("ADMIN");
-            Set<Role> roles = new HashSet<>();
-            roles.add(admin);
+            roleRepository.save(admin);
 
             Club bee = new Club();
             bee.setName("BEE");
             clubRepository.save(bee);
 
+            Club dnhe = new Club();
+            dnhe.setName("DNHE");
+            clubRepository.save(dnhe);
+
             User ex = new User();
-            ex.setFirstName("first");
+            ex.setFirstName("bee");
             ex.setLastName("admin");
             ex.setUserName("admin");
             ex.setBirthDate(Date.valueOf("1989-01-01"));
@@ -53,14 +57,30 @@ public class AdvancedModuleEshipdiaryWebApplication {
             ex.setPhoneNumber("22021043");
             ex.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
             ex.setWeightInKg(80);
-            ex.setRoles(roles);
+            ex.setRoles(admin);
             ex.setClub(bee);
             userRepository.save(ex);
 
+            User dek = new User();
+            dek.setFirstName("dnhe");
+            dek.setLastName("admin");
+            dek.setUserName("admin2");
+            dek.setBirthDate(Date.valueOf("1989-01-01"));
+            dek.setActive(true);
+            dek.setEmailAddress("admin2@yahoo.com");
+            dek.setPasswordHash("password");
+            dek.setPhoneNumber("22021043");
+            dek.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
+            dek.setWeightInKg(80);
+            dek.setRoles(admin);
+            dek.setClub(dnhe);
+            userRepository.save(dek);
+
+
             Role userRole = new Role();
             userRole.setName("USER");
-            Set<Role> userRoles = new HashSet<>();
-            userRoles.add(userRole);
+            roleRepository.save(userRole);
+
             User user = new User();
             user.setFirstName("first");
             user.setLastName("user");
@@ -72,7 +92,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
             user.setPhoneNumber("62426180");
             user.setKnowledgeLevel(User.KnowledgeLevel.ADVANCED);
             user.setWeightInKg(90);
-            user.setRoles(userRoles);
+            user.setRoles(userRole);
             user.setClub(bee);
             userRepository.save(user);
 

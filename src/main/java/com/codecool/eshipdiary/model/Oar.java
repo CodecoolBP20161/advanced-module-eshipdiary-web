@@ -1,6 +1,7 @@
 package com.codecool.eshipdiary.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -29,6 +30,10 @@ public class Oar {
 
     @Column(nullable = false)
     private boolean active;
+
+    @JsonIgnore
+    @ManyToOne
+    private Club club;
 
     public Oar() {
         this.setActive(true);
