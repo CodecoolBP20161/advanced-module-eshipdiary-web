@@ -2,7 +2,6 @@ package com.codecool.eshipdiary.config;
 
 
 import com.codecool.eshipdiary.filter.StatelessAuthFilter;
-import com.codecool.eshipdiary.service.ApiAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,17 +12,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@Order(2)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
-    private ApiAuthenticationService apiAuthenticationService;
+    private StatelessAuthFilter statelessAuthFilter;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -33,9 +33,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf()
+                .disable()
                 .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/images/**", "/api_login").permitAll()
-                .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -49,10 +50,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                     .and()
                 .rememberMe()
-
-                    .and()
-                .addFilter(new StatelessAuthFilter());
-
+                .and()
+                .addFilterBefore(statelessAuthFilter, UsernamePasswordAuthenticationFilter.class)
+        ;
     }
 
     @Autowired
@@ -60,15 +60,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder());
-    }
-
-    @Bean
-    public ApiAuthenticationService apiAuthenticationService() {
-        return apiAuthenticationService;
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return userDetailsService;
     }
 }
