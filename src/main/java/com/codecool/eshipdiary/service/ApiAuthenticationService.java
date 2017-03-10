@@ -1,7 +1,7 @@
 package com.codecool.eshipdiary.service;
 
 import com.codecool.eshipdiary.model.User;
-import com.codecool.eshipdiary.model.UserAuthentication;
+import com.codecool.eshipdiary.model.ApiAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -30,12 +30,12 @@ public class ApiAuthenticationService {
     public Authentication getAuth(HttpServletRequest request) {
         final String apiKey = request.getHeader(AUTH_HEADER_NAME);
         if (apiKey == null) {
-            throw new AuthenticationCredentialsNotFoundException("No apikey");
+            throw new AuthenticationCredentialsNotFoundException("No token.");
         }
         if (isApiKeyValid(apiKey)) {
             final User user = userRepositoryService.getUserByAPIKey(apiKey).get();
-            return new UserAuthentication(user);
+            return new ApiAuthentication(user);
         }
-        throw new InsufficientAuthenticationException("Invalid apikey");
+        throw new InsufficientAuthenticationException("invalid token");
     }
 }
