@@ -3,14 +3,15 @@ package com.codecool.eshipdiary.config;
 
 import com.codecool.eshipdiary.filter.ApiAuthenticationFilter;
 import com.codecool.eshipdiary.filter.IsActiveFilter;
+import com.codecool.eshipdiary.security.AjaxAuthHandler;
+import com.codecool.eshipdiary.security.AuthFailureHandler;
+import com.codecool.eshipdiary.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -19,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private AuthFailureHandler authFailureHandler;
 
     @Autowired
     private ApiAuthenticationFilter apiAuthenticationFilter;
@@ -28,11 +29,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private IsActiveFilter isActiveFilter;
 
     @Autowired
-    private AuthFailureHandler authFailureHandler;
+    private AjaxAuthHandler ajaxAuthHandler;
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsServiceImpl)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -45,40 +51,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api_login").permitAll()
                 .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
+
                     .and()
                 .formLogin()
                 .failureHandler(authFailureHandler)
                 .loginPage("/login")
                 .permitAll()
+
                     .and()
                 .logout()
                 .deleteCookies("remember-me")
                 .permitAll()
+
                     .and()
                 .rememberMe()
+
                     .and()
                 .addFilterBefore(apiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(isActiveFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling().authenticationEntryPoint(new AjaxAwareAuthenticationEntryPoint("/login?error3"))
+                .exceptionHandling()
+                .authenticationEntryPoint(ajaxAuthHandler)
+
                     .and()
                 .csrf().disable();
     }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder());
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return userDetailsService;
-    }
-
-    @Bean
-    AuthFailureHandler authenticationHandler() {
-        return new AuthFailureHandler();
-    }
-
 }
