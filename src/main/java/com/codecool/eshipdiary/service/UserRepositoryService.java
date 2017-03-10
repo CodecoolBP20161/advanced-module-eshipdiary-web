@@ -3,12 +3,9 @@ package com.codecool.eshipdiary.service;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Optional;
 
 @Service

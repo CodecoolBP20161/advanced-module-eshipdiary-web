@@ -74,7 +74,7 @@ function updateModal(link, name){
 function validateForm(id){
     $.ajax({
         url:'/users/' + id,
-        type:'post',
+        type:'POST',
         data:$('#userForm').serialize(),
         success:function(result){
             document.getElementById('userUpdate').innerHTML = result;

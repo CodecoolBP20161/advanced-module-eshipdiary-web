@@ -20,14 +20,12 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 
 
 @Data
-@EqualsAndHashCode(exclude="roles")
-@ToString(exclude = {"roles", "passwordHash"})
+@ToString(exclude = {"ships", "oars", "passwordHash"})
 @Entity
 @Table(name = "users")
 public class User {
@@ -85,7 +83,7 @@ public class User {
 
     @JsonIgnore
     @ManyToOne
-    private Role roles;
+    private Role role;
 
     @OneToMany(mappedBy = "owner")
     @LazyCollection(LazyCollectionOption.FALSE)

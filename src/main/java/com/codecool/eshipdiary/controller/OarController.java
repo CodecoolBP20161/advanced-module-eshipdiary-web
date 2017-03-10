@@ -42,11 +42,11 @@ public class OarController {
         return "oars";
     }
 
-    @RequestMapping(value = "/oars/update/{oarsId}", method = RequestMethod.OPTIONS)
-    public String updateOar(@PathVariable("oarsId") Long id, Model model){
+    @RequestMapping(value = "/oars/{oarId}", method = RequestMethod.OPTIONS)
+    public String updateOar(@PathVariable("oarId") Long id, Model model){
         Optional<Oar> oar = oarRepositoryService.getOarById(id);
         model.addAttribute("oar", oar.isPresent() ? oar.get() : new Oar());
-        model.addAttribute("validate", "return validateOar()");
+        model.addAttribute("validate", "return validateOar(" + id + ")");
         return "oars/oar_form";
     }
 
@@ -56,27 +56,18 @@ public class OarController {
         Oar oar = new Oar();
         oar.setOwner(user.isPresent() ? user.get() : new User());
         model.addAttribute("oar", oar);
-        model.addAttribute("validate", "return validateOar()");
+        model.addAttribute("validate", "return validateOar(0)");
         return "oars/oar_form";
     }
 
-    @RequestMapping(value = "/oars/update", method = RequestMethod.POST)
-    public String saveOar(@ModelAttribute("oar") @Valid Oar oar, BindingResult result, Model model) {
-        model.addAttribute("validate", "return validateOar()");
+    @RequestMapping(value = "/oars/{oarId}", method = RequestMethod.POST)
+    public String saveOar(@PathVariable("oarId") Long id, @ModelAttribute("oar") @Valid Oar oar, BindingResult result, Model model) {
+        model.addAttribute("validate", "return validateOar(" + id + ")");
         if(result.hasErrors()) {
             LOG.error("Error while trying to update oar: " + result.getFieldErrors());
         } else {
-            model.addAttribute("submit", "return submitOar()");
-            oarRepositoryService.save(oar);
+            model.addAttribute("submit", "return submitOar(" + id + ")");
         }
         return "oars/oar_form";
     }
-
-    @RequestMapping(value = "/oars/delete/{oarsId}")
-    public void deleteOar(@PathVariable("oarsId") Long id, HttpServletResponse response){
-        oarRepositoryService.deleteOarById(id);
-        response.setStatus(200);
-    }
-
-
 }

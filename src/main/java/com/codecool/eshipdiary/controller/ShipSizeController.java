@@ -31,31 +31,22 @@ public class ShipSizeController {
         return "shipsizes";
     }
 
-    @RequestMapping(value = "/shipsizes/update/{shipSizesId}", method = RequestMethod.OPTIONS)
-    public String updateShipSize(@PathVariable("shipSizesId") Long id, Model model){
+    @RequestMapping(value = "/shipsizes/{shipSizeId}", method = RequestMethod.OPTIONS)
+    public String updateShipSize(@PathVariable("shipSizeId") Long id, Model model){
         Optional<ShipSize> shipSize = shipSizeRepositoryService.getShipSizeById(id);
         model.addAttribute("shipSize", shipSize.isPresent() ? shipSize.get() : new ShipSize());
-        model.addAttribute("validate", "return validateShipSize()");
+        model.addAttribute("validate", "return validateShipSize(" + id + ")");
         return "shipsizes/shipsize_form";
     }
 
-    @RequestMapping(value = "/shipsizes/update", method = RequestMethod.POST)
-    public String saveShipSize(@ModelAttribute("shipSize") @Valid ShipSize shipSize, BindingResult result, Model model) {
-        model.addAttribute("validate", "return validateShipSize()");
+    @RequestMapping(value = "/shipsizes/{shipSizeId}", method = RequestMethod.POST)
+    public String saveShipSize(@PathVariable("shipSizeId") Long id, @ModelAttribute("shipSize") @Valid ShipSize shipSize, BindingResult result, Model model) {
+        model.addAttribute("validate", "return validateShipSize(" + id + ")");
         if(result.hasErrors()) {
             LOG.error("Error while trying to update shipSize: " + result.getFieldErrors());
         } else {
-            model.addAttribute("submit", "return submitShipSize()");
-            shipSizeRepositoryService.save(shipSize);
+            model.addAttribute("submit", "return submitShipSize(" + id + ")");
         }
         return "shipsizes/shipsize_form";
     }
-
-    @RequestMapping(value = "/shipsizes/delete/{shipSizesId}")
-    public void deleteShipSize(@PathVariable("shipSizesId") Long id, HttpServletResponse response){
-        shipSizeRepositoryService.deleteShipSizeById(id);
-        response.setStatus(200);
-    }
-
-
 }

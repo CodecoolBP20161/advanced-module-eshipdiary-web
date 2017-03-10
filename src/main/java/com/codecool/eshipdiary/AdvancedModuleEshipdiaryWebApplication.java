@@ -1,10 +1,6 @@
 package com.codecool.eshipdiary;
 
-import com.codecool.eshipdiary.model.Club;
-import com.codecool.eshipdiary.model.Role;
-import com.codecool.eshipdiary.model.Ship;
-import com.codecool.eshipdiary.model.User;
-import com.codecool.eshipdiary.model.Type;
+import com.codecool.eshipdiary.model.*;
 import com.codecool.eshipdiary.repository.ClubRepository;
 import com.codecool.eshipdiary.repository.RoleRepository;
 import com.codecool.eshipdiary.repository.ShipRepository;
@@ -16,10 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @SpringBootApplication
 public class AdvancedModuleEshipdiaryWebApplication {
@@ -57,7 +50,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
             ex.setPhoneNumber("22021043");
             ex.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
             ex.setWeightInKg(80);
-            ex.setRoles(admin);
+            ex.setRole(admin);
             ex.setClub(bee);
             userRepository.save(ex);
 
@@ -72,7 +65,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
             dek.setPhoneNumber("22021043");
             dek.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
             dek.setWeightInKg(80);
-            dek.setRoles(admin);
+            dek.setRole(admin);
             dek.setClub(dnhe);
             userRepository.save(dek);
 
@@ -92,7 +85,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
             user.setPhoneNumber("62426180");
             user.setKnowledgeLevel(User.KnowledgeLevel.ADVANCED);
             user.setWeightInKg(90);
-            user.setRoles(userRole);
+            user.setRole(userRole);
             user.setClub(bee);
             userRepository.save(user);
 

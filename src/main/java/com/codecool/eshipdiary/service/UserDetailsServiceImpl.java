@@ -1,6 +1,5 @@
 package com.codecool.eshipdiary.service;
 
-import com.codecool.eshipdiary.model.Role;
 import com.codecool.eshipdiary.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         LOG.info("User for authentication by name {} ", user.get().getUserName());
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.get().getRoles().getName()));
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.get().getRole().getName()));
 
         return new org.springframework.security.core.userdetails.User(
                 user.get().getUserName(),

@@ -6,7 +6,7 @@
 <div class="container">
     <h2>Hajóméretek
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipSizeModal"
-                onclick="shipSizeModal('/shipsizes/update/0', 'Új');">Új méret felvétele</button>
+                onclick="shipSizeModal('/shipsizes/0', 'Új');">Új méret felvétele</button>
     </h2>
     <div id="shipsizes-table">
         <div th:replace="shipsizes/shipsize_update:: shipsize-update"></div>

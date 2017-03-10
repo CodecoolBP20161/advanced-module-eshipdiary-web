@@ -4,7 +4,6 @@
 <div th:fragment="ship-form">
 
     <form th:object="${ship}" th:onsubmit="${validate}" class="form-horizontal" id="shipForm">
-        <input type="hidden" th:field="*{id}" />
 
         <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error has-feedback'">
             <label class="control-label col-sm-4" th:for="name">Hajó neve</label>
