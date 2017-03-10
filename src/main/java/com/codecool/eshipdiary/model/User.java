@@ -2,9 +2,7 @@ package com.codecool.eshipdiary.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.NotEmpty;
