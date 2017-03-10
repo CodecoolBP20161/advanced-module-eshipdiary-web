@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .rememberMe()
                     .and()
-//                .addFilterBefore(apiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(apiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(new AjaxAwareAuthenticationEntryPoint("/login?error3"))
                     .and()
                 .csrf().disable();
