@@ -64,7 +64,7 @@ public class ShipController {
         Ship ship = new Ship();
         ship.setOwner(user.isPresent() ? user.get() : new User());
         model.addAttribute("ship", ship);
-        model.addAttribute("validate", "return validateShip(" + id + ")");
+        model.addAttribute("validate", "return validateShip(0)");
         return "ships/ship_form";
     }
 

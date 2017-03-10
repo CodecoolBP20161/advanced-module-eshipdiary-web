@@ -56,7 +56,7 @@ public class OarController {
         Oar oar = new Oar();
         oar.setOwner(user.isPresent() ? user.get() : new User());
         model.addAttribute("oar", oar);
-        model.addAttribute("validate", "return validateOar(" + id + ")");
+        model.addAttribute("validate", "return validateOar(0)");
         return "oars/oar_form";
     }
 
