@@ -16,14 +16,15 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
  * Created by hamargyuri on 2017. 02. 28..
  */
 @Component
-public class StatelessAuthFilter extends GenericFilterBean {
-    private static final Logger LOG = LoggerFactory.getLogger(StatelessAuthFilter.class);
+public class ApiAuthFilter extends GenericFilterBean {
+    private static final Logger LOG = LoggerFactory.getLogger(ApiAuthFilter.class);
 
     @Autowired
     ApiAuthenticationService apiAuthenticationService;
@@ -32,18 +33,21 @@ public class StatelessAuthFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         Authentication authentication;
 
         try {
             authentication = apiAuthenticationService.getAuth(httpServletRequest);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            LOG.info("api authentication successful: {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            LOG.info("REST authentication successful with user: {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            filterChain.doFilter(servletRequest, servletResponse);
 
         } catch (InsufficientAuthenticationException invalidToken) {
-            LOG.info("api auth failed {}", invalidToken.getMessage());
+            LOG.info("REST auth failed: {}", invalidToken.getMessage());
+            httpServletResponse.sendError(400, "Invalid token.");
         } catch (AuthenticationCredentialsNotFoundException noToken) {
             LOG.debug("{}, moving on to next authentication link", noToken.getMessage());
+            filterChain.doFilter(servletRequest, servletResponse);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 }
