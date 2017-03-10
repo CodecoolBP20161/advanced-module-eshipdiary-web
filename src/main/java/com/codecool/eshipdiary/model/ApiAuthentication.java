@@ -10,12 +10,12 @@ import java.util.stream.Collectors;
 /**
  * Created by hamargyuri on 2017. 03. 02..
  */
-public class UserAuthentication implements Authentication {
+public class ApiAuthentication implements Authentication {
 
     private boolean authenticated = true;
     private User user;
 
-    public UserAuthentication(User user) {
+    public ApiAuthentication(User user) {
         this.user = user;
     }
 
