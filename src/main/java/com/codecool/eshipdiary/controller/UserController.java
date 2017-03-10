@@ -43,7 +43,9 @@ public class UserController {
     @RequestMapping(value = "/users/{usersId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("usersId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateForm(" + id + ")");
-        if(userRepositoryService.isUserNameTaken(user.getUserName(), id)){
+        if(userRepositoryService.getUserByUserName(user.getUserName())
+                .filter(u -> !u.getId().equals(id))
+                .isPresent()){
             result.addError(new FieldError(
                     "user",
                     "userName",
@@ -53,7 +55,9 @@ public class UserController {
                     null,
                     "A megadott felhasználónév már foglalt"));
         }
-        if(userRepositoryService.isEmailAddressTaken(user.getEmailAddress(), id)){
+        if(userRepositoryService.getUserByEmailAddress(user.getEmailAddress())
+                .filter(u -> !u.getId().equals(id))
+                .isPresent()){
             result.addError(new FieldError(
                     "user",
                     "emailAddress",
