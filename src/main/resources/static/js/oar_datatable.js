@@ -32,7 +32,6 @@ function oarActionButtons( data, type, row ) {
 }
 
 function setOarStatus(link, shouldBeActive) {
-    console.log(shouldBeActive);
     $.ajax({
         url: link,
         type: 'PATCH',
@@ -85,4 +84,5 @@ function submitOar(){
     document.getElementById('oarModalLabel').innerHTML = "";
     $('#oarModal').modal('hide');
     $('#oar-table').DataTable().ajax.reload( null, false );
+    $('#user-table').DataTable().ajax.reload( null, false );
 }
