@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,9 +43,12 @@ public class ApiAuthenticationFilter extends GenericFilterBean {
             LOG.info("REST authentication successful with user: {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             filterChain.doFilter(servletRequest, servletResponse);
 
+        } catch (DisabledException inActiveUser) {
+            LOG.info("{}", inActiveUser.getMessage());
+            httpServletResponse.sendError(403, inActiveUser.getMessage());
         } catch (InsufficientAuthenticationException invalidToken) {
             LOG.info("REST auth failed: {}", invalidToken.getMessage());
-            httpServletResponse.sendError(400, "Invalid token.");
+            httpServletResponse.sendError(401, invalidToken.getMessage());
         } catch (AuthenticationCredentialsNotFoundException noToken) {
             LOG.debug("{}, moving on to next authentication link", noToken.getMessage());
             filterChain.doFilter(servletRequest, servletResponse);
