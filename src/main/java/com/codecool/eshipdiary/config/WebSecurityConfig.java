@@ -2,6 +2,7 @@ package com.codecool.eshipdiary.config;
 
 
 import com.codecool.eshipdiary.filter.ApiAuthenticationFilter;
+import com.codecool.eshipdiary.filter.IsActiveFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private ApiAuthenticationFilter apiAuthenticationFilter;
+
+    @Autowired
+    private IsActiveFilter isActiveFilter;
 
     @Autowired
     private AuthFailureHandler authFailureHandler;
@@ -54,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                     .and()
                 .addFilterBefore(apiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(isActiveFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(new AjaxAwareAuthenticationEntryPoint("/login?error3"))
                     .and()
                 .csrf().disable();
