@@ -23,6 +23,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ApiAuthenticationFilter apiAuthenticationFilter;
 
+    @Autowired
+    private AuthFailureHandler authFailureHandler;
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -31,13 +34,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable()
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/images/**", "/api_login").permitAll()
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/js/**").permitAll()
+                .antMatchers("/images/**").permitAll()
+                .antMatchers("/api_login").permitAll()
+                .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                     .and()
                 .formLogin()
+                .failureHandler(authFailureHandler)
                 .loginPage("/login")
                 .permitAll()
                     .and()
@@ -47,7 +53,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .rememberMe()
                     .and()
-                .addFilterBefore(apiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//                .addFilterBefore(apiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().authenticationEntryPoint(new AjaxAwareAuthenticationEntryPoint("/login?error3"))
+                    .and()
+                .csrf().disable();
     }
 
     @Autowired
@@ -56,4 +65,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder());
     }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return userDetailsService;
+    }
+
+    @Bean
+    AuthFailureHandler authenticationHandler() {
+        return new AuthFailureHandler();
+    }
+
 }

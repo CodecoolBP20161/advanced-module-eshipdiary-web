@@ -2,15 +2,21 @@ package com.codecool.eshipdiary.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.Set;
 import java.util.UUID;
+
 
 @Data
 @EqualsAndHashCode(exclude="roles")
@@ -33,15 +39,20 @@ public class User {
     @Column(nullable = false, unique = true)
     private String apiKey;
 
+    @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false)
     private String firstName;
 
+    @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false)
     private String lastName;
 
+    @NotEmpty(message = "A mező nem lehet üres")
+    @Size(min = 3, message = "A felhasználónév legalább 3 karakter")
     @Column(nullable = false, unique = true)
     private String userName;
 
+    @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false, unique = true)
     private String emailAddress;
 
@@ -50,11 +61,13 @@ public class User {
 
     @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "Nem megfelelő dátum")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
+    @NotNull(message = "A mező nem lehet üres")
     @Column(nullable = false)
-    private int phoneNumber;
+    private String phoneNumber;
 
     @Column
     private KnowledgeLevel knowledgeLevel;
@@ -65,20 +78,31 @@ public class User {
     @Column(nullable = false)
     private boolean active;
 
+    @JsonIgnore
     @ManyToOne
     private Club club;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    @ManyToOne
+    private Role role;
 
     @PrePersist
-    private void setAPIKey(){
+    private void validate(){
         this.apiKey = UUID.randomUUID().toString();
+        if(this.passwordHash == null){
+            this.setPasswordHash(this.userName);
+        }
     }
 
     public void setPasswordHash(String rawPassword) {
+        if(rawPassword.equals("")){
+            rawPassword = this.userName;
+        }
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
     }
+
+    public User(){
+        this.active = true;
+    }
+
 }

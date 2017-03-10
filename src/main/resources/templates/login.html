@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/imports :: imports"></head>
 <head>
-    <div th:replace="fragments/imports :: imports"></div>
-    <link href="/css/login.css" rel="stylesheet" type="text/css"/>
-    <title>E Ship Diary</title>
+    <link th:href="@{/css/login.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="container">
-    <div th:if="${param.error}">
-        Invalid username and password.
-    </div>
-    <div th:if="${param.logout}">
-        You have been logged out.
-    </div>
+
     <form class="form-signin" th:action="@{/login}" method="post">
         <h2 class="form-signin-heading">Bejelentkezés</h2>
-
+        <div class="alert alert-danger" role="alert" th:if="${param.error}">
+            <strong>Hibás felhasználónév vagy jelszó.</strong>
+        </div>
+        <div class="alert alert-danger" role="alert" th:if="${param.error2}">
+            <strong>Inaktív felhasználó.</strong>
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.logout}">
+            <strong>Sikeres kijelentkezés.</strong>
+        </div>
+        <div class="alert alert-warning" role="alert" th:if="${param.error3}">
+            <strong>Bejelentkezés szükséges.</strong>
+        </div>
         <label for="inputUsername" class="sr-only">Felhasználónév</label>
         <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Felhasználónév"
                required="required" autofocus="autofocus"/>
@@ -33,6 +38,5 @@
     </form>
 
 </div>
-<script src="js/login.js"></script>
 </body>
 </html>
