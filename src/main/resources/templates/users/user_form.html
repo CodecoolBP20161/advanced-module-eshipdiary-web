@@ -78,7 +78,7 @@
                 <select th:field="*{knowledgeLevel}" class="form-control">
                     <option th:each="knowledgeLevel : ${T(com.codecool.eshipdiary.model.User.KnowledgeLevel).values()}"
                             th:value="${knowledgeLevel}"
-                            th:text="${knowledgeLevel}" />
+                            th:text="${knowledgeLevel.getDisplayName()}" />
                 </select>
             </div>
         </div>
