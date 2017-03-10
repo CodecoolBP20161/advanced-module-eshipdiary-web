@@ -35,21 +35,18 @@ public class LoginController {
 
     @RequestMapping(value = "/api_login")
     public ResponseEntity<String> validateApiLogin(@RequestParam("username") String userName,
-                                         @RequestParam("password") String password) {
-        if (isUserPresent(userName)) {
+                                                   @RequestParam("password") String password) {
+        if (userRepositoryService.getUserByUserName(userName).isPresent()) {
             User user = userRepositoryService.getUserByUserName(userName).get();
-            if (isPasswordCorrect(user, password)) {
-                return new ResponseEntity<>(user.getApiKey(), HttpStatus.OK);
+            if (User.PASSWORD_ENCODER.matches(password, user.getPasswordHash())) {
+                if (user.isActive()) {
+                    LOG.info("new login via api: {}", user.getUserName());
+                    return new ResponseEntity<>(user.getApiKey(), HttpStatus.OK);
+                }
+                LOG.debug("inactive user tried to log in via api: {}", user.getUserName());
+                return new ResponseEntity<>("inactive user",HttpStatus.FORBIDDEN);
             }
         }
-        return new ResponseEntity<>("Hibás belépési adatok.", HttpStatus.BAD_REQUEST);
-    }
-
-    private boolean isUserPresent(String userName) {
-        return userRepositoryService.getUserByUserName(userName).isPresent();
-    }
-
-    private boolean isPasswordCorrect(User user, String password) {
-        return User.PASSWORD_ENCODER.matches(password, user.getPasswordHash());
+        return new ResponseEntity<>("wrong credentials", HttpStatus.UNAUTHORIZED);
     }
 }
