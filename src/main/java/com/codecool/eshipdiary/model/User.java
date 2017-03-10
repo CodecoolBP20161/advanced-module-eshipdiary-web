@@ -2,34 +2,33 @@ package com.codecool.eshipdiary.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 
+
 @Data
-@EqualsAndHashCode(exclude="roles")
-@ToString(exclude = {"roles", "passwordHash"})
+@ToString(exclude = {"ships", "oars", "passwordHash"})
 @Entity
-@Table(name = "`user`")
+@Table(name = "users")
 public class User {
-
-    public enum KnowledgeLevel {
-        BEGINNER, MEDIUM, ADVANCED
-    }
-
-    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Id
     @Column
@@ -86,6 +85,14 @@ public class User {
     @ManyToOne
     private Role role;
 
+    @OneToMany(mappedBy = "owner")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Ship> ships;
+
+    @OneToMany(mappedBy = "owner")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Oar> oars;
+
     @PrePersist
     private void validate(){
         this.apiKey = UUID.randomUUID().toString();
@@ -104,5 +111,22 @@ public class User {
     public User(){
         this.active = true;
     }
+
+    public enum KnowledgeLevel {
+        BEGINNER("kezdő"),
+        MEDIUM("haladó"),
+        ADVANCED("gyakorlott");
+
+        private final String displayName;
+
+        KnowledgeLevel(String displayName) {
+            this.displayName = displayName;
+        }
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
+    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
 }

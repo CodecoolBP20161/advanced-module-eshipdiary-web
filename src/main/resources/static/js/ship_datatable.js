@@ -95,6 +95,7 @@ function submitShip(id){
             document.getElementById('shipModalLabel').innerHTML = "";
             $('#shipModal').modal('hide');
             $('#ship-table').DataTable().ajax.reload( null, false );
+            $('#user-table').DataTable().ajax.reload( null, false );
         },
         dataType: 'json',
         contentType : 'application/json'

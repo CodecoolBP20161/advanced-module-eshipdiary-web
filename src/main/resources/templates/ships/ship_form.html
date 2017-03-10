@@ -66,7 +66,7 @@
                 <select th:field="*{category}" class="form-control">
                     <option th:each="category : ${T(com.codecool.eshipdiary.model.Ship.Category).values()}"
                             th:value="${category}"
-                            th:text="${category}" />
+                            th:text="${category.getDisplayName()}" />
                 </select>
             </div>
         </div>

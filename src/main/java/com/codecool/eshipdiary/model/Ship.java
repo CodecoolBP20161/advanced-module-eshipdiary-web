@@ -62,7 +62,19 @@ public class Ship {
     private Club club;
 
     public enum Category {
-        TRAINING, COMPETITION, TOP, TEACHING
+        TRAINING("edzőhajó"),
+        COMPETITION("versenyhajó"),
+        TOP("TOP hajó"),
+        TEACHING("oktatóhajó");
+
+        private final String displayName;
+
+        Category(String displayName) {
+            this.displayName = displayName;
+        }
+        public String getDisplayName() {
+            return displayName;
+        }
     }
 
     public Ship() {

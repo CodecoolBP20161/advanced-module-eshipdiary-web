@@ -12,6 +12,7 @@ public interface ShipOverviewProjection {
     boolean getActive();
     @Value("#{target.owner != null ? target.owner.lastName+' '+target.owner.firstName : 'Klub tulajdona'}")
     String getOwner();
+    @Value("#{target.category.displayName}")
     String getCategory();
     String getMaxSeat();
 }
