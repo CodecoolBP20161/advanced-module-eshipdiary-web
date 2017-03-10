@@ -25,8 +25,8 @@ function oarActionButtons( data, type, row ) {
     var shouldBeActive = !(row.active);
     var activationLabel = shouldBeActive ? 'Aktiválás' : 'Inaktiválás';
     var buttonType = shouldBeActive ? 'success' : 'warning';
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/update/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
-    var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#oarDeleteModal" role="button" onclick="oarDeleteModal(\'/oars/delete/'+row.id+'\', \''+row.name+'\');">Törlés</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#oarDeleteModal" role="button" onclick="oarDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setOarStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
     return editButton + deleteButton + statusChangeButton;
 }
@@ -47,7 +47,7 @@ function oarDeleteModal(link, name){
     document.getElementById('oarDeleteModalLabel').innerHTML = name + ' törlése';
     document.getElementById('oarDelete').addEventListener('click', function(){
         $.ajax({
-            type: 'GET',
+            type: 'DELETE',
             url: link,
             success: function(msg){
                 $('#oarDeleteModal').modal('hide');
@@ -68,9 +68,9 @@ function oarModal(link, name){
     });
 }
 
-function validateOar(){
+function validateOar(id){
     $.ajax({
-        url:'/oars/update',
+        url:'/oars/' + id,
         type:'POST',
         data:$('#oarForm').serialize(),
         success:function(result){
@@ -81,8 +81,19 @@ function validateOar(){
     return false;
 }
 
-function submitOar(){
-    document.getElementById('oarModalLabel').innerHTML = "";
-    $('#oarModal').modal('hide');
-    $('#oar-table').DataTable().ajax.reload( null, false );
+function submitOar(id){
+    var data = $("#oarForm").serializeObject();
+    data.owner = window.location.origin + 'api/user/' + data.owner;
+    $.ajax({
+        type: id == 0 ? 'POST' : 'PATCH',
+        url: id == 0 ? '/api/oar' : 'api/oar/' + id,
+        data: JSON.stringify(data),
+        success: function (msg) {
+            document.getElementById('oarModalLabel').innerHTML = "";
+            $('#oarModal').modal('hide');
+            $('#oar-table').DataTable().ajax.reload( null, false );
+        },
+        dataType: 'json',
+        contentType : 'application/json'
+    });
 }

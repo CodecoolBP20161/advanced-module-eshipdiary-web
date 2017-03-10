@@ -22,8 +22,8 @@ $(document).ready( function () {
 
 
 function shipSizeActionButtons( data, type, row ) {
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipSizeModal" role="button" onclick="shipSizeModal(\'/shipsizes/update/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
-    var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipSizeDeleteModal" role="button" onclick="shipSizeDeleteModal(\'/shipsizes/delete/'+row.id+'\', \''+row.name+'\');">Törlés</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipSizeModal" role="button" onclick="shipSizeModal(\'/shipsizes/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
+    var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipSizeDeleteModal" role="button" onclick="shipSizeDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     return editButton + deleteButton;
 }
 
@@ -31,7 +31,7 @@ function shipSizeDeleteModal(link, name){
     document.getElementById('shipSizeDeleteModalLabel').innerHTML = name + ' méret törlése';
     document.getElementById('shipSizeDelete').addEventListener('click', function(){
         $.ajax({
-            type: 'GET',
+            type: 'DELETE',
             url: link,
             success: function(msg){
                 $('#shipSizeDeleteModal').modal('hide');
@@ -52,9 +52,9 @@ function shipSizeModal(link, name){
     });
 }
 
-function validateShipSize(){
+function validateShipSize(id){
     $.ajax({
-        url:'/shipsizes/update',
+        url:'/shipsizes/' + id,
         type:'POST',
         data:$('#shipSizeForm').serialize(),
         success:function(result){
@@ -65,8 +65,18 @@ function validateShipSize(){
     return false;
 }
 
-function submitShipSize(){
-    document.getElementById('shipSizeModalLabel').innerHTML = "";
-    $('#shipSizeModal').modal('hide');
-    $('#shipsize-table').DataTable().ajax.reload( null, false );
+function submitShipSize(id){
+    var data = $("#shipSizeForm").serializeObject();
+    $.ajax({
+        type: id == 0 ? 'POST' : 'PATCH',
+        url: id == 0 ? '/api/shipSize' : 'api/shipSize/' + id,
+        data: JSON.stringify(data),
+        success: function (msg) {
+            document.getElementById('shipSizeModalLabel').innerHTML = "";
+            $('#shipSizeModal').modal('hide');
+            $('#shipsize-table').DataTable().ajax.reload( null, false );
+        },
+        dataType: 'json',
+        contentType : 'application/json'
+    });
 }

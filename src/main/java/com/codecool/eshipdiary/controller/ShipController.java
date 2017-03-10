@@ -50,11 +50,11 @@ public class ShipController {
         return "ships";
     }
 
-    @RequestMapping(value = "/ships/update/{shipId}", method = RequestMethod.OPTIONS)
+    @RequestMapping(value = "/ships/{shipId}", method = RequestMethod.OPTIONS)
     public String updateShipForm(@PathVariable("shipId") Long id, Model model){
         Optional<Ship> ship = shipRepositoryService.getShipById(id);
         model.addAttribute("ship", ship.isPresent() ? ship.get() : new Ship());
-        model.addAttribute("validate", "return validateShip()");
+        model.addAttribute("validate", "return validateShip(" + id + ")");
         return "ships/ship_form";
     }
 
@@ -64,26 +64,18 @@ public class ShipController {
         Ship ship = new Ship();
         ship.setOwner(user.isPresent() ? user.get() : new User());
         model.addAttribute("ship", ship);
-        model.addAttribute("validate", "return validateShip()");
+        model.addAttribute("validate", "return validateShip(" + id + ")");
         return "ships/ship_form";
     }
 
-    @RequestMapping(value = "ships/update", method = RequestMethod.POST)
-    public String updateShip(@ModelAttribute("ship") @Valid Ship ship, BindingResult result, Model model) {
-        model.addAttribute("validate", "return validateShip()");
+    @RequestMapping(value = "ships/{shipId}", method = RequestMethod.POST)
+    public String updateShip(@PathVariable("shipId") Long id, @ModelAttribute("ship") @Valid Ship ship, BindingResult result, Model model) {
+        model.addAttribute("validate", "return validateShip(" + id + ")");
         if(result.hasErrors()) {
             LOG.error("Error while trying to update ship: " + result.getFieldErrors());
         } else {
-            model.addAttribute("submit", "return submitShip()");
-            shipRepositoryService.save(ship);
+            model.addAttribute("submit", "return submitShip(" + id + ")");
         }
         return "ships/ship_form";
     }
-
-    @RequestMapping(value = "/ships/delete/{shipId}", method = RequestMethod.GET)
-    public String deleteShip(@PathVariable("shipId") Long id) {
-        shipRepositoryService.deleteShipById(id);
-        return "redirect:/ships";
-    }
-
 }

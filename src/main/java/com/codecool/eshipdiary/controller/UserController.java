@@ -32,16 +32,16 @@ public class UserController {
         return "users";
     }
 
-    @RequestMapping(value = "/users/{usersId}")
-    public String updateUser(@PathVariable("usersId") Long id, Model model){
+    @RequestMapping(value = "/users/{userId}")
+    public String updateUser(@PathVariable("userId") Long id, Model model){
         Optional<User> match = userRepositoryService.getUserById(id);
         model.addAttribute("user", match.isPresent() ? match.get() : new User());
         model.addAttribute("validate", "return validateForm(" + id + ")");
         return "users/user_form";
     }
 
-    @RequestMapping(value = "/users/{usersId}", method = RequestMethod.POST)
-    public String saveUser(@PathVariable("usersId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.POST)
+    public String saveUser(@PathVariable("userId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateForm(" + id + ")");
         if(userRepositoryService.getUserByUserName(user.getUserName())
                 .filter(u -> !u.getId().equals(id))
