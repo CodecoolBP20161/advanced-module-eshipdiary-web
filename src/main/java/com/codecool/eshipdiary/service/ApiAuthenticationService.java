@@ -1,10 +1,9 @@
 package com.codecool.eshipdiary.service;
 
-import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.model.ApiAuthentication;
+import com.codecool.eshipdiary.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -30,10 +29,10 @@ public class ApiAuthenticationService {
             throw new AuthenticationCredentialsNotFoundException("No token.");
         }
         if (user.isPresent()) {
-            if (user.get().isActive()) {
-                return new ApiAuthentication(user.get());
-            }
-            throw new DisabledException("inactive user");
+            return new ApiAuthentication(user.get());
+//            if (user.get().isActive()) {
+//            }
+//            throw new DisabledException("inactive user");
         }
         throw new InsufficientAuthenticationException("invalid token");
     }
