@@ -23,8 +23,8 @@ import java.io.IOException;
  * Created by hamargyuri on 2017. 02. 28..
  */
 @Component
-public class ApiAuthFilter extends GenericFilterBean {
-    private static final Logger LOG = LoggerFactory.getLogger(ApiAuthFilter.class);
+public class ApiAuthenticationFilter extends GenericFilterBean {
+    private static final Logger LOG = LoggerFactory.getLogger(ApiAuthenticationFilter.class);
 
     @Autowired
     ApiAuthenticationService apiAuthenticationService;
