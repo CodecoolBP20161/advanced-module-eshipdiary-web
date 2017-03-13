@@ -40,10 +40,10 @@ public class LoginController {
             User user = userRepositoryService.getUserByUserName(userName).get();
             if (User.PASSWORD_ENCODER.matches(password, user.getPasswordHash())) {
                 if (user.isActive()) {
-                    LOG.info("new login via api: {}", user.getUserName());
+                    LOG.info("New login via api: {}", user.getUserName());
                     return new ResponseEntity<>(user.getApiKey(), HttpStatus.OK);
                 }
-                LOG.debug("inactive user tried to log in via api: {}", user.getUserName());
+                LOG.debug("Inactive user tried to log in via api: {}", user.getUserName());
                 return new ResponseEntity<>("inactive user",HttpStatus.FORBIDDEN);
             }
         }
