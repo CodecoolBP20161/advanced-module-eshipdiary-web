@@ -39,14 +39,10 @@ public class ApiAuthenticationFilter extends GenericFilterBean {
         try {
             authentication = apiAuthenticationService.getAuth(httpServletRequest);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            LOG.info("REST authentication successful with user: {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            LOG.debug("REST authentication successful with user: {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             filterChain.doFilter(servletRequest, servletResponse);
-
-//        } catch (DisabledException inActiveUser) {
-//            LOG.info("{}", inActiveUser.getMessage());
-//            httpServletResponse.sendError(403, inActiveUser.getMessage());
         } catch (InsufficientAuthenticationException invalidToken) {
-            LOG.info("REST auth failed: {}", invalidToken.getMessage());
+            LOG.debug("REST auth failed: {}", invalidToken.getMessage());
             httpServletResponse.sendError(401, invalidToken.getMessage());
         } catch (AuthenticationCredentialsNotFoundException noToken) {
             LOG.debug("{}, moving on to next authentication link", noToken.getMessage());
