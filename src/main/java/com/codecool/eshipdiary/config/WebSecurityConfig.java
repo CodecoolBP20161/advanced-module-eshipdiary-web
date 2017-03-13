@@ -21,9 +21,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private ErrorAttributes errorAttributes;
-
-    @Autowired
     private AuthFailureHandler authFailureHandler;
 
     @Autowired
