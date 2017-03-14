@@ -2,10 +2,12 @@ package com.codecool.eshipdiary.controller;
 
 
 import com.codecool.eshipdiary.model.User;
+import com.codecool.eshipdiary.service.EmailService;
 import com.codecool.eshipdiary.service.UserRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -24,8 +27,10 @@ public class UserController {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    UserRepositoryService userRepositoryService;
+    private UserRepositoryService userRepositoryService;
 
+    @Autowired
+    private EmailService emailService;
 
     @RequestMapping(value = "/users")
     public String getUserTable() {
@@ -71,6 +76,9 @@ public class UserController {
             LOG.error("Error while trying to update user: " + result.getFieldErrors());
         } else {
             model.addAttribute("submit", "return submitForm(" + id + ")");
+            if(id == 0) {
+                emailService.prepareAndSend(user.getEmailAddress(), "Welcome to the club");
+            }
         }
         return "users/user_form";
     }
