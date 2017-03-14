@@ -20,23 +20,25 @@ public class EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    @Async
-    public void prepareAndSend(String recipient, String message) {
+    public MimeMessagePreparator prepareRegistrationEmail(String recipient, String message) {
         LOG.debug("Recipient {} and message {}", recipient, message);
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setFrom("eshipdiary@gmail.com");
             messageHelper.setTo(recipient);
             messageHelper.setSubject("Sikeres regisztráció");
             messageHelper.setText(message);
         };
+
+        return messagePreparator;
+    }
+
+    @Async
+    public void sendEmail(MimeMessagePreparator email) {
         try {
-            emailSender.send(messagePreparator);
+            emailSender.send(email);
             LOG.info("{} - Email sent successfully", new Date());
         } catch (MailException e) {
             LOG.error("Error trying to send email on {} due to {}", new Date(), e.getMessage());
         }
     }
 }
-
-
