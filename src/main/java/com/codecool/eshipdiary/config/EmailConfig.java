@@ -24,6 +24,12 @@ public class EmailConfig {
     private boolean auth;
     @Value("${mail.smtp.starttls.enable}")
     private boolean starttls;
+    @Value("${mail.smtp.connectiontimeout}")
+    private int connectionTimeout;
+    @Value("${mail.smtp.timeout}")
+    private int timeout;
+    @Value("${mail.smtp.writetimeout}")
+    private int writeTimeout;
     @Value("${mail.from}")
     private String from;
     @Value("${mail.username}")
@@ -34,15 +40,26 @@ public class EmailConfig {
     @Bean
     public JavaMailSender emailSender() {
         JavaMailSenderImpl emailSender = new JavaMailSenderImpl();
-        Properties mailProperties = new Properties();
-        mailProperties.put("mail.smtp.auth", auth);
-        mailProperties.put("mail.smtp.starttls.enable", starttls);
-        emailSender.setJavaMailProperties(mailProperties);
+        emailSender.setJavaMailProperties(setProperties());
         emailSender.setHost(host);
         emailSender.setPort(port);
         emailSender.setProtocol(protocol);
         emailSender.setUsername(username);
         emailSender.setPassword(password);
+
         return emailSender;
     }
+
+    private Properties setProperties() {
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", auth);
+        props.put("mail.smtp.starttls.enable", starttls);
+        props.put("mail.smtp.connecttimeout", connectionTimeout);
+        props.put("mail.smtp.timeout", timeout);
+        props.put("mail.smtp.writetimeout", writeTimeout);
+        return props;
+    }
 }
+
+
+
