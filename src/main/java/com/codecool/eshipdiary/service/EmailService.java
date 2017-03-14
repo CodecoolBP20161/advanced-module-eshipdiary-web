@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary.service;
 
+import com.codecool.eshipdiary.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,17 @@ public class EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    public MimeMessagePreparator prepareRegistrationEmail(String recipient, String message) {
-        LOG.debug("Recipient {} and message {}", recipient, message);
+    @Autowired
+    private EmailContentBuilder emailContentBuilder;
+
+    public MimeMessagePreparator prepareRegistrationEmail(User user) {
+        LOG.debug("Sending email to the following user {}", user.toString());
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setTo(recipient);
+            messageHelper.setTo(user.getEmailAddress());
             messageHelper.setSubject("Sikeres regisztráció");
-            messageHelper.setText(message);
+            String content = emailContentBuilder.build(user);
+            messageHelper.setText(content, true);
         };
 
         return messagePreparator;

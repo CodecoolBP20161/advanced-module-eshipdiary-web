@@ -75,7 +75,7 @@ public class UserController {
         } else {
             model.addAttribute("submit", "return submitForm(" + id + ")");
             if(id == 0) {
-                emailService.sendEmail(emailService.prepareRegistrationEmail(user.getEmailAddress(), "Welcome to the club"));
+                emailService.sendEmail(emailService.prepareRegistrationEmail(user));
             }
         }
         return "users/user_form";
