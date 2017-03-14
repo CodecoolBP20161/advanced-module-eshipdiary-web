@@ -2,6 +2,7 @@ package com.codecool.eshipdiary.controller;
 
 
 import com.codecool.eshipdiary.model.User;
+import com.codecool.eshipdiary.service.EmailService;
 import com.codecool.eshipdiary.service.UserRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +25,10 @@ public class UserController {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    UserRepositoryService userRepositoryService;
+    private UserRepositoryService userRepositoryService;
 
+    @Autowired
+    private EmailService emailService;
 
     @RequestMapping(value = "/users")
     public String getUserTable() {
@@ -71,6 +74,9 @@ public class UserController {
             LOG.error("Error while trying to update user: " + result.getFieldErrors());
         } else {
             model.addAttribute("submit", "return submitForm(" + id + ")");
+            if(id == 0) {
+                emailService.sendEmail(emailService.prepareRegistrationEmail(user.getEmailAddress(), "Welcome to the club"));
+            }
         }
         return "users/user_form";
     }
