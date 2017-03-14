@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/imports :: imports"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container">
+    <h2>Hajónapló</h2>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalModal">
+            Hajóbérlés</button>
+
+        <div class="modal fade bs-example-modal-lg" id="rentalModal" tabindex="-1" role="dialog" aria-labelledby="rentalModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="rentalModalLabel">Hajóbérlés</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div th:replace="rental_log/rental_form"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="rentalSubmit" class="btn btn-primary">Mentés</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+</body>
+</html>
