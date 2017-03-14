@@ -7,7 +7,7 @@
             <div sec:authorize="hasAuthority('ADMIN')">
             <ul class="nav navbar-nav">
                 <li><img alt="Brand" th:src="@{/images/banner.png}" height="50px" /></li>
-                <li><a href="#">Hajónapló</a></li>
+                <li><a th:href="@{/rentals}">Hajónapló</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
                     <ul class="dropdown-menu">
