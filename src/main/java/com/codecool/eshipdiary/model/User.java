@@ -91,6 +91,10 @@ public class User {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Oar> oars;
 
+    @ManyToMany(mappedBy = "crew")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<RentalLog> rentalLogs;
+
     @PrePersist
     private void validate(){
         this.apiKey = UUID.randomUUID().toString();
