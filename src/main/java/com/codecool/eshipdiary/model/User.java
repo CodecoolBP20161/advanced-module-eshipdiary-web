@@ -34,7 +34,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String apiKey;
+    private String apiToken;
 
     @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false)
@@ -93,7 +93,7 @@ public class User {
 
     @PrePersist
     private void validate(){
-        this.apiKey = UUID.randomUUID().toString();
+        this.apiToken = UUID.randomUUID().toString();
         if(this.passwordHash == null){
             this.setPasswordHash(this.userName);
         }

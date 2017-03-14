@@ -39,7 +39,8 @@ public class ApiAuthenticationFilter extends GenericFilterBean {
         try {
             authentication = apiAuthenticationService.getAuth(httpServletRequest);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            LOG.debug("REST authentication successful with user: {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            LOG.debug("REST authentication successful with user: {}",
+                    SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (InsufficientAuthenticationException invalidToken) {
             LOG.debug("REST auth failed: {}", invalidToken.getMessage());
