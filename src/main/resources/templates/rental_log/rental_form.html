@@ -26,10 +26,11 @@
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="ship">Legénység</label>
             <div class="col-sm-8">
-                <select th:field="*{crew}" class="multiselect-ui form-control" multiple="multiple">
+                <select th:field="*{crew}" class="multi-select form-control" multiple="multiple">
                     <option th:each="crewMember : ${users}"
                             th:value="${crewMember.getId()}"
-                            th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}" />
+                            th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}"
+                            selected=""/>
                 </select>
             </div>
         </div>
@@ -37,11 +38,11 @@
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="ship">Lapátok</label>
             <div class="col-sm-8">
-                <select th:field="*{oars}" class="multiselect-ui form-control" multiple="multiple">
-                    <option th:value="0"></option>
+                <select th:field="*{oars}" class="multi-select form-control" multiple="multiple">
                     <option th:each="oar : ${oars}"
                             th:value="${oar.getId()}"
-                            th:text="${oar.getName()}" />
+                            th:text="${oar.getName()}"
+                            selected="" />
                 </select>
             </div>
         </div>
