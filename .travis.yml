@@ -1,5 +1,5 @@
 language: java
-install: ./mvnw clean test -Dmaven.javadoc.skip=true -Dspring.profiles.active=travis -B -V
+install: ./mvnw clean -Dmaven.javadoc.skip=true -Dspring.profiles.active=test -B -V
 sudo: false
 addons:
   apt:
