@@ -87,6 +87,7 @@ function submitShip(id){
     var data = $("#shipForm").serializeObject();
     data.owner = window.location.origin + "/api/user/" + data.owner;
     data.size = window.location.origin + "/api/shipSize/" + data.size;
+    data.type = window.location.origin + "/api/shipType/" + data.type;
     $.ajax({
         type: id == 0 ? 'POST' : 'PATCH',
         url: id == 0 ? '/api/ship' : 'api/ship/' + id,

@@ -97,7 +97,6 @@ public class AdvancedModuleEshipdiaryWebApplication {
             ship.setCode("4x+");
             ship.setCoxed(true);
             ship.setMaxSeat(4);
-            ship.setShipType(Type.SCULL);
             shipRepository.save(ship);
 
 
