@@ -23,16 +23,13 @@ public class ApiAuthenticationService {
     UserRepositoryService userRepositoryService;
 
     public Authentication getAuth(HttpServletRequest request) {
-        final String apiKey = request.getHeader(AUTH_HEADER_NAME);
-        Optional<User> user = userRepositoryService.getUserByAPIKey(apiKey);
-        if (apiKey == null) {
+        final String token = request.getHeader(AUTH_HEADER_NAME);
+        Optional<User> user = userRepositoryService.getUserByApiToken(token);
+        if (token == null) {
             throw new AuthenticationCredentialsNotFoundException("No token.");
         }
         if (user.isPresent()) {
             return new ApiAuthentication(user.get());
-//            if (user.get().isActive()) {
-//            }
-//            throw new DisabledException("inactive user");
         }
         throw new InsufficientAuthenticationException("invalid token");
     }

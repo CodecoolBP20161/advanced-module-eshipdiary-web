@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import java.util.HashMap;
+
 @Controller
 public class LoginController {
 
@@ -23,7 +25,7 @@ public class LoginController {
     @Autowired
     UserRepositoryService userRepositoryService;
 
-    @RequestMapping(value = "/login")
+    @RequestMapping("/login")
     public String login() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
@@ -33,20 +35,25 @@ public class LoginController {
         return "login";
     }
 
-    @RequestMapping(value = "/api_login")
-    public ResponseEntity<String> validateApiLogin(@RequestParam("username") String userName,
-                                                   @RequestParam("password") String password) {
+    @RequestMapping(value = "/api_login", produces = "application/json")
+    public ResponseEntity<HashMap<String, String>> validateApiLogin(@RequestParam("username") String userName,
+                                                                @RequestParam("password") String password) {
+        HashMap<String, String> data = new HashMap<>();
         if (userRepositoryService.getUserByUserName(userName).isPresent()) {
             User user = userRepositoryService.getUserByUserName(userName).get();
             if (User.PASSWORD_ENCODER.matches(password, user.getPasswordHash())) {
                 if (user.isActive()) {
                     LOG.info("New login via api: {}", user.getUserName());
-                    return new ResponseEntity<>(user.getApiKey(), HttpStatus.OK);
+                    data.put("token", user.getApiToken());
+                    data.put("id", user.getId().toString());
+                    return new ResponseEntity<>(data, HttpStatus.OK);
                 }
                 LOG.debug("Inactive user tried to log in via api: {}", user.getUserName());
-                return new ResponseEntity<>("inactive user",HttpStatus.FORBIDDEN);
+                data.put("message", "Inaktív felhasználó.");
+                return new ResponseEntity<>(data, HttpStatus.FORBIDDEN);
             }
         }
-        return new ResponseEntity<>("wrong credentials", HttpStatus.UNAUTHORIZED);
+        data.put("message", "Hibás belépési adatok.");
+        return new ResponseEntity<>(data, HttpStatus.UNAUTHORIZED);
     }
 }
