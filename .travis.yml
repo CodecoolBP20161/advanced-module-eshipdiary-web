@@ -1,5 +1,5 @@
 language: java
-install: mvn clean test -Dmaven.javadoc.skip=true -Dspring.profiles.active=trevis -B -V
+install: mvn clean test -Dmaven.javadoc.skip=true -Dspring.profiles.active=travis -B -V
 sudo: false
 addons:
   apt:
@@ -8,4 +8,4 @@ addons:
 jdk:
   - oraclejdk8
 notifications:
-email: false
+  email: false
