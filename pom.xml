@@ -11,6 +11,24 @@
     <name>advanced-module-eshipdiary-web</name>
     <description>Electronic ship diary for a rowing club</description>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <activatedProperties>test</activatedProperties>
+            </properties>
+        </profile>
+    </profiles>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -83,6 +101,18 @@
             <artifactId>jquery</artifactId>
             <version>2.1.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.193</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -90,6 +120,20 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+            </plugin>
+            <plugin>
+                <groupId>com.rimerosolutions.maven.plugins</groupId>
+                <artifactId>wrapper-maven-plugin</artifactId>
+                <version>0.0.4</version>
+                <configuration>
+                    <mavenVersion>3.3.9</mavenVersion>
+                </configuration>
             </plugin>
         </plugins>
     </build>
