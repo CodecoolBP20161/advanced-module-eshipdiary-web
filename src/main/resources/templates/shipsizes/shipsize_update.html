@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="shipsize-update">
+    <div class="modal fade bs-example-modal-lg" id="shipSizeModal" tabindex="-1" role="dialog" aria-labelledby="shipSizeModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="shipSizeModalLabel">Label</h4>
+                </div>
+                <div class="modal-body" id="shipSizeUpdate"></div>
+                <div class="modal-footer">
+                    <button type="submit" id="shipSizeSubmit" class="btn btn-primary" form="shipSizeForm">Mentés</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

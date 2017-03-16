@@ -1,5 +1,5 @@
 $(document).ready( function () {
-    var table = $('#user-table').DataTable ({
+    $('#user-table').DataTable ({
         language: {
             'url': 'https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json'
         },
@@ -14,6 +14,7 @@ $(document).ready( function () {
             {data: 'isActive'},
             {
                 sortable: false,
+                searchable: false,
                 render: userActionButtons
             }
         ]
@@ -21,23 +22,22 @@ $(document).ready( function () {
 });
 
 function userActionButtons( data, type, row ) {
-    var shouldBeActive;
-    var activationLabel;
-    var buttonType;
-    if (row.isActive === "Aktív") {
-        activationLabel = 'Inaktiválás';
-        shouldBeActive = false;
-        buttonType = 'warning'
-    } else {
-        activationLabel = 'Aktiválás';
-        shouldBeActive = true;
-        buttonType = 'success'
-    }
+    var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
+    var shipButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/ships/user/'+row.id+'\', \'Új hajó\');">Hajó</a>';
+    var oarButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/user/'+row.id+'\', \'Új evező\');">Evező</a>';
+    return detailsButton + deleteButton(row) + statusButton(row) + shipButton + oarButton;
+}
 
-    var detailsButton = ' <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
-    var deleteButton = ' <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
-    var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-sm" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
-    return detailsButton + deleteButton + statusChangeButton;
+function statusButton(row){
+    var isActive = row.isActive === "Inaktív";
+    var activationLabel = isActive ? 'Aktiválás' : 'Inaktiválás';
+    var activationClass = isActive ? 'success' : 'warning';
+    return ' <a class="btn btn-'+activationClass+' btn-xs" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + isActive + ')">' + activationLabel + '</a>';
+}
+
+function deleteButton(row){
+    if(row.ships.length + row.oars.length === 0) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
+    return ' <button disabled class="btn btn-default btn-xs" data-toggle="tooltip" title="Hozzátartozó hajó/evező miatt nem törölhető!">Törlés</button>';
 }
 
 function setUserStatus(link, shouldBeActive) {
@@ -46,11 +46,6 @@ function setUserStatus(link, shouldBeActive) {
         type: 'PATCH',
         data: JSON.stringify({"active": shouldBeActive}),
         success: function (msg) {$('#user-table').DataTable().ajax.reload( null, false );},
-        statusCode: {
-            403: function() {
-                location.reload();
-            }
-        },
         dataType: 'json',
         contentType : 'application/json'
     })
@@ -65,11 +60,6 @@ function deleteModal(link, name){
             success: function(msg){
                 $('#deleteModal').modal('hide');
                 $('#user-table').DataTable().ajax.reload( null, false );
-            },
-            statusCode: {
-                403: function() {
-                    location.reload();
-                }
             }
         });
     });
@@ -82,52 +72,19 @@ function updateModal(link, name){
             url: link,
             success: function (result) {
                 document.getElementById('userUpdate').innerHTML = result;
-                name !== 'Új tag' ? disableModal() : enableModal();
-            },
-            statusCode: {
-                403: function () {
-                    location.reload();
-                }
             }
         });
     }
 }
 
-function disableModal(){
-    var form = document.getElementById('userForm');
-    var elements = form.elements;
-    for (var i = 0, len = elements.length; i < len; ++i) {
-        elements[i].disabled = true;
-    }
-    document.getElementById('userEdit').style.display = 'inline';
-    document.getElementById('userSubmit').style.display = 'none';
-}
-
-function enableModal(){
-    var form = document.getElementById('userForm');
-    var elements = form.elements;
-    for (var i = 0, len = elements.length; i < len; ++i) {
-        elements[i].disabled = false;
-    }
-    document.getElementById('userEdit').style.display = 'none';
-    document.getElementById('userSubmit').style.display = 'inline';
-}
-
-
-
 function validateForm(id){
     $.ajax({
         url:'/users/' + id,
-        type:'post',
+        type:'POST',
         data:$('#userForm').serialize(),
         success:function(result){
             document.getElementById('userUpdate').innerHTML = result;
             $('#userPost').click();
-        },
-        statusCode: {
-            403: function() {
-                location.reload();
-            }
         }
     });
     return false;
@@ -144,28 +101,7 @@ function submitForm(id){
             $('#updateModal').modal('hide');
             $('#user-table').DataTable().ajax.reload( null, false );
         },
-        statusCode: {
-            403: function() {
-                location.reload();
-            }
-        },
         dataType: 'json',
         contentType : 'application/json'
     });
 }
-
-$.fn.serializeObject = function() {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};

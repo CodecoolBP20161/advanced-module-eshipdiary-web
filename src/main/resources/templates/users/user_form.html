@@ -19,7 +19,7 @@
         <div class="form-group" th:classappend="${#fields.hasErrors('firstName')} ? 'has-error has-feedback'">
             <label class="control-label col-sm-4" th:for="first_name">Keresztnév</label>
             <div class="col-sm-8">
-                <input th:field="*{firstName}" type="text" class="form-control" placeholder="Keresztnév" autofocus="" />
+                <input th:field="*{firstName}" type="text" class="form-control" placeholder="Keresztnév" />
                 <div th:if="${#fields.hasErrors('firstName')}">
                     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                 </div>
@@ -30,7 +30,7 @@
         <div class="form-group" th:classappend="${#fields.hasErrors('userName')} ? 'has-error has-feedback'">
             <label class="control-label col-sm-4" th:for="username">Felhasználónév</label>
             <div class="col-sm-8">
-                <input th:field="*{userName}" type="text" class="form-control" placeholder="Felhasználónév" autofocus="" />
+                <input th:field="*{userName}" type="text" class="form-control" placeholder="Felhasználónév" />
                 <div th:if="${#fields.hasErrors('userName')}">
                     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                 </div>
@@ -41,7 +41,7 @@
         <div class="form-group" th:classappend="${#fields.hasErrors('emailAddress')} ? 'has-error has-feedback'">
             <label class="control-label col-sm-4" th:for="email_address">Email-cím</label>
             <div class="col-sm-8">
-                <input th:field="*{emailAddress}" type="email" class="form-control" placeholder="Email-cím" autofocus="" />
+                <input th:field="*{emailAddress}" type="email" class="form-control" placeholder="Email-cím" />
                 <div th:if="${#fields.hasErrors('emailAddress')}">
                     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                 </div>
@@ -52,7 +52,7 @@
         <div class="form-group" th:classappend="${#fields.hasErrors('birthDate')} ? 'has-error has-feedback'">
             <label class="control-label col-sm-4" th:for="birth_date">Születési idő</label>
             <div class="col-sm-8">
-                <input th:field="*{birthDate}" type="date" class="form-control" placeholder="Születési idő (hónap, nap, év)" autofocus="" />
+                <input th:field="*{birthDate}" type="date" class="form-control" />
                 <div th:if="${#fields.hasErrors('birthDate')}">
                     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                 </div>
@@ -64,7 +64,7 @@
         <div class="form-group" th:classappend="${#fields.hasErrors('phoneNumber')} ? 'has-error has-feedback'">
             <label class="control-label col-sm-4" th:for="phone_number">Telefonszám</label>
             <div class="col-sm-8">
-                <input th:field="*{phoneNumber}" type="tel" class="form-control" placeholder="Telefonszám" autofocus="" />
+                <input th:field="*{phoneNumber}" type="tel" class="form-control" placeholder="Telefonszám" />
                 <div th:if="${#fields.hasErrors('phoneNumber')}">
                     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                 </div>
@@ -75,10 +75,10 @@
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="knowledge_level">Tapasztalat</label>
             <div class="col-sm-8">
-                <select th:field="*{knowledgeLevel}" class="form-control" autofocus="">
+                <select th:field="*{knowledgeLevel}" class="form-control">
                     <option th:each="knowledgeLevel : ${T(com.codecool.eshipdiary.model.User.KnowledgeLevel).values()}"
                             th:value="${knowledgeLevel}"
-                            th:text="${knowledgeLevel}" />
+                            th:text="${knowledgeLevel.getDisplayName()}" />
                 </select>
             </div>
         </div>
@@ -86,8 +86,7 @@
         <div class="form-group" th:classappend="${#fields.hasErrors('weightInKg')} ? 'has-error has-feedback'">
             <label class="control-label col-sm-4" th:for="weight_in_kg">Súly</label>
             <div class="col-sm-8">
-                <input th:field="*{weightInKg}" type="number" class="form-control"
-                       placeholder="Súly (kg)" autofocus="" />
+                <input th:field="*{weightInKg}" type="number" class="form-control" placeholder="Súly (kg)" />
                 <div th:if="${#fields.hasErrors('weightInKg')}">
                     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                 </div>
@@ -99,15 +98,13 @@
             <label class="control-label col-sm-4" for="active">Státusz</label>
             <div class="col-sm-8">
                 <div class="checkbox">
-                    <input th:field="*{active}" type="radio" class="form-check-input"
-                           id="active" th:value="true" /> Aktív
+                    <input th:field="*{active}" type="radio" class="form-check-input" id="active" th:value="true" /> Aktív
                 </div>
             </div>
             <div class="col-sm-4"></div>
             <div class="col-sm-8">
                 <div class="checkbox">
-                    <input th:field="*{active}" type="radio" class="form-check-input"
-                           id="inactive" th:value="false" /> Inaktív
+                    <input th:field="*{active}" type="radio" class="form-check-input" id="inactive" th:value="false" /> Inaktív
                 </div>
             </div>
         </div>

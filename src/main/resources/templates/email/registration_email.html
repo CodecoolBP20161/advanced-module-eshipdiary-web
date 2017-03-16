@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8" />
+<body>
+    <div class="container">
+        <h2>Kedves <strong th:text="${user.getLastName()} + ' ' + ${user.getFirstName()} + '!'"></strong></h2>
+        <p th:text="${user.getUserName()} + ' felhasználónévvel sikeresen regisztráltál a hajófoglalási rendszerbe.'
+        + ' Ideiglenes jelszavad a választott felhasználóneved alapján: '
+        + ${user.getUserName()}"></p>
+        <p>A jelszót az alábbi linken tudod módosítani: </p> <a href="#">LINK</a>
+    </div>
+</body>
+</html>
