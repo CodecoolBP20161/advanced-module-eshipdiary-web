@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 @RepositoryRestResource(collectionResourceRel = "user", path = "user")
 public interface UserRepository extends CrudRepository<User, Long> {
+    User findByUserName(String userName);
     Optional<User> findOneByUserName(String userName);
-    Optional<User> findOneByApiKey(String APIKey);
+    Optional<User> findOneByApiToken(String APIKey);
+    Optional<User> findOneByEmailAddress(String emailAddress);
 }

@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <div th:replace="fragments/imports :: imports"></div>
-    <title>Elektronikus hajónapló</title>
-</head>
+<head th:replace="fragments/imports :: imports"></head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
     <h2>Hajók
-        <a th:href="@{/ships/update/0}" type="button" class="btn btn-md btn-primary">Új hajó felvétele</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipModal"
+                onclick="shipModal('/ships/0', 'Új hajó');">Új hajó felvétele</button>
     </h2>
     <div id="ships-table">
+        <div th:replace="ships/ship_update:: ship-update"></div>
         <div th:replace="ships/ship_table :: ship-table"></div>
         <div th:replace="ships/ship_delete :: ship-delete"></div>
     </div>

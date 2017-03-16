@@ -3,7 +3,6 @@ package com.codecool.eshipdiary.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Entity
@@ -16,8 +15,5 @@ public class Role {
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
 
 }

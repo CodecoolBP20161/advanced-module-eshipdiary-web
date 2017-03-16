@@ -76,6 +76,7 @@ fabric.properties
 
 # Package Files #
 *.jar
+!maven/maven-wrapper.jar
 *.war
 *.ear
 

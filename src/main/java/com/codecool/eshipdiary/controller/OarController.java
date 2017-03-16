@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -36,35 +35,38 @@ public class OarController {
         return (List<User>) userRepositoryService.getAllUsers();
     }
 
-    @RequestMapping("/oars")
+    @RequestMapping(value = {"/oars", "/oars/**"})
     public String getOarTable(Model model) {
         model.addAttribute("oar");
         return "oars";
     }
 
-    @RequestMapping(value = "/oars/update/{oarsId}")
-    public String updateOar(@PathVariable("oarsId") Long id, Model model){
+    @RequestMapping(value = "/oars/{oarId}", method = RequestMethod.OPTIONS)
+    public String updateOar(@PathVariable("oarId") Long id, Model model){
         Optional<Oar> oar = oarRepositoryService.getOarById(id);
         model.addAttribute("oar", oar.isPresent() ? oar.get() : new Oar());
-        model.addAttribute("title", oar.map(Oar::getName).orElse("Új evező"));
+        model.addAttribute("validate", "return validateOar(" + id + ")");
         return "oars/oar_form";
     }
 
-    @RequestMapping(value = "/oars/update", method = RequestMethod.POST)
-    public String saveOar(@ModelAttribute("oar") @Valid Oar oar, BindingResult result) {
+    @RequestMapping(value = "/oars/user/{userId}", method = RequestMethod.OPTIONS)
+    public String createOar(@PathVariable("userId") Long id, Model model){
+        Optional<User> user = userRepositoryService.getUserById(id);
+        Oar oar = new Oar();
+        oar.setOwner(user.isPresent() ? user.get() : new User());
+        model.addAttribute("oar", oar);
+        model.addAttribute("validate", "return validateOar(0)");
+        return "oars/oar_form";
+    }
+
+    @RequestMapping(value = "/oars/{oarId}", method = RequestMethod.POST)
+    public String saveOar(@PathVariable("oarId") Long id, @ModelAttribute("oar") @Valid Oar oar, BindingResult result, Model model) {
+        model.addAttribute("validate", "return validateOar(" + id + ")");
         if(result.hasErrors()) {
             LOG.error("Error while trying to update oar: " + result.getFieldErrors());
-            return "oars/oar_form";
+        } else {
+            model.addAttribute("submit", "return submitOar(" + id + ")");
         }
-        oarRepositoryService.save(oar);
-        return "redirect:/oars";
+        return "oars/oar_form";
     }
-
-    @RequestMapping(value = "/oars/delete/{oarsId}")
-    public void deleteOar(@PathVariable("oarsId") Long id, HttpServletResponse response){
-        oarRepositoryService.deleteOarById(id);
-        response.setStatus(200);
-    }
-
-
 }

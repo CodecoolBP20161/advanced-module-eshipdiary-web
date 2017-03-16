@@ -4,7 +4,7 @@ body {
 
 .navbar-default {
     background-color: #E62117;
-    border-color: #E62117;
+    border: none;
 }
 
 .navbar-default .navbar-nav > li > a {

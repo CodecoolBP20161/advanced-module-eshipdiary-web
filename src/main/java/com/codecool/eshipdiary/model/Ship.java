@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -23,6 +24,9 @@ public class Ship {
 
     @Column(nullable = false)
     private String code;
+
+    @ManyToOne
+    private ShipSize size;
 
     @Column
     @NotNull(message = "A mező nem lehet üres")
@@ -50,12 +54,32 @@ public class Ship {
     @Column
     private String notes;
 
+    @Column(nullable = false)
+    private boolean active;
+
+    @JsonIgnore
+    @ManyToOne
+    private Club club;
+
     public enum Category {
-        TRAINING, COMPETITION, TOP, TEACHING
+        TRAINING("edzőhajó"),
+        COMPETITION("versenyhajó"),
+        TOP("TOP hajó"),
+        TEACHING("oktatóhajó");
+
+        private final String displayName;
+
+        Category(String displayName) {
+            this.displayName = displayName;
+        }
+        public String getDisplayName() {
+            return displayName;
+        }
     }
 
     public Ship() {
         this.setMaxSeat(1);
+        this.setActive(true);
     }
 
 }
