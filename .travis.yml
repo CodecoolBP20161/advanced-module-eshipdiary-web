@@ -1,0 +1,11 @@
+language: java
+install: mvn clean test -Dmaven.javadoc.skip=true -Dspring.profiles.active=trevis -B -V
+sudo: false
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+jdk:
+  - oraclejdk8
+notifications:
+email: false
