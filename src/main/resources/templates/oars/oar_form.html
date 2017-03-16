@@ -6,12 +6,13 @@
     <form th:object="${oar}" th:onsubmit="${validate}" class="form-horizontal" id="oarForm">
 
         <div class="form-group">
-            <label class="control-label col-sm-4" th:for="type">Típus</label>
+            <label class="control-label col-sm-4" th:for="type">Evező típusa</label>
             <div class="col-sm-8">
-                <select th:field="*{type}" class="form-control" autofocus="">
-                    <option th:each="type : ${T(com.codecool.eshipdiary.model.Type).values()}"
-                            th:value="${type}"
-                            th:text="${type}" />
+                <select th:field="*{type}" class="form-control">
+                    <option th:value="0">Nincs Típus</option>
+                    <option th:each="type : ${shipTypes}"
+                            th:value="${type.getId()}"
+                            th:text="${type.getName()}" />
                 </select>
             </div>
         </div>
