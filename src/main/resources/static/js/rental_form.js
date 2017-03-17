@@ -13,35 +13,9 @@ var simpleSelectWithFilter = function () {
 };
 
 var multipleSelect = function () {
-    var crewList = [];
-    $('#crew').multiselect({
+    $('.multi-select').multiselect({
         enableCaseInsensitiveFiltering: true,
-        filterPlaceholder: 'Keresés...',
-        buttonText: function(options, select) {
-            return 'Válassz legénységet!';
-        },
-        buttonWidth: '368px',
-        onChange: function(element, checked) {
-            if (checked === true) {
-                crewList.push(element.html());
-                document.getElementById("crewDisplay").innerHTML = displayCrew(crewList);
-            }
-        }
-    });
-    $('#oars').multiselect({
-        enableCaseInsensitiveFiltering: true,
-        filterPlaceholder: 'Keresés...',
-        buttonText: function (options, select) {
-            return 'Válassz lapátokat!';
-        },
-        buttonWidth: '368px'
+        filterPlaceholder: 'Keresés...'
     });
 };
 
-var displayCrew = function (crewList) {
-    var text = "<ul>";
-    for (var i = 0; i < crewList.length; i++) {
-        text += "<li>" + crewList[i] + "</li>";
-    }
-    return text;
-};
