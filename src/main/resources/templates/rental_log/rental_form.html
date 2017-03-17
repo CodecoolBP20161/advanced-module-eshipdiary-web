@@ -8,7 +8,7 @@
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="ship">Hajók</label>
             <div class="col-sm-8">
-                <select th:field="*{chosenShip}" class="form-control">
+                <select th:field="*{chosenShip}" class="multi-select form-control">
                     <option th:each="ship : ${ships}"
                             th:value="${ship.getId()}"
                             th:text="${ship.getName()}" />
@@ -26,7 +26,7 @@
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="ship">Legénység</label>
             <div class="col-sm-8">
-                <select th:field="*{crew}" class="multi-select form-control" multiple="multiple">
+                <select th:field="*{crew}" name="crew[]" class="multi-select form-control" multiple="multiple">
                     <option th:each="crewMember : ${users}"
                             th:value="${crewMember.getId()}"
                             th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}"
@@ -34,6 +34,8 @@
                 </select>
             </div>
         </div>
+
+        <div id="crewDisplay"><ul></ul></div>
 
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="ship">Lapátok</label>
@@ -55,9 +57,9 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-4" th:for="distance">Távolság</label>
+            <label class="control-label col-sm-4" th:for="distance">Távolság (km)</label>
             <div class="col-sm-8">
-                <input th:field="*{distance}" type="number" max="15" class="form-control"/>
+                <input th:field="*{distance}" type="number" min="1" max="15" class="form-control"/>
             </div>
         </div>
 
@@ -67,8 +69,6 @@
                 <textarea th:field="*{comment}" class="form-control" placeholder="Megjegyzés" rows="3"></textarea>
             </div>
         </div>
-
-
     </form>
 
     <button type="button" hidden="hidden" th:onclick="${submit}" id=""></button>
