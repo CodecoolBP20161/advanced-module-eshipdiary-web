@@ -83,6 +83,7 @@ function validateOar(id){
 function submitOar(id){
     var data = $("#oarForm").serializeObject();
     data.owner = window.location.origin + 'api/user/' + data.owner;
+    data.type = window.location.origin + "/api/shipType/" + data.type;
     $.ajax({
         type: id == 0 ? 'POST' : 'PATCH',
         url: id == 0 ? '/api/oar' : 'api/oar/' + id,

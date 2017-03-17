@@ -8,7 +8,10 @@ import com.codecool.eshipdiary.security.AuthFailureHandler;
 import com.codecool.eshipdiary.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.repository.query.spi.EvaluationContextExtension;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -75,5 +78,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                     .and()
                 .csrf().disable();
+    }
+
+    @Bean
+    EvaluationContextExtension securityExtension() {
+        return new SecurityEvaluationContextExtension();
     }
 }
