@@ -2,8 +2,10 @@ package com.codecool.eshipdiary.repository;
 
 
 import com.codecool.eshipdiary.model.Oar;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -12,4 +14,8 @@ import java.util.Optional;
 @RepositoryRestResource(collectionResourceRel = "oar", path = "oar")
 public interface OarRepository extends CrudRepository<Oar, Long> {
     Optional<Oar> findOneById(Long id);
+    @Override
+    @RestResource(exported = true)
+    @Query("select oar from Oar oar where oar.club = ?#{principal.club}")
+    Iterable<Oar> findAll();
 }
