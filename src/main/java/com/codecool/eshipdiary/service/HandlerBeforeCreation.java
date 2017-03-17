@@ -54,6 +54,13 @@ public class HandlerBeforeCreation {
         shipSize.setClub(club);
     }
 
+    @HandleBeforeCreate(ShipType.class)
+    public void setShipTypeClubUsingSecurityContext(ShipType shipType) {
+        determineClubOfCurrentUser();
+        log.debug("This size of ship belongs to club " + club.getName());
+        shipType.setClub(club);
+    }
+
     private void determineClubOfCurrentUser() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         log.debug("Found principal: " + userName);
