@@ -2,9 +2,11 @@ package com.codecool.eshipdiary.controller;
 
 import com.codecool.eshipdiary.model.Ship;
 import com.codecool.eshipdiary.model.ShipSize;
+import com.codecool.eshipdiary.model.ShipType;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.service.ShipRepositoryService;
 import com.codecool.eshipdiary.service.ShipSizeRepositoryService;
+import com.codecool.eshipdiary.service.ShipTypeRepositoryService;
 import com.codecool.eshipdiary.service.UserRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,9 @@ public class ShipController {
     @Autowired
     ShipSizeRepositoryService shipSizeRepositoryService;
 
+    @Autowired
+    ShipTypeRepositoryService shipTypeRepositoryService;
+
     @ModelAttribute("users")
     public List<User> listUsers() {
         return (List<User>) userRepositoryService.getAllUsers();
@@ -42,6 +47,11 @@ public class ShipController {
     @ModelAttribute("shipSizes")
     public List<ShipSize> listSizes() {
         return (List<ShipSize>) shipSizeRepositoryService.getAllShipSize();
+    }
+
+    @ModelAttribute("shipTypes")
+    public List<ShipType> listTypes() {
+        return (List<ShipType>) shipTypeRepositoryService.getAllShipType();
     }
 
     @RequestMapping(value = {"/ships", "/ships/**"})

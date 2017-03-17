@@ -48,5 +48,4 @@ public class RentalLog {
     public void setRentalStart() {
         this.rentalStart = new Date();
     }
-
 }

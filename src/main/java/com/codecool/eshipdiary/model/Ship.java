@@ -40,10 +40,8 @@ public class Ship {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @Column
-    @NotNull(message = "A mező nem lehet üres")
-    @Enumerated(EnumType.STRING)
-    private Type shipType;
+    @ManyToOne
+    private ShipType type;
 
     @ManyToOne
     private User owner;
