@@ -98,13 +98,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
             ship.setCoxed(true);
             ship.setMaxSeat(4);
             shipRepository.save(ship);
-
-
-            LOG.info("Users found with findAll():");
-            LOG.info("-------------------------------");
-            for (User u : userRepository.findAll()) {
-                LOG.info(u.toString());
-            }
+            
         };
     }
 }
