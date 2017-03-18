@@ -55,8 +55,7 @@ public class ShipController {
     }
 
     @RequestMapping(value = {"/ships", "/ships/**"})
-    public String getShipTable(Model model) {
-        model.addAttribute("ship");
+    public String getShipTable() {
         return "ships";
     }
 

@@ -25,8 +25,7 @@ public class ShipSizeController {
     ShipSizeRepositoryService shipSizeRepositoryService;
 
     @RequestMapping(value = {"/shipsizes", "/shipsizes/**"})
-    public String getShipSizeTable(Model model) {
-        model.addAttribute("shipSize");
+    public String getShipSizeTable() {
         return "shipsizes";
     }
 

@@ -46,8 +46,7 @@ public class OarController {
     }
 
     @RequestMapping(value = {"/oars", "/oars/**"})
-    public String getOarTable(Model model) {
-        model.addAttribute("oar");
+    public String getOarTable() {
         return "oars";
     }
 

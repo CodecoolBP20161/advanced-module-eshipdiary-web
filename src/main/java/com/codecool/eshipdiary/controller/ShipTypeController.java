@@ -25,8 +25,7 @@ public class ShipTypeController {
     ShipTypeRepositoryService shipTypeRepositoryService;
 
     @RequestMapping(value = {"/shiptypes", "/shiptypes/**"})
-    public String getShipTypeTable(Model model) {
-        model.addAttribute("shipType");
+    public String getShipTypeTable() {
         return "shiptypes";
     }
 

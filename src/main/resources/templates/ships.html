@@ -8,11 +8,10 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipModal"
                 onclick="shipModal('/ships/0', 'Új hajó');">Új hajó felvétele</button>
     </h2>
-    <div id="ships-table">
-        <div th:replace="ships/ship_update:: ship-update"></div>
-        <div th:replace="ships/ship_table :: ship-table"></div>
-        <div th:replace="ships/ship_delete :: ship-delete"></div>
-    </div>
+
+    <div th:replace="ships/ship_table :: ship-table"></div>
+    <div th:replace="ships/ship_update:: ship-update"></div>
+    <div th:replace="ships/ship_delete :: ship-delete"></div>
 
 </div>
 

@@ -1,63 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="oar-form">
+<form th:object="${oar}" th:onsubmit="${validate}" class="form-horizontal" id="oarForm">
+    <div class="form-group">
+        <label class="control-label col-sm-4" th:for="type">Evező típusa</label>
+        <div class="col-sm-8">
+            <select th:field="*{type}" class="form-control">
+                <option th:value="0">Nincs Típus</option>
+                <option th:each="type : ${shipTypes}"
+                        th:value="${type.getId()}"
+                        th:text="${type.getName()}" />
+            </select>
+        </div>
+    </div>
 
-    <form th:object="${oar}" th:onsubmit="${validate}" class="form-horizontal" id="oarForm">
 
-        <div class="form-group">
-            <label class="control-label col-sm-4" th:for="type">Evező típusa</label>
-            <div class="col-sm-8">
-                <select th:field="*{type}" class="form-control">
-                    <option th:value="0">Nincs Típus</option>
-                    <option th:each="type : ${shipTypes}"
-                            th:value="${type.getId()}"
-                            th:text="${type.getName()}" />
-                </select>
+    <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error has-feedback'">
+        <label class="control-label col-sm-4" th:for="name">Név</label>
+        <div class="col-sm-8">
+            <input th:field="*{name}" type="text" class="form-control" placeholder="Név" />
+            <div th:if="${#fields.hasErrors('name')}">
+                <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+            </div>
+            <div th:errors="*{name}"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-4" th:for="owner">Evező tulajdonosa</label>
+        <div class="col-sm-8">
+            <select th:field="*{owner}" class="form-control">
+                <option th:value="0">Klub tulajdona</option>
+                <option th:each="owner : ${users}"
+                        th:value="${owner.getId()}"
+                        th:text="${owner.getLastName() + ' ' + owner.getFirstName()}" />
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-4" for="active">Státusz</label>
+        <div class="col-sm-8">
+            <div class="checkbox">
+                <input th:field="*{active}" type="radio" class="form-check-input" id="active" th:value="true" /> Aktív
             </div>
         </div>
-
-
-        <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error has-feedback'">
-            <label class="control-label col-sm-4" th:for="name">Név</label>
-            <div class="col-sm-8">
-                <input th:field="*{name}" type="text" class="form-control" placeholder="Név" />
-                <div th:if="${#fields.hasErrors('name')}">
-                    <span class="glyphicon glyphicon-remove form-control-feedback"></span>
-                </div>
-                <div th:errors="*{name}"></div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-8">
+            <div class="checkbox">
+                <input th:field="*{active}" type="radio" class="form-check-input" id="inactive" th:value="false" /> Inaktív
             </div>
         </div>
-
-        <div class="form-group">
-            <label class="control-label col-sm-4" th:for="owner">Evező tulajdonosa</label>
-            <div class="col-sm-8">
-                <select th:field="*{owner}" class="form-control">
-                    <option th:value="0">Klub tulajdona</option>
-                    <option th:each="owner : ${users}"
-                            th:value="${owner.getId()}"
-                            th:text="${owner.getLastName() + ' ' + owner.getFirstName()}" />
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-sm-4" for="active">Státusz</label>
-            <div class="col-sm-8">
-                <div class="checkbox">
-                    <input th:field="*{active}" type="radio" class="form-check-input" id="active" th:value="true" /> Aktív
-                </div>
-            </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-8">
-                <div class="checkbox">
-                    <input th:field="*{active}" type="radio" class="form-check-input" id="inactive" th:value="false" /> Inaktív
-                </div>
-            </div>
-        </div>
-     </form>
-
-    <button type="button" hidden="hidden" th:onclick="${submit}" id="oarPost"></button>
+    </div>
+</form>
+<button type="button" hidden="hidden" th:onclick="${submit}" id="oarPost"></button>
 
 </div>
 </html>
