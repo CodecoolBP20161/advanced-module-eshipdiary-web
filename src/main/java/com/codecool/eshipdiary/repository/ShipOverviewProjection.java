@@ -11,7 +11,7 @@ public interface ShipOverviewProjection {
     @Value("#{target.type != null ? target.type.name : 'Nincs típus'}")
     String getShipType();
     boolean getActive();
-    @Value("#{target.owner != null ? target.owner.lastName+' '+target.owner.firstName : 'Klub tulajdona'}")
+    @Value("#{target.owner != null ? target.owner.lastName+' '+target.owner.firstName : target.club.name}")
     String getOwner();
     @Value("#{target.category.displayName}")
     String getCategory();

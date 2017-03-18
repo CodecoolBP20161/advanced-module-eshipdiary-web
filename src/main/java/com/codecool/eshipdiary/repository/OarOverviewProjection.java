@@ -11,6 +11,6 @@ public interface OarOverviewProjection {
     @Value("#{target.type != null ? target.type.name : 'Nincs típus'}")
     String getType();
     boolean getActive();
-    @Value("#{target.owner != null ? target.owner.lastName+' '+target.owner.firstName : 'Klub tulajdona'}")
+    @Value("#{target.owner != null ? target.owner.lastName+' '+target.owner.firstName : target.club.name}")
     String getOwner();
 }
