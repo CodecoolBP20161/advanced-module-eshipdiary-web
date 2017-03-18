@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.spi.EvaluationContextExtension;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -57,6 +58,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/api_login").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/api/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
 
                     .and()
