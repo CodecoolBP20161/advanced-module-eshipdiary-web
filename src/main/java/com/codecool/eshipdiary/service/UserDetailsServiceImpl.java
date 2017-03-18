@@ -33,6 +33,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(user.get().getRole().getName()));
+        LOG.info("User for authentication with authorities {} ", grantedAuthorities);
+
 
         return new TenantAwarePrincipal(
                 user.get().getUserName(),
