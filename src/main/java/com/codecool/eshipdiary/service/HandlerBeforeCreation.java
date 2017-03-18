@@ -15,12 +15,14 @@ import org.springframework.stereotype.Component;
 public class HandlerBeforeCreation {
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
+    private final RoleRepository roleRepository;
     private Club club;
 
     @Autowired
-    public HandlerBeforeCreation(UserRepository userRepository, ClubRepository clubRepository) {
+    public HandlerBeforeCreation(UserRepository userRepository, ClubRepository clubRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.clubRepository = clubRepository;
+        this.roleRepository = roleRepository;
     }
 
 
@@ -38,6 +40,14 @@ public class HandlerBeforeCreation {
         determineClubOfCurrentUser();
         log.debug("This user belongs to club " + club.getName());
         user.setClub(club);
+
+        Role userRole = roleRepository.findOneByName("USER");
+        if (userRole == null) {
+            userRole = new Role();
+            userRole.setName("USER");
+            roleRepository.save(userRole);
+        }
+        user.setRole(userRole);
     }
 
     @HandleBeforeCreate(Oar.class)
