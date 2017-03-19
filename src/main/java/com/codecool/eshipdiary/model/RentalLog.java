@@ -1,6 +1,8 @@
 package com.codecool.eshipdiary.model;
 
 import lombok.Data;
+import lombok.ToString;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,6 +29,10 @@ public class RentalLog {
     private Date rentalStart;
 
     @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date rentalEnd;
+
+    @Column
     private int rentalPeriod;
 
     @ManyToOne
@@ -44,11 +50,11 @@ public class RentalLog {
     @Column
     private int distance;
 
-    @Column
+    @Column(columnDefinition="TEXT")
     private String comment;
 
-    @PrePersist
-    public void setRentalStart() {
+    public RentalLog() {
         this.rentalStart = new Date();
+        this.rentalPeriod = 120;
     }
 }
