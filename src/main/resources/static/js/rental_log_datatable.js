@@ -37,18 +37,20 @@ function submitRentalLog() {
     dataCrew = [];
     for (var i = 0; i < data.crew.length; i++) {
         if(data.crew[i] == 0) {
-            data.crew[i] = null;
+            dataCrew.push(null);
+        } else {
+            dataCrew.push(window.location.origin + '/api/user/' + data.crew[i]);
         }
-        dataCrew.push(window.location.origin + '/api/user/' + data.crew[i]);
     }
     data.crew = dataCrew;
 
     dataOars = [];
     for (var j = 0; j < data.oars.length; j++) {
         if(data.oars[j] == 0) {
-            data.oars[j] = null;
+            dataOars.push(null);
+        } else {
+            dataOars.push(window.location.origin + '/api/oar/' + data.oars[j]);
         }
-        dataOars.push(window.location.origin + '/api/user/' + data.crew[j]);
     }
     data.oars = dataOars;
 
