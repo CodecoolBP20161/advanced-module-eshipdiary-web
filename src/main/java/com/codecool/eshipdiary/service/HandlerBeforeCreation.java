@@ -16,13 +16,15 @@ public class HandlerBeforeCreation {
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
     private final RoleRepository roleRepository;
+    private final EmailService emailService;
     private Club club;
 
     @Autowired
-    public HandlerBeforeCreation(UserRepository userRepository, ClubRepository clubRepository, RoleRepository roleRepository) {
+    public HandlerBeforeCreation(UserRepository userRepository, ClubRepository clubRepository, RoleRepository roleRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.clubRepository = clubRepository;
         this.roleRepository = roleRepository;
+        this.emailService = emailService;
     }
 
 
@@ -48,6 +50,8 @@ public class HandlerBeforeCreation {
             roleRepository.save(userRole);
         }
         user.setRole(userRole);
+
+        emailService.sendEmail(emailService.prepareRegistrationEmail(user));
     }
 
     @HandleBeforeCreate(Oar.class)
