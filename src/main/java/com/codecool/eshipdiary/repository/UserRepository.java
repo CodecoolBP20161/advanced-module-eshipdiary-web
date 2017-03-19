@@ -23,10 +23,10 @@ public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findOneByEmailAddress(String emailAddress);
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     void delete(User user);
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     void delete(Long id);
 }
