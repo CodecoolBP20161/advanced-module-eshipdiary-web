@@ -74,9 +74,6 @@ public class UserController {
             LOG.error("Error while trying to update user: " + result.getFieldErrors());
         } else {
             model.addAttribute("submit", "return submitForm(" + id + ")");
-            if(id == 0) {
-                emailService.sendEmail(emailService.prepareRegistrationEmail(user));
-            }
         }
         return "users/user_form";
     }

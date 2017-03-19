@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="rental-form">
+
+    <form th:object="${rental}" class="form-horizontal" id="rentalForm">
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" th:for="ship">Hajók</label>
+            <div class="col-sm-8">
+                <select th:field="*{chosenShip}" class="form-control">
+                    <option th:each="ship : ${ships}"
+                            th:value="${ship.getId()}"
+                            th:text="${ship.getName()}" />
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" th:for="ship">Bérlési idő (perc)</label>
+            <div class="col-sm-8">
+                <input th:field="*{rentalPeriod}" class="form-control" type="number" th:value="*{rentalPeriod}" min="30" max="120" step="15" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" th:for="ship">Legénység</label>
+            <div class="col-sm-8">
+                <select th:field="*{crew}" class="multiselect-ui form-control" multiple="multiple">
+                    <option th:each="crewMember : ${users}"
+                            th:value="${crewMember.getId()}"
+                            th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}" />
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" th:for="ship">Lapátok</label>
+            <div class="col-sm-8">
+                <select th:field="*{oars}" class="multiselect-ui form-control" multiple="multiple">
+                    <option th:value="0"></option>
+                    <option th:each="oar : ${oars}"
+                            th:value="${oar.getId()}"
+                            th:text="${oar.getName()}" />
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" th:for="itinerary">Útirány</label>
+            <div class="col-sm-8">
+                <input th:field="*{itinerary}" type="text" class="form-control" placeholder="pl. Öböl" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" th:for="distance">Távolság</label>
+            <div class="col-sm-8">
+                <input th:field="*{distance}" type="number" max="15" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-4" th:for="comment">Megjegyzés</label>
+            <div class="col-sm-8">
+                <textarea th:field="*{comment}" class="form-control" placeholder="Megjegyzés" rows="3"></textarea>
+            </div>
+        </div>
+
+
+    </form>
+
+    <button type="button" hidden="hidden" th:onclick="${submit}" id=""></button>
+
+</div>
+</html>

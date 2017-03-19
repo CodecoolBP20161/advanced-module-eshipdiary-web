@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary.service;
 
+import com.codecool.eshipdiary.model.TenantAwarePrincipal;
 import com.codecool.eshipdiary.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,15 +33,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(user.get().getRole().getName()));
+        LOG.info("User for authentication with authorities {} ", grantedAuthorities);
 
-        return new org.springframework.security.core.userdetails.User(
+
+        return new TenantAwarePrincipal(
                 user.get().getUserName(),
                 user.get().getPasswordHash(),
                 user.get().isActive(),
                 true,
                 true,
                 true,
-                grantedAuthorities
+                grantedAuthorities,
+                user.get().getClub()
         );
     }
 }

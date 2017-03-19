@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<form th:object="${shipType}" th:onsubmit="${validate}" class="form-horizontal" id="shipTypeForm">
+    <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error has-feedback'">
+        <label class="control-label col-sm-4" th:for="name">Név</label>
+        <div class="col-sm-8">
+            <input th:field="*{name}" type="text" class="form-control" placeholder="Név" autofocus="" />
+            <div th:if="${#fields.hasErrors('name')}">
+                <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+            </div>
+            <div th:errors="*{name}"></div>
+        </div>
+    </div>
+</form>
+<button type="button" hidden="hidden" th:onclick="${submit}" id="shipTypePost"></button>
+
+</html>

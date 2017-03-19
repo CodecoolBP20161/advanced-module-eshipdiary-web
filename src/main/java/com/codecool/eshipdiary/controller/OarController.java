@@ -1,8 +1,10 @@
 package com.codecool.eshipdiary.controller;
 
 import com.codecool.eshipdiary.model.Oar;
+import com.codecool.eshipdiary.model.ShipType;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.service.OarRepositoryService;
+import com.codecool.eshipdiary.service.ShipTypeRepositoryService;
 import com.codecool.eshipdiary.service.UserRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +32,21 @@ public class OarController {
     @Autowired
     UserRepositoryService userRepositoryService;
 
+    @Autowired
+    ShipTypeRepositoryService shipTypeRepositoryService;
+
     @ModelAttribute("users")
     public List<User> listUsers() {
         return (List<User>) userRepositoryService.getAllUsers();
     }
 
+    @ModelAttribute("shipTypes")
+    public List<ShipType> listTypes() {
+        return (List<ShipType>) shipTypeRepositoryService.getAllShipType();
+    }
+
     @RequestMapping(value = {"/oars", "/oars/**"})
-    public String getOarTable(Model model) {
-        model.addAttribute("oar");
+    public String getOarTable() {
         return "oars";
     }
 
