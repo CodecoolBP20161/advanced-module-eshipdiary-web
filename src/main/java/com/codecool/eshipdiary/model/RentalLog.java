@@ -19,6 +19,9 @@ public class RentalLog {
     @ManyToOne
     private Ship chosenShip;
 
+    @ManyToOne
+    private User captain;
+
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date rentalStart;

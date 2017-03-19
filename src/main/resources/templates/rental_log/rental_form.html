@@ -7,8 +7,18 @@
 
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="chosenShip">Hajó</label>
-            <div class="col-sm-8">
-                <select th:field="*{chosenShip}" class="multi-select form-control">
+            <div class="col-sm-4">
+                <h5>Típus alapján</h5>
+                <select th:field="*{chosenShip}" id="shipByType" class="multi-select form-control">
+                    <option th:each="type : ${shipTypes}"
+                            th:value="${type.getId()}"
+                            th:text="${type.getName()}" />
+                </select>
+            </div>
+
+            <div class="col-sm-4">
+                <h5>Név alapján</h5>
+                <select th:field="*{chosenShip}" name="shipByName" class="multi-select form-control">
                     <option th:each="ship : ${ships}"
                             th:value="${ship.getId()}"
                             th:text="${ship.getName()}" />
@@ -204,7 +214,7 @@
         </div>
     </form>
 
-    <button type="button" hidden="hidden" th:onclick="${submit}" id=""></button>
+    <!--<button type="button" hidden="hidden" th:onclick="${submit}" id=""></button>-->
 
 </div>
 </html>
