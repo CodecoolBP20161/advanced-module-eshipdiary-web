@@ -3,8 +3,9 @@
 
 <div th:fragment="rental-form">
 
-    <form th:object="${rental}" class="form-horizontal" id="rentalForm">
+    <form th:object="${rental}" th:onsubmit="${validate}" class="form-horizontal" id="rentalForm">
 
+        <input type="hidden" th:field="*{captain}" />
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="chosenShip">Hajó</label>
             <div class="col-sm-4">
@@ -113,6 +114,19 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label col-sm-4" th:for="cox">Kormányos</label>
+            <div class="col-sm-8">
+                <select th:field="*{cox}" class="multi-select form-control">
+                    <option selected="selected" size="2" value="0"/>
+                    <option th:each="possibleCox : ${users}"
+                            th:value="${possibleCox.getId()}"
+                            th:text="${possibleCox.getLastName()} + ' ' + ${possibleCox.getFirstName()}"
+                    />
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="control-label col-sm-4" th:for="oars">Lapátok</label>
             <div class="col-sm-4">
                 <select th:field="*{oars}" class="multi-select form-control" >
@@ -214,7 +228,7 @@
         </div>
     </form>
 
-    <!--<button type="button" hidden="hidden" th:onclick="${submit}" id=""></button>-->
+    <button type="button" hidden="hidden" th:onclick="${submit}" id="rentalPost"></button>
 
 </div>
 </html>
