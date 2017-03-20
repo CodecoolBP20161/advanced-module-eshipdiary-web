@@ -50,8 +50,14 @@ public class RentalLog {
     @Column
     private int distance;
 
+    @Column
+    private boolean finalized;
+
     @Column(columnDefinition="TEXT")
     private String comment;
+
+    @Column(columnDefinition="TEXT")
+    private String adminComment;
 
     public RentalLog() {
         this.rentalStart = new Date();
