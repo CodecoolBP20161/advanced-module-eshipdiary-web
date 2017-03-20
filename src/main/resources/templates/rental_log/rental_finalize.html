@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <form th:object="${rental}" onsubmit="return submitRentalLog()" class="form-horizontal" id="rentalForm">
+        <input type="hidden" th:field="*{rentalEnd}">
+        <div class="form-group">
+            <label class="control-label col-sm-4" th:for="comment">Megjegyzés</label>
+            <textarea th:field="*{comment}" cols="30" rows="10" placeholder="Megjegyzés..."></textarea>
+        </div>
+    </form>
+</html>
