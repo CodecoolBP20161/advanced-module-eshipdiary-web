@@ -65,7 +65,9 @@ public class RentalController {
     }
 
     @RequestMapping(value = {"/rentals", "/rentals/**"})
-    public String getRentalHistory() {
+    public String getRentalHistory(Model model) {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("role", userRepositoryService.getUserByUserName(userName).get().getRole().getName());
         return "rentals";
     }
 
