@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary.controller;
 
+import com.codecool.AnonymousAuthMock;
 import com.codecool.MockAuthentication;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,17 +33,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @PrepareForTest(SecurityContextHolder.class)
 @ContextConfiguration
 public class HomeControllerTest {
+
+    private MockMvc mockMvc;
+    private AnonymousAuthMock authentication;
+    private HashSet<GrantedAuthority> authorities;
+
     @Mock
     private SecurityContext securityContext;
 
     @InjectMocks
     private HomeController homeController;
-
-    private MockMvc mockMvc;
-
-    private HashSet<GrantedAuthority> authorities;
-
-    private MockAuthentication authentication;
 
     @Before
     public void setUp() throws Exception {
@@ -57,16 +57,15 @@ public class HomeControllerTest {
     @Test
     public void indexWithAdmin() throws Exception {
         authorities.add(new SimpleGrantedAuthority("ADMIN"));
-        authentication = new MockAuthentication(authorities);
+        authentication = AnonymousAuthMock.withAddedAuth(authorities);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         mockMvc.perform(get("/")).andExpect(redirectedUrl("/users"));
     }
 
     @Test
     public void indexWithNotAdmin() throws Exception {
-        authorities.add(new SimpleGrantedAuthority("USER"));
-        authentication = new MockAuthentication(authorities);
+        authentication = AnonymousAuthMock.withDefaultAuth();
         when(securityContext.getAuthentication()).thenReturn(authentication);
-        mockMvc.perform(get("/")).andExpect(forwardedUrl("index"));
+        mockMvc.perform(get("/")).andExpect(view().name("index"));
     }
 }
