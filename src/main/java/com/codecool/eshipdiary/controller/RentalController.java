@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -86,8 +87,8 @@ public class RentalController {
     public String rentalLogFinalize(@PathVariable("rentalId") Long id, Model model){
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
-        match.setRentalEnd(new Date());
         model.addAttribute("rental", match);
+        model.addAttribute("end", new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
         model.addAttribute("submit", "return submitFinalRentalLog(" + id + ")");
         return "rental_log/rental_finalize";
     }
@@ -95,8 +96,7 @@ public class RentalController {
     @RequestMapping(value = "/rentals/comment/{rentalId}", method = RequestMethod.OPTIONS)
     public String rentalLogComment(@PathVariable("rentalId") Long id, Model model){
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
-        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
-        model.addAttribute("rental", match);
+        model.addAttribute("rental", rentalLog.isPresent() ? rentalLog.get() : new RentalLog());
         model.addAttribute("submit", "return submitFinalRentalLog(" + id + ")");
         return "rental_log/rental_comment";
     }
