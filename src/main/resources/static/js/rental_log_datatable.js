@@ -1,7 +1,49 @@
+$(document).ready( function () {
+    $('#rental-table').DataTable ({
+        language: {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
+        },
+        ajax: {
+            url: '/api/rental?projection=rentalOverview',
+            dataSrc: '_embedded.rental'
+        },
+        columns: [
+            {data: 'captain'},
+            {data: 'ship'},
+            {
+                data: 'rentalStart',
+                searchable: false
+            },
+            {
+                data: 'rentalPeriod',
+                searchable: false
+            },
+            {
+                data: 'cox',
+                searchable: false
+            },
+            {
+                data: 'distance',
+                searchable: false
+            },
+            {
+                sortable: false,
+                searchable: false,
+                render: rentalActionButtons
+            }
+        ]
+    });
+});
+
+function rentalActionButtons( data, type, row ) {
+    return '<a class="btn btn-info btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalDetailsModal(\'/rentals/details/'+row.id+'\');">Részletek</a>';
+}
+
 function multipleSelect () {
     $('.multi-select').multiselect({
         enableCaseInsensitiveFiltering: true,
-        filterPlaceholder: 'Keresés...'
+        filterPlaceholder: 'Keresés...',
+        buttonWidth : '100%'
     });
 }
 
@@ -10,59 +52,54 @@ function rentalModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
+            document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés";
             document.getElementById('rentalUpdate').innerHTML = result;
+            document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
         }
     });
 }
 
-function validateRentalLog() {
+function rentalDetailsModal(link) {
     $.ajax({
-        url: '/rentals',
-        type: 'POST',
-        data: $('#rentalForm').serialize(),
+        url: link,
+        type: "OPTIONS",
         success: function (result) {
+            document.getElementById('rentalModalLabel').innerHTML = "Bérlés részletei";
             document.getElementById('rentalUpdate').innerHTML = result;
-            $('#rentalPost').click();
+            document.getElementById('rentalSubmit').style.display = "none";
         }
     });
-    return false;
 }
 
 function submitRentalLog() {
-    var data = $("#rentalForm").serializeObject();
-    data.chosenShip = window.location.origin + '/api/ship/' + data.chosenShip;
-    data.cox = window.location.origin + '/api/user/' + data.cox;
-    data.captain = window.location.origin + '/api/user/' + data.captain;
-    dataCrew = [];
-    for (var i = 0; i < data.crew.length; i++) {
-        if(data.crew[i] == 0) {
-            dataCrew.push(null);
-        } else {
-            dataCrew.push(window.location.origin + '/api/user/' + data.crew[i]);
-        }
-    }
-    data.crew = dataCrew;
-
-    dataOars = [];
-    for (var j = 0; j < data.oars.length; j++) {
-        if(data.oars[j] == 0) {
-            dataOars.push(null);
-        } else {
-            dataOars.push(window.location.origin + '/api/oar/' + data.oars[j]);
-        }
-    }
-    data.oars = dataOars;
-
     $.ajax({
         type: 'POST',
         url: '/api/rental',
-        data: JSON.stringify(data),
+        data: JSON.stringify(processData($("#rentalForm").serializeObject())),
         success: function (msg) {
             $('#rentalModal').modal('hide');
-            // $('#rental-table').DataTable().ajax.reload(null, false);
+            $('#rental-table').DataTable().ajax.reload(null, false);
         },
         dataType: 'json',
         contentType: 'application/json'
     });
+    return false;
+}
+
+function processData(data) {
+    data.chosenShip = window.location.origin + '/api/ship/' + data.chosenShip;
+    data.cox = window.location.origin + '/api/user/' + data.cox;
+    data.captain = window.location.origin + '/api/user/' + data.captain;
+    if(data.crew.constructor === Array) {
+        data.crew = data.crew.map(function(member, index){return window.location.origin + '/api/user/' + member});
+    } else {
+        data.crew = [window.location.origin + '/api/user/' + data.crew];
+    }
+    if(data.oars.constructor === Array) {
+        data.oars = data.oars.map(function(oar, index){return window.location.origin + '/api/oar/' + oar});
+    } else {
+        data.oars = [window.location.origin + '/api/oar/' + data.oars];
+    }
+    return data;
 }

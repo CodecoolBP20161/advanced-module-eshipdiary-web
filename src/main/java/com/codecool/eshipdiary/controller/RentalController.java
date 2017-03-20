@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,33 +65,32 @@ public class RentalController {
         return (List<Oar>) oarRepositoryService.getAllOars();
     }
 
-    @RequestMapping("/rentals")
-    public String getRentalHistory(Model model) {
-        model.addAttribute("rental");
-        model.addAttribute("users");
-        model.addAttribute("ships");
-        model.addAttribute("shipTypes");
-        model.addAttribute("oars");
+    @RequestMapping(value = {"/rentals", "/rentals/**"})
+    public String getRentalHistory() {
         return "rentals";
     }
 
     @RequestMapping(value = "/rentals", method = RequestMethod.OPTIONS)
-    public String saveOrUpdateRentalForm(Model model){
-        LOG.info("Saving rental form");
-        model.addAttribute("rental");
-        model.addAttribute("validate", "return validateRentalLog()");
+    public String rentalForm(){
         return "rental_log/rental_form";
     }
 
-    @RequestMapping(value = "rentals", method = RequestMethod.POST)
-    public String updateShip(@ModelAttribute("rental") @Valid RentalLog rentalLog, BindingResult result, Model model) {
-        model.addAttribute("validate", "return validateRentalLog()");
+    @RequestMapping(value = "/rentals/details/{rentalId}", method = RequestMethod.OPTIONS)
+    public String updateShipSize(@PathVariable("rentalId") Long id, Model model){
+        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
+        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
+        model.addAttribute("rental", match);
+        model.addAttribute("crewDetails", crewDetails(match));
+        return "rental_log/rental_details";
+    }
 
-        if(result.hasErrors()) {
-            LOG.error("Error while trying to update rentalLog: " + result.getFieldErrors());
-        } else {
-            model.addAttribute("submit", "return submitRentalLog()");
+    public String crewDetails(RentalLog rentalLog) {
+        String result = "";
+        for (int i=0; i < rentalLog.getCrew().size(); i++){
+            User user = rentalLog.getCrew().get(i);
+            String oar = rentalLog.getOars().size() > i ? rentalLog.getOars().get(i).getName() : "nincs evező";
+            result += user.getLastName() + ' ' + user.getFirstName() + " (evező: " + oar + ")\n";
         }
-        return "rental_log/rental_form";
+        return result;
     }
 }

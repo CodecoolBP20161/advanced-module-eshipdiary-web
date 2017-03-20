@@ -3,23 +3,14 @@
 
 <div th:fragment="rental-form">
 
-    <form th:object="${rental}" th:onsubmit="${validate}" class="form-horizontal" id="rentalForm">
+    <form th:object="${rental}" onsubmit="return submitRentalLog()" class="form-horizontal" id="rentalForm">
 
         <input type="hidden" th:field="*{captain}" />
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="chosenShip">Hajó</label>
-            <div class="col-sm-4">
-                <h5>Típus alapján</h5>
-                <select th:field="*{chosenShip}" id="shipByType" class="multi-select form-control">
-                    <option th:each="type : ${shipTypes}"
-                            th:value="${type.getId()}"
-                            th:text="${type.getName()}" />
-                </select>
-            </div>
-
-            <div class="col-sm-4">
+            <div class="col-sm-8">
                 <h5>Név alapján</h5>
-                <select th:field="*{chosenShip}" name="shipByName" class="multi-select form-control">
+                <select th:field="*{chosenShip}" class="multi-select form-control" required="required">
                     <option th:each="ship : ${ships}"
                             th:value="${ship.getId()}"
                             th:text="${ship.getName()}" />
@@ -36,75 +27,12 @@
 
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="crew">Legénység</label>
-            <div class="col-sm-4">
-                <select th:field="*{crew}" class="multi-select form-control" >
-                    <option th:field="*{crew}" readonly="readonly" th:value="${rental.getCaptain().getId()}" th:text="${rental.getCaptain().getLastName()} + ' ' + ${rental.getCaptain().getFirstName()}" />
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <select th:field="*{crew}" class="multi-select form-control">
-                    <option selected="selected"  size="2" value="0"/>
+            <div class="col-sm-8">
+                <select th:field="*{crew}" class="multi-select form-control" multiple="multiple" required="required">
                     <option th:each="crewMember : ${users}"
                             th:value="${crewMember.getId()}"
                             th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}"
-                            />
-                </select>
-            </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
-                <select th:field="*{crew}" class="multi-select form-control">
-                    <option selected="selected"  size="2" value="0"/>
-                    <option th:each="crewMember : ${users}"
-                            th:value="${crewMember.getId()}"
-                            th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}"
-                            />
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <select th:field="*{crew}" class="multi-select form-control">
-                    <option selected="selected"  size="2" value="0"/>
-                    <option th:each="crewMember : ${users}"
-                            th:value="${crewMember.getId()}"
-                            th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}"
-                            />
-                </select>
-            </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
-                <select th:field="*{crew}" class="multi-select form-control">
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="crewMember : ${users}"
-                            th:value="${crewMember.getId()}"
-                            th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}"
-                            />
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <select th:field="*{crew}" class="multi-select form-control">
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="crewMember : ${users}"
-                            th:value="${crewMember.getId()}"
-                            th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}"
-                            />
-                </select>
-            </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
-                <select th:field="*{crew}" class="multi-select form-control">
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="crewMember : ${users}"
-                            th:value="${crewMember.getId()}"
-                            th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}"
-                            />
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <select th:field="*{crew}" class="multi-select form-control">
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="crewMember : ${users}"
-                            th:value="${crewMember.getId()}"
-                            th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}"
-                            />
+                    />
                 </select>
             </div>
         </div>
@@ -113,7 +41,6 @@
             <label class="control-label col-sm-4" th:for="cox">Kormányos</label>
             <div class="col-sm-8">
                 <select th:field="*{cox}" class="multi-select form-control">
-                    <option selected="selected" size="2" value="0"/>
                     <option th:each="possibleCox : ${users}"
                             th:value="${possibleCox.getId()}"
                             th:text="${possibleCox.getLastName()} + ' ' + ${possibleCox.getFirstName()}"
@@ -124,80 +51,11 @@
 
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="oars">Lapátok</label>
-            <div class="col-sm-4">
-                <select th:field="*{oars}" class="multi-select form-control" >
-                    <option selected="selected" size="2" value="0"/>
+            <div class="col-sm-8">
+                <select th:field="*{oars}" class="multi-select form-control" multiple="multiple" required="required">
                     <option th:each="oar : ${oars}"
                             th:value="${oar.getId()}"
-                            th:text="${oar.getName()}"
-                            selected="" />
-                </select>
-            </div>
-
-            <div class="col-sm-4">
-                <select th:field="*{oars}" class="multi-select form-control" >
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="oar : ${oars}"
-                            th:value="${oar.getId()}"
-                            th:text="${oar.getName()}"
-                            selected="" />
-                </select>
-            </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
-                <select th:field="*{oars}" class="multi-select form-control" >
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="oar : ${oars}"
-                            th:value="${oar.getId()}"
-                            th:text="${oar.getName()}"
-                            selected="" />
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <select th:field="*{oars}" class="multi-select form-control">
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="oar : ${oars}"
-                            th:value="${oar.getId()}"
-                            th:text="${oar.getName()}"
-                            selected="" />
-                </select>
-            </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
-                <select th:field="*{oars}" class="multi-select form-control" >
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="oar : ${oars}"
-                            th:value="${oar.getId()}"
-                            th:text="${oar.getName()}"
-                            selected="" />
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <select th:field="*{oars}" class="multi-select form-control" >
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="oar : ${oars}"
-                            th:value="${oar.getId()}"
-                            th:text="${oar.getName()}"
-                            selected="" />
-                </select>
-            </div>
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">
-                <select th:field="*{oars}" class="multi-select form-control" >
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="oar : ${oars}"
-                            th:value="${oar.getId()}"
-                            th:text="${oar.getName()}"
-                            selected="" />
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <select th:field="*{oars}" class="multi-select form-control" >
-                    <option selected="selected" size="2" value="0"/>
-                    <option th:each="oar : ${oars}"
-                            th:value="${oar.getId()}"
-                            th:text="${oar.getName()}"
-                            selected="" />
+                            th:text="${oar.getName()}" />
                 </select>
             </div>
         </div>
@@ -223,8 +81,5 @@
             </div>
         </div>
     </form>
-
-    <button type="button" hidden="hidden" th:onclick="${submit}" id="rentalPost"></button>
-
 </div>
 </html>
