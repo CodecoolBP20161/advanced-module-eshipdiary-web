@@ -2,6 +2,7 @@ package com.codecool;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,9 +17,19 @@ public class MockAuthentication implements Authentication {
         this.authorities = authorities;
     }
 
+    public MockAuthentication() {
+        super();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        Collection<GrantedAuthority> givenAuthorities = new HashSet<>();
+        givenAuthorities.add(new SimpleGrantedAuthority("USER"));
+        if (!(this.authorities == null)) {
+            givenAuthorities.addAll(this.authorities);
+        }
+        return givenAuthorities;
+
     }
 
     @Override
@@ -38,7 +49,7 @@ public class MockAuthentication implements Authentication {
 
     @Override
     public boolean isAuthenticated() {
-        return false;
+        return true;
     }
 
     @Override
