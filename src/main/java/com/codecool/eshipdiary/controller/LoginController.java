@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class LoginController {
             return "redirect:/";
         }
         LOG.info("Current session id {} ", RequestContextHolder.currentRequestAttributes().getSessionId());
-        return "login";
+        return "login_page";
     }
 
     @RequestMapping(value = "/api_login", produces = "application/json")
