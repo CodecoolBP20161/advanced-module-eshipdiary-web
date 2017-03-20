@@ -16,4 +16,5 @@ public interface RentalLogOverviewProjection {
     @Value("#{target.cox != null ? target.cox.lastName+' '+target.cox.firstName : 'nincs kormányos'}")
     String getCox();
     String getDistance();
+    boolean getFinalized();
 }
