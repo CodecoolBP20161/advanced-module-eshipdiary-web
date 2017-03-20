@@ -9,7 +9,6 @@
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="chosenShip">Hajó</label>
             <div class="col-sm-8">
-                <h5>Név alapján</h5>
                 <select th:field="*{chosenShip}" class="multi-select form-control" required="required">
                     <option th:each="ship : ${ships}"
                             th:value="${ship.getId()}"
