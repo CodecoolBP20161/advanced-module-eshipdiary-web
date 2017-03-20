@@ -36,7 +36,10 @@ $(document).ready( function () {
 });
 
 function rentalActionButtons( data, type, row ) {
-    return '<a class="btn btn-info btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalDetailsModal(\'/rentals/details/'+row.id+'\');">Részletek</a>';
+    var details = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalDetailsModal(\'/rentals/details/'+row.id+'\');">Részletek</a>';
+    var final = ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalFinalModal(\'/rentals/final/'+row.id+'\');">Véglegesítés</a>';
+    var comment = ' <a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalCommentModal(\'/rentals/comment/'+row.id+'\');">Megjegyzés</a>';
+    return details + final + comment;
 }
 
 function multipleSelect () {
@@ -53,6 +56,32 @@ function rentalModal(link) {
         type: "OPTIONS",
         success: function (result) {
             document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés";
+            document.getElementById('rentalUpdate').innerHTML = result;
+            document.getElementById('rentalSubmit').style.display = "inline";
+            multipleSelect();
+        }
+    });
+}
+
+function rentalFinalModal(link) {
+    $.ajax({
+        url: link,
+        type: "OPTIONS",
+        success: function (result) {
+            document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés befejezése";
+            document.getElementById('rentalUpdate').innerHTML = result;
+            document.getElementById('rentalSubmit').style.display = "inline";
+            multipleSelect();
+        }
+    });
+}
+
+function rentalCommentModal(link) {
+    $.ajax({
+        url: link,
+        type: "OPTIONS",
+        success: function (result) {
+            document.getElementById('rentalModalLabel').innerHTML = "Megjegyzés hozzáfűzése";
             document.getElementById('rentalUpdate').innerHTML = result;
             document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
@@ -102,4 +131,19 @@ function processData(data) {
         data.oars = [window.location.origin + '/api/oar/' + data.oars];
     }
     return data;
+}
+
+function submitFinalRentalLog(id) {
+    $.ajax({
+        type: 'PATCH',
+        url: '/api/rental/' + id,
+        data: JSON.stringify($("#rentalForm").serializeObject()),
+        success: function (msg) {
+            $('#rentalModal').modal('hide');
+            $('#rental-table').DataTable().ajax.reload(null, false);
+        },
+        dataType: 'json',
+        contentType: 'application/json'
+    });
+    return false;
 }

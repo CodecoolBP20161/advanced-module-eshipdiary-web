@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,12 +74,31 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals/details/{rentalId}", method = RequestMethod.OPTIONS)
-    public String updateShipSize(@PathVariable("rentalId") Long id, Model model){
+    public String rentalLogDetails(@PathVariable("rentalId") Long id, Model model){
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
         model.addAttribute("rental", match);
         model.addAttribute("crewDetails", crewDetails(match));
         return "rental_log/rental_details";
+    }
+
+    @RequestMapping(value = "/rentals/final/{rentalId}", method = RequestMethod.OPTIONS)
+    public String rentalLogFinalize(@PathVariable("rentalId") Long id, Model model){
+        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
+        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
+        match.setRentalEnd(new Date());
+        model.addAttribute("rental", match);
+        model.addAttribute("submit", "return submitFinalRentalLog(" + id + ")");
+        return "rental_log/rental_finalize";
+    }
+
+    @RequestMapping(value = "/rentals/comment/{rentalId}", method = RequestMethod.OPTIONS)
+    public String rentalLogComment(@PathVariable("rentalId") Long id, Model model){
+        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
+        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
+        model.addAttribute("rental", match);
+        model.addAttribute("submit", "return submitFinalRentalLog(" + id + ")");
+        return "rental_log/rental_comment";
     }
 
     public String crewDetails(RentalLog rentalLog) {

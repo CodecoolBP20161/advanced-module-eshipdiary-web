@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<form th:object="${rental}" onsubmit="return submitFinalRentalLog()" class="form-horizontal" id="rentalForm">
+<form th:object="${rental}" th:onsubmit="${submit}" class="form-horizontal" id="rentalForm">
     <div class="form-group">
         <label class="control-label col-sm-4" th:for="comment">Megjegyzés</label>
-        <textarea th:field="*{adminComment}" cols="30" rows="10" placeholder="Megjegyzés..."></textarea>
+        <div class="col-sm-8">
+            <textarea th:field="*{adminComment}" class="form-control" rows="3" placeholder="Megjegyzés..."></textarea>
+        </div>
     </div>
 </form>
 </html>
