@@ -4,30 +4,20 @@
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
-    <h2>Hajónapló</h2>
+    <h2>Hajónapló
+        <button id="newRental" type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalModal"
+                         onclick="rentalModal('/rentals');">Hajóbérlés</button>
+    </h2>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalModal">
-            Hajóbérlés</button>
-
-        <div class="modal fade bs-example-modal-lg" id="rentalModal" tabindex="-1" role="dialog" aria-labelledby="rentalModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="rentalModalLabel">Hajóbérlés</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div th:replace="rental_log/rental_form"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" id="rentalSubmit" class="btn btn-primary">Mentés</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <div id="rentals_table">
+        <div th:replace="rental_log/rental_table :: rental-table"></div>
+        <div th:replace="rental_log/rental_update :: rental-update"></div>
+    </div>
 </div>
 
+<input type="hidden" th:value="${role}" id="role" />
+<script type="text/javascript" th:src="@{/js/rental_log_datatable.js}"></script>
+<script type="text/javascript" th:src="@{/js/scripts.js}"></script>
+<script type="text/javascript" th:src="@{/js/plugin/bootstrap-multiselect.js}"></script>
 </body>
 </html>

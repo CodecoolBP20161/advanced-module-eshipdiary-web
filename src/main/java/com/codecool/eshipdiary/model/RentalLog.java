@@ -3,6 +3,7 @@ package com.codecool.eshipdiary.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
@@ -18,8 +19,22 @@ public class RentalLog {
     @ManyToOne
     private Ship chosenShip;
 
+    @ManyToOne
+    private User captain;
+
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date rentalStart;
+
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date rentalEnd;
+
     @Column
     private int rentalPeriod;
+
+    @ManyToOne
+    private User cox;
 
     @ManyToMany
     private List<User> crew;
@@ -34,6 +49,16 @@ public class RentalLog {
     private int distance;
 
     @Column
+    private boolean finalized;
+
+    @Column(columnDefinition="TEXT")
     private String comment;
 
+    @Column(columnDefinition="TEXT")
+    private String adminComment;
+
+    public RentalLog() {
+        this.rentalStart = new Date();
+        this.rentalPeriod = 120;
+    }
 }
