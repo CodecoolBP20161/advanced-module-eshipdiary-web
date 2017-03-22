@@ -22,9 +22,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * Created by hamargyuri on 2017. 03. 20..
- */
+
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(SecurityContextHolder.class)
 @ContextConfiguration

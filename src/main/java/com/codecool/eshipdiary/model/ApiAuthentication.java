@@ -8,9 +8,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by hamargyuri on 2017. 03. 02..
- */
 public class ApiAuthentication implements Authentication {
 
     private boolean authenticated = true;

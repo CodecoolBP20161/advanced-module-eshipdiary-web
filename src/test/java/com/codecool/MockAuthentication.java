@@ -7,9 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.HashSet;
 
-/**
- * Created by hamargyuri on 2017. 03. 20..
- */
 public class MockAuthentication implements Authentication {
     private Collection<GrantedAuthority> authorities;
 
