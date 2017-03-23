@@ -10,6 +10,9 @@
     <dt class="col-sm-3">Bérlés kezdete</dt>
     <dd class="col-sm-9" th:text="*{rentalStart}">Bérlés kezdete</dd>
 
+    <dt class="col-sm-3">Bérlés vége</dt>
+    <dd class="col-sm-9" th:text="*{rentalEnd?:'Bérlés még folyamatban'}">Bérlés vége</dd>
+
     <dt class="col-sm-3">Bérlés időtartama</dt>
     <dd class="col-sm-9" th:text="*{rentalPeriod+' perc'}">Bérlés időtartama</dd>
 
