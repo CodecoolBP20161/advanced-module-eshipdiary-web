@@ -20,7 +20,7 @@ $(document).ready( function () {
 
 
 function shipTypeActionButtons( data, type, row ) {
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipTypeModal" role="button" onclick="shipTypeModal(\'/shiptypes/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipTypeModal" role="button" onclick="shipTypeModal(\'/shiptypes/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     return editButton + deleteButton(row);
 }
 

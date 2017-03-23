@@ -25,7 +25,7 @@ function oarActionButtons( data, type, row ) {
     var shouldBeActive = !(row.active);
     var activationLabel = shouldBeActive ? 'Aktiválás' : 'Inaktiválás';
     var buttonType = shouldBeActive ? 'success' : 'warning';
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#oarDeleteModal" role="button" onclick="oarDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setOarStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
     return editButton + deleteButton + statusChangeButton;
