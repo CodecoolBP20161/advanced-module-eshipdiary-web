@@ -6,9 +6,20 @@
     <form th:object="${rental}" class="form-horizontal" id="rentalForm">
 
         <div class="form-group">
-            <label class="control-label col-sm-4" th:for="ship">Hajók</label>
             <div class="col-sm-8">
-                <select th:field="*{chosenShip}" class="form-control">
+            <label class="control-label col-sm-4" th:for="chosenShip">Hajó</label>
+            <div class="col-sm-4">
+                <h5>Típus alapján</h5>
+                <select id="shipByType" class="form-control">
+                    <option th:each="type : ${shipTypes}"
+                            th:value="${type.getId()}"
+                            th:text="${type.getName()}" />
+                </select>
+            </div>
+
+            <div class="col-sm-4">
+                <h5>Név alapján</h5>
+                <select th:field="*{chosenShip}" id="shipByName" class="multi-select form-control">
                     <option th:each="ship : ${ships}"
                             th:value="${ship.getId()}"
                             th:text="${ship.getName()}" />
