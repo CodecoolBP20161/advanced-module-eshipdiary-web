@@ -23,7 +23,7 @@ import java.util.UUID;
 
 
 @Data
-@ToString(exclude = {"ships", "oars", "passwordHash"})
+@ToString(exclude = {"ships", "oars", "passwordHash", "rentalLogs"})
 @Entity
 @Table(name = "users")
 public class User {

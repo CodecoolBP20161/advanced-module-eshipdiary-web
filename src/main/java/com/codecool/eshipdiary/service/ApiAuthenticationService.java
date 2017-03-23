@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
-/**
- * Created by hamargyuri on 2017. 03. 02..
- */
 @Service
 public class ApiAuthenticationService {
 

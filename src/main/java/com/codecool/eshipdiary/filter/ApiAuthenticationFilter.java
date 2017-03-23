@@ -19,9 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by hamargyuri on 2017. 02. 28..
- */
 @Component
 public class ApiAuthenticationFilter extends GenericFilterBean {
     private static final Logger LOG = LoggerFactory.getLogger(ApiAuthenticationFilter.class);
