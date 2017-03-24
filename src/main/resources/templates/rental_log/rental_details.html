@@ -8,10 +8,10 @@
     <dd class="col-sm-9" th:text="*{chosenShip.getName()}">Hajó</dd>
 
     <dt class="col-sm-3">Bérlés kezdete</dt>
-    <dd class="col-sm-9" th:text="*{rentalStart}">Bérlés kezdete</dd>
+    <dd class="col-sm-9" th:text="*{#dates.format(rentalStart, 'yyyy.&nbsp;MM.&nbsp;dd.&nbsp;HH:mm')}">Bérlés kezdete</dd>
 
     <dt class="col-sm-3">Bérlés vége</dt>
-    <dd class="col-sm-9" th:text="*{rentalEnd?:'Bérlés még folyamatban'}">Bérlés vége</dd>
+    <dd class="col-sm-9" th:text="*{(rentalEnd != null) ? #dates.format(rentalEnd, 'yyyy.&nbsp;MM.&nbsp;dd.&nbsp;HH:mm') : 'Bérlés még folyamatban'}">Bérlés vége</dd>
 
     <dt class="col-sm-3">Bérlés időtartama</dt>
     <dd class="col-sm-9" th:text="*{rentalPeriod+' perc'}">Bérlés időtartama</dd>

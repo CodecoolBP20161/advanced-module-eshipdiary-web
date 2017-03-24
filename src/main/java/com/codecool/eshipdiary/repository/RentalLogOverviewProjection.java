@@ -11,6 +11,7 @@ public interface RentalLogOverviewProjection {
     String getCaptain();
     @Value("#{target.chosenShip != null ? target.chosenShip.name : 'nincs hajó'}")
     String getShip();
+    @Value("#{target.getFormattedDate(target.rentalStart)}")
     String getRentalStart();
     String getRentalPeriod();
     @Value("#{target.cox != null ? target.cox.lastName+' '+target.cox.firstName : 'nincs kormányos'}")

@@ -1,8 +1,10 @@
 package com.codecool.eshipdiary.model;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -61,4 +63,9 @@ public class RentalLog {
         this.rentalStart = new Date();
         this.rentalPeriod = 120;
     }
+
+    public String  getFormattedDate(Date date) {
+        return new SimpleDateFormat("yyyy. MM. dd. HH:mm").format(date);
+    }
+
 }
