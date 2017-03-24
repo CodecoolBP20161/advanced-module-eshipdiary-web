@@ -25,7 +25,8 @@ function userActionButtons( data, type, row ) {
     var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var shipButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/ships/user/'+row.id+'\', \'Új hajó\');">Hajó</a>';
     var oarButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/user/'+row.id+'\', \'Új evező\');">Evező</a>';
-    return detailsButton + deleteButton(row) + statusButton(row) + shipButton + oarButton;
+    var current = document.getElementById("current").value === row.id ? '' : deleteButton(row) + statusButton(row);
+    return detailsButton + current + shipButton + oarButton;
 }
 
 function statusButton(row){
