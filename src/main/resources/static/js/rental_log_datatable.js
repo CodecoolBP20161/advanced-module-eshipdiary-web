@@ -60,6 +60,7 @@ function rentalModal(link) {
             document.getElementById('rentalUpdate').innerHTML = result;
             document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
+            loadValidate();
         }
     });
 }
@@ -147,4 +148,29 @@ function submitFinalRentalLog(id) {
         contentType: 'application/json'
     });
     return false;
+}
+
+function loadValidate() {
+    $('#rentalPeriod').on('input', function () {
+        this.setCustomValidity(validateRentalPeriod(this.value));
+    })
+}
+
+function validateRentalPeriod(rentalPeriod) {
+    if(rentalPeriod > minutesUntilMidnight()) {
+        return "A bérlési idő maximum a nap végéig tart"
+    } else if (rentalPeriod < 15) {
+        return "A bérlési idő minimum 15 perc"
+    } else if (rentalPeriod % 15 != 0) {
+        return "Negyedórás időközt használj"
+    } else {
+        return ""
+    }
+}
+
+function minutesUntilMidnight() {
+    var now = new Date();
+    var midnight = new Date();
+    midnight.setHours(24, 0, 0, 0);
+    return (midnight.getTime() - now.getTime())/ 1000 / 60;
 }
