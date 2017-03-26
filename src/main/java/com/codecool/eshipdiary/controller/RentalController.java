@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -103,7 +104,7 @@ public class RentalController {
         return "rental_log/rental_comment";
     }
 
-    public String crewDetails(RentalLog rentalLog) {
+    private String crewDetails(RentalLog rentalLog) {
         String result = "";
         for (int i=0; i < rentalLog.getCrew().size(); i++){
             User user = rentalLog.getCrew().get(i);
@@ -112,4 +113,20 @@ public class RentalController {
         }
         return result;
     }
+
+    @RequestMapping(value = "/rentals/final/transaction")
+    public String finalRentalTransaction(@RequestParam("rentalId") String rentalId,
+                                       @RequestParam("shipId") String shipId,
+                                       @RequestParam("oarId") String[] oarIds,
+                                         HttpServletResponse response) {
+        //TODO: implement rental finalize logic with injuries
+         System.out.println(rentalId);
+         System.out.println(shipId);
+         for (String oarId : oarIds) {
+             System.out.println(oarId);
+         }
+        System.out.println(response.getStatus());
+         return "rentals";
+     }
+
 }
