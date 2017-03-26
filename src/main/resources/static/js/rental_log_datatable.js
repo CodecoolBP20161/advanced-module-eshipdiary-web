@@ -8,14 +8,14 @@ $(document).ready( function () {
             dataSrc: '_embedded.rental'
         },
         columns: [
-            {data: 'captain'},
             {data: 'ship'},
+            {data: 'captain'},
             {
                 data: 'rentalStart',
                 searchable: false
             },
             {
-                data: 'rentalPeriod',
+                data: 'rentalEnd',
                 searchable: false
             },
             {
