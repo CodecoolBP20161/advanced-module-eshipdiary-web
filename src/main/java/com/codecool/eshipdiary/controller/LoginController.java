@@ -21,7 +21,7 @@ import java.util.HashMap;
 @Controller
 public class LoginController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     UserRepositoryService userRepositoryService;
