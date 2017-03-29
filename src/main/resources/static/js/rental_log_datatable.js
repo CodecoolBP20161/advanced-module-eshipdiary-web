@@ -60,10 +60,12 @@ function rentalModal(link) {
             document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés";
             document.getElementById('rentalUpdate').innerHTML = result;
             document.getElementById('rentalSubmit').style.display = "inline";
+            $('#cox').hide();
             multipleSelect();
             loadValidate();
             selectShipsByType();
             selectShipsByName();
+            displayCox();
         }
     });
 }
@@ -190,7 +192,8 @@ function getShipsByType(id) {
             $.each(data, function(index, value) {
                 shipByName.append($('<option></option>').text(value['name']).val(value['id']));
                 });
-            shipByName.multiselect('rebuild');
+            shipByName.multiselect('setOptions', {nonSelectedText: $('#shipByType option:selected').text()})
+            shipByName.val('').multiselect('rebuild');
         }
     });
 }
@@ -210,6 +213,25 @@ function selectShipsByName() {
         enableCaseInsensitiveFiltering: true,
         filterPlaceholder: 'Keresés...',
         buttonWidth: '100%',
-        nonSelectedText: 'Minden hajó'
+        nonSelectedText: 'Minden hajó',
+        onChange: function (option, checked, select) {
+            displayCox(option.val());
+        }
     })
+}
+
+function displayCox(id) {
+    $.ajax({
+        type: "GET",
+        url: "isShipCoxed",
+        data: {"shipId": id},
+        dataType: 'json',
+        success: function(data) {
+            if(data) {
+                $('#cox').show();
+            } else {
+                $('#cox').hide();
+            }
+        }
+    });
 }
