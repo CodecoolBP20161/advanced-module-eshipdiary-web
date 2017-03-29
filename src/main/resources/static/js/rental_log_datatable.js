@@ -62,6 +62,7 @@ function rentalModal(link) {
         type: "OPTIONS",
         success: function (result) {
             document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés";
+            document.getElementById('rentalSubmit').innerHTML = "Mentés";
             document.getElementById('rentalUpdate').innerHTML = result;
             document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
@@ -78,6 +79,7 @@ function rentalFinalModal(link) {
         type: "OPTIONS",
         success: function (result) {
             document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés befejezése";
+            document.getElementById('rentalSubmit').innerHTML = "Befejezés";
             document.getElementById('rentalUpdate').innerHTML = result;
             document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
