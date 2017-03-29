@@ -18,9 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 
-/**
- * Created by hamargyuri on 2017. 03. 10..
- */
 @Component
 public class IsActiveFilter extends GenericFilterBean {
     private static final Logger LOG = LoggerFactory.getLogger(ApiAuthenticationFilter.class);

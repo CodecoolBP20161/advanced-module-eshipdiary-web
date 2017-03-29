@@ -1,10 +1,7 @@
 package com.codecool.eshipdiary;
 
 import com.codecool.eshipdiary.model.*;
-import com.codecool.eshipdiary.repository.ClubRepository;
-import com.codecool.eshipdiary.repository.RoleRepository;
-import com.codecool.eshipdiary.repository.ShipRepository;
-import com.codecool.eshipdiary.repository.UserRepository;
+import com.codecool.eshipdiary.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -26,7 +23,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository userRepository, ClubRepository clubRepository, ShipRepository shipRepository, RoleRepository roleRepository) {
+    public CommandLineRunner demo(UserRepository userRepository, ClubRepository clubRepository, ShipRepository shipRepository, RoleRepository roleRepository, OarRepository oarRepository, ShipTypeRepository shipTypeRepository) {
         return (args) -> {
 
             Role admin = new Role();
@@ -91,14 +88,26 @@ public class AdvancedModuleEshipdiaryWebApplication {
             user.setClub(bee);
             userRepository.save(user);
 
+            ShipType shipType = new ShipType();
+            shipType.setName("Kayak");
+            shipType.setClub(bee);
+            shipTypeRepository.save(shipType);
+
             Ship ship = new Ship();
             ship.setName("Atlanta");
             ship.setCategory(Ship.Category.TRAINING);
             ship.setCode("4x+");
             ship.setCoxed(true);
             ship.setMaxSeat(4);
+            ship.setType(shipType);
+            ship.setClub(bee);
             shipRepository.save(ship);
-            
+
+            Oar oar = new Oar();
+            oar.setName("testOar");
+            oar.setType(shipType);
+            oar.setClub(bee);
+            oarRepository.save(oar);
         };
     }
 }

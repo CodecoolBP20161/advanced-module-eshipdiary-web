@@ -2,6 +2,7 @@ package com.codecool.eshipdiary.config;
 
 import com.codecool.eshipdiary.model.*;
 import com.codecool.eshipdiary.repository.OarOverviewProjection;
+import com.codecool.eshipdiary.repository.RentalLogOverviewProjection;
 import com.codecool.eshipdiary.repository.ShipOverviewProjection;
 import com.codecool.eshipdiary.repository.UserOverviewProjection;
 import org.springframework.context.annotation.Bean;
@@ -24,12 +25,14 @@ public class SpringDataRestConfig {
                         Ship.class,
                         Oar.class,
                         ShipSize.class,
-                        ShipType.class
+                        ShipType.class,
+                        RentalLog.class
                 )
                         .getProjectionConfiguration()
                         .addProjection(UserOverviewProjection.class)
                         .addProjection(OarOverviewProjection.class)
-                        .addProjection(ShipOverviewProjection.class);
+                        .addProjection(ShipOverviewProjection.class)
+                        .addProjection(RentalLogOverviewProjection.class);
             }
         };
     }
