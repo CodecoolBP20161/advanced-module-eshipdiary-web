@@ -88,10 +88,15 @@ public class AdvancedModuleEshipdiaryWebApplication {
             user.setClub(bee);
             userRepository.save(user);
 
-            ShipType shipType = new ShipType();
-            shipType.setName("Kayak");
-            shipType.setClub(bee);
-            shipTypeRepository.save(shipType);
+            ShipType kayak = new ShipType();
+            kayak.setName("kajak");
+            kayak.setClub(bee);
+            shipTypeRepository.save(kayak);
+
+            ShipType canoe = new ShipType();
+            canoe.setName("kenu");
+            canoe.setClub(bee);
+            shipTypeRepository.save(canoe);
 
             Ship ship = new Ship();
             ship.setName("Atlanta");
@@ -99,13 +104,33 @@ public class AdvancedModuleEshipdiaryWebApplication {
             ship.setCode("4x+");
             ship.setCoxed(true);
             ship.setMaxSeat(4);
-            ship.setType(shipType);
+            ship.setType(kayak);
             ship.setClub(bee);
             shipRepository.save(ship);
+            
+            Ship touringCanoe = new Ship();
+            touringCanoe.setName("Salmon");
+            touringCanoe.setCategory(Ship.Category.COMPETITION);
+            touringCanoe.setCode("4");
+            touringCanoe.setCoxed(false);
+            touringCanoe.setMaxSeat(4);
+            touringCanoe.setType(canoe);
+            touringCanoe.setClub(bee);
+            shipRepository.save(touringCanoe);
+            
+            Ship sprintCanoe = new Ship();
+            sprintCanoe.setName("Sprint Canoe");
+            sprintCanoe.setCategory(Ship.Category.TRAINING);
+            sprintCanoe.setCode("");
+            sprintCanoe.setCoxed(true);
+            sprintCanoe.setMaxSeat(1);
+            sprintCanoe.setType(canoe);
+            sprintCanoe.setClub(bee);
+            shipRepository.save(sprintCanoe);
 
             Oar oar = new Oar();
             oar.setName("testOar");
-            oar.setType(shipType);
+            oar.setType(kayak);
             oar.setClub(bee);
             oarRepository.save(oar);
         };
