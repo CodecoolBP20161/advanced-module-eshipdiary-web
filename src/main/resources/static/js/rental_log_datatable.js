@@ -10,7 +10,8 @@ $(document).ready( function () {
         columns: [
             {   data: 'ship'
             },
-            {   data: 'crewNames'
+            {   data: 'crewNames',
+                render: $.fn.dataTable.render.ellipsis(15, true, false)
             },
             {   data: 'cox'
             },
@@ -233,7 +234,7 @@ $.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {
         }
 
         if ( typeof d !== 'number' && typeof d !== 'string' ) {
-            console.log("the type of the data inserted to ellipsis function is not number or string")
+            console.log("wrong type inserted to ellpsis function: " + typeof d)
             return d;
         }
 

@@ -69,13 +69,13 @@ public class RentalLog {
         return new SimpleDateFormat("yyyy. MM. dd. HH:mm").format(date);
     }
 
-    public List<String> getCrewNames() {
-        List<String> names = new ArrayList<>();
+    public String getCrewNames() {
+        String names = "";
         for (User crewMember : crew) {
-            String name = crewMember.getLastName() + " " + crewMember.getFirstName();
-            names.add(name);
+            String name = crewMember.getLastName() + " " + crewMember.getFirstName() + ", ";
+            names += name;
         }
-        return names;
+        return names.substring(0, names.length()-2);
     }
 
 }

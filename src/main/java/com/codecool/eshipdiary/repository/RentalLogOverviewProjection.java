@@ -22,5 +22,5 @@ public interface RentalLogOverviewProjection {
     String getItinerary();
     boolean getFinalized();
     String getComment();
-    List<String> getCrewNames();
+    String getCrewNames();
 }
