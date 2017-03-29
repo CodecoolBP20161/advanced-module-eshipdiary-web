@@ -218,10 +218,10 @@ function selectShipsByName() {
     })
 }
 
-$.fn.dataTable.render.ellipsis = function (charLimit) {
+$.fn.dataTable.render.ellipsis = function ( cutoff ) {
     return function ( data, type, row ) {
-        return type === 'display' && data.length > 10 ?
-            data.substr( 0, charLimit ) +'…' :
+        return type === 'display' && data.length > cutoff ?
+            data.substr( 0, cutoff ) +'…' :
             data;
     }
 };
