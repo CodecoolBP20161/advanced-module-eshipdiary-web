@@ -14,12 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,5 +84,16 @@ public class ShipController {
             model.addAttribute("submit", "return submitShip(" + id + ")");
         }
         return "ships/ship_form";
+    }
+
+    @RequestMapping("/shipsByType")
+    public @ResponseBody List<Ship> getShipsByShipType(@RequestParam("typeId") Long id) {
+        Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
+        List<Ship> shipsByType = new ArrayList<>();
+
+        if(type.isPresent()) {
+            shipRepositoryService.getAllShipsByType(type.get()).forEach(shipsByType::add);
+        }
+        return shipsByType;
     }
 }

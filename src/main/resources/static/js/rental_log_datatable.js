@@ -47,7 +47,8 @@ function multipleSelect () {
     $('.multi-select').multiselect({
         enableCaseInsensitiveFiltering: true,
         filterPlaceholder: 'Keresés...',
-        buttonWidth : '100%'
+        buttonWidth : '100%',
+        nonSelectedText: ' '
     });
 }
 
@@ -61,6 +62,8 @@ function rentalModal(link) {
             document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
             loadValidate();
+            selectShipsByType();
+            selectShipsByName();
         }
     });
 }
@@ -173,4 +176,40 @@ function minutesUntilMidnight() {
     var midnight = new Date();
     midnight.setHours(24, 0, 0, 0);
     return (midnight.getTime() - now.getTime())/ 1000 / 60;
+}
+
+function getShipsByType(id) {
+    $.ajax({
+        type: "GET",
+        url: "shipsByType",
+        data: {"typeId": id},
+        dataType: 'json',
+        success: function(data) {
+            var shipByName = $('#shipByName');
+            shipByName.empty();
+            $.each(data, function(index, value) {
+                shipByName.append($('<option></option>').text(value['name']).val(value['id']));
+                });
+            shipByName.multiselect('rebuild');
+        }
+    });
+}
+
+function selectShipsByType() {
+    $('#shipByType').val('').multiselect({
+        buttonWidth: '100%',
+        nonSelectedText: 'Minden típus',
+        onChange: function (option, checked, select) {
+            getShipsByType(option.val());
+        }
+    })
+}
+
+function selectShipsByName() {
+    $('#shipByName').val('').multiselect({
+        enableCaseInsensitiveFiltering: true,
+        filterPlaceholder: 'Keresés...',
+        buttonWidth: '100%',
+        nonSelectedText: 'Minden hajó'
+    })
 }
