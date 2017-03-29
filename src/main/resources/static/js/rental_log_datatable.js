@@ -12,6 +12,8 @@ $(document).ready( function () {
             },
             {   data: 'crewNames'
             },
+            {   data: 'cox'
+            },
             {
                 data: 'rentalStart',
                 searchable: false
@@ -19,9 +21,6 @@ $(document).ready( function () {
             {
                 data: 'rentalEnd',
                 searchable: false
-            },
-            {
-                data: 'cox'
             },
             {
                 data: 'itinerary'
