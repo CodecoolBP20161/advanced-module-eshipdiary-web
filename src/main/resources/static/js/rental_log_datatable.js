@@ -8,8 +8,10 @@ $(document).ready( function () {
             dataSrc: '_embedded.rental'
         },
         columns: [
-            {data: 'ship'},
-            {data: 'captain'},
+            {   data: 'ship'
+            },
+            {   data: 'crewNames'
+            },
             {
                 data: 'rentalStart',
                 searchable: false
@@ -19,12 +21,14 @@ $(document).ready( function () {
                 searchable: false
             },
             {
-                data: 'cox',
-                searchable: false
+                data: 'cox'
             },
             {
-                data: 'distance',
-                searchable: false
+                data: 'itinerary'
+            },
+            {
+                data: 'comment',
+                render: $.fn.dataTable.render.ellipsis(10)
             },
             {
                 sortable: false,
@@ -213,3 +217,11 @@ function selectShipsByName() {
         nonSelectedText: 'Minden hajó'
     })
 }
+
+$.fn.dataTable.render.ellipsis = function (charLimit) {
+    return function ( data, type, row ) {
+        return type === 'display' && data.length > 10 ?
+            data.substr( 0, charLimit ) +'…' :
+            data;
+    }
+};
