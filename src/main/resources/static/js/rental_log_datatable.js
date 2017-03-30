@@ -61,10 +61,7 @@ function rentalModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés";
-            document.getElementById('rentalSubmit').innerHTML = "Mentés";
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
             loadValidate();
             selectShipsByType();
@@ -78,10 +75,7 @@ function rentalFinalModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés befejezése";
-            document.getElementById('rentalSubmit').innerHTML = "Befejezés";
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
         }
     });
@@ -92,9 +86,7 @@ function rentalCommentModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Megjegyzés hozzáfűzése";
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
         }
     });
@@ -105,9 +97,7 @@ function rentalDetailsModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Bérlés részletei";
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "none";
         }
     });
 }
