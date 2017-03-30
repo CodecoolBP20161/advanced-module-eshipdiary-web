@@ -93,7 +93,14 @@ public class RentalController {
         model.addAttribute("rental", match);
         model.addAttribute("end", new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
         model.addAttribute("submit", "return submitFinalRentalLog(" + id + ")");
+        model.addAttribute("change", "return changeRental(" + id + ")");
         return "rental_log/rental_finalize";
+    }
+
+    @RequestMapping(value = "/rentals/final-and-change/{rentalId}", method = RequestMethod.OPTIONS)
+    public String rentalLogFinalizeAndChange(@PathVariable("rentalId") Long id, Model model){
+        // TODO: prefill form with data from previous rental
+        return "rental_log/rental_form";
     }
 
     @RequestMapping(value = "/rentals/comment/{rentalId}", method = RequestMethod.OPTIONS)

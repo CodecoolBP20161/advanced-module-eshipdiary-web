@@ -149,6 +149,20 @@ function submitFinalRentalLog(id) {
     return false;
 }
 
+function changeRental(id) {
+    $.ajax({
+        type: 'PATCH',
+        url: '/api/rental/' + id,
+        data: JSON.stringify($("#rentalForm").serializeObject()),
+        success: function (msg) {
+            $('#rental-table').DataTable().ajax.reload(null, false);
+        },
+        dataType: 'json',
+        contentType: 'application/json'
+    });
+    rentalModal("/rentals/final-and-change/" + id);
+}
+
 function loadValidate() {
     $('#crew').on('change', function () {
         this.setCustomValidity(validateCaptainPresence());
