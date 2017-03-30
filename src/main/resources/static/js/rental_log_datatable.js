@@ -150,9 +150,22 @@ function submitFinalRentalLog(id) {
 }
 
 function loadValidate() {
+    $('#crew').on('change', function () {
+        this.setCustomValidity(validateCaptainPresence());
+    });
     $('#rentalPeriod').on('input', function () {
         this.setCustomValidity(validateRentalPeriod(this.value));
-    })
+    });
+}
+
+function validateCaptainPresence() {
+    var crew = $('#crew').val();
+    crew.push($('#cox').val());
+    if($('#role').val()!=='ADMIN' && !crew.includes($('#captain').value)) {
+        return "Felhasználó nincs a legénységben"
+    } else {
+        return ""
+    }
 }
 
 function validateRentalPeriod(rentalPeriod) {
