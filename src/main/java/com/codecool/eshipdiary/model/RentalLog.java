@@ -78,4 +78,13 @@ public class RentalLog {
         return names.substring(0, names.length()-2);
     }
 
+    public void copyRelevantFields(RentalLog previousRental) {
+        chosenShip = previousRental.getChosenShip();
+        captain = previousRental.getCaptain();
+        cox = previousRental.getCox();
+        crew = previousRental.getCrew();
+        oars = previousRental.getOars();
+        itinerary = previousRental.getItinerary();
+    }
+
 }

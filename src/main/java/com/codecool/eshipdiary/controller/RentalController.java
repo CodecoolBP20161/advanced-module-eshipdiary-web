@@ -99,7 +99,11 @@ public class RentalController {
 
     @RequestMapping(value = "/rentals/final-and-change/{rentalId}", method = RequestMethod.OPTIONS)
     public String rentalLogFinalizeAndChange(@PathVariable("rentalId") Long id, Model model){
-        // TODO: prefill form with data from previous rental
+        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
+        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
+        RentalLog newRental = new RentalLog();
+        newRental.copyRelevantFields(match);
+        model.addAttribute("rental", newRental);
         return "rental_log/rental_form";
     }
 
