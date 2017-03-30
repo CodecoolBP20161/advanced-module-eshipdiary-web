@@ -41,7 +41,6 @@ function statusButton(row){
 }
 
 function deleteButton(row){
-    console.log(row.member);
     if(row.member === true) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Kilépés</a>';
     return ' <a class="btn btn-success btn-xs" role="button" onclick="reActivate(\''+row._links.self.href+'\', \''+row.name+'\');">Beiratkozás</a>';
 }
