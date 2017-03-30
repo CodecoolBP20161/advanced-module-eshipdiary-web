@@ -161,7 +161,7 @@ function loadValidate() {
 function validateCaptainPresence() {
     var crew = $('#crew').val();
     crew.push($('#cox').val());
-    if($('#role').val()!=='ADMIN' && !crew.includes($('#captain').value)) {
+    if($('#role').val()!=='ADMIN' && !crew.includes($('#captain').val())) {
         return "Felhasználó nincs a legénységben"
     } else {
         return ""
