@@ -24,4 +24,5 @@ public interface UserOverviewProjection {
     String getIsActive();
     List<Ship> getShips();
     List<Oar> getOars();
+    boolean getMember();
 }

@@ -25,7 +25,11 @@ function userActionButtons( data, type, row ) {
     var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var shipButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/ships/user/'+row.id+'\', \'Új hajó\');">Hajó</a>';
     var oarButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/user/'+row.id+'\', \'Új evező\');">Evező</a>';
-    var current = document.getElementById("current").value === row.id ? '' : deleteButton(row) + statusButton(row);
+    var current = '';
+    if(document.getElementById("current").value !== row.id) {
+        current = deleteButton(row);
+        current += row.member ? statusButton(row) : '';
+    }
     return detailsButton + current + shipButton + oarButton;
 }
 
@@ -37,8 +41,9 @@ function statusButton(row){
 }
 
 function deleteButton(row){
-    if(row.ships.length + row.oars.length === 0) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
-    return ' <button disabled class="btn btn-default btn-xs" data-toggle="tooltip" title="Hozzátartozó hajó/evező miatt nem törölhető!">Törlés</button>';
+    console.log(row.member);
+    if(row.member === true) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Kilépés</a>';
+    return ' <a class="btn btn-success btn-xs" role="button" onclick="reActivate(\''+row._links.self.href+'\', \''+row.name+'\');">Beiratkozás</a>';
 }
 
 function setUserStatus(link, shouldBeActive) {
@@ -53,16 +58,30 @@ function setUserStatus(link, shouldBeActive) {
 }
 
 function deleteModal(link, name){
-    document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
+    document.getElementById('deleteModalLabel').innerHTML = name + ' kiléptetése';
     document.getElementById('userDelete').addEventListener('click', function(){
         $.ajax({
-            type: 'DELETE',
+            type: 'PATCH',
             url: link,
+            data: JSON.stringify({"active": false, "member": false}),
             success: function(msg){
                 $('#deleteModal').modal('hide');
                 $('#user-table').DataTable().ajax.reload( null, false );
-            }
+            },
+            dataType: 'json',
+            contentType : 'application/json'
         });
+    });
+}
+
+function reActivate(link, name){
+    $.ajax({
+        type: 'PATCH',
+        url: link,
+        data: JSON.stringify({"member": true}),
+        success: function(msg){$('#user-table').DataTable().ajax.reload( null, false );},
+        dataType: 'json',
+        contentType : 'application/json'
     });
 }
 

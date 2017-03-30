@@ -75,6 +75,9 @@ public class User {
     @Column(nullable = false)
     private boolean active;
 
+    @Column(nullable = false)
+    private boolean member;
+
     @JsonIgnore
     @ManyToOne
     private Club club;
@@ -112,6 +115,7 @@ public class User {
 
     public User(){
         this.active = true;
+        this.member = true;
     }
 
     public enum KnowledgeLevel {
