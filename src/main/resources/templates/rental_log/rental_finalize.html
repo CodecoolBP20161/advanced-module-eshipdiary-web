@@ -9,5 +9,20 @@
                 <textarea th:field="*{comment}" rows="3" class="form-control" placeholder="Megjegyzés..."></textarea>
             </div>
         </div>
+        <div class="col-sm-12"></div>
+        <div>
+            <label class="control-label col-sm-4">Hajó sérülés</label>
+            <div class="checkbox col-sm-8">
+                <label><input type="checkbox" th:field="*{chosenShip}" th:value="${ship.getId()}" th:text="${ship.getName()}"/></label>
+            </div>
+            <label class="control-label col-sm-4">Lapát sérülés</label>
+            <div class="col-sm-8">
+                <select th:field="*{oars}" class="multi-select form-control" multiple="multiple">
+                    <option th:each="oar : ${oars}"
+                            th:value="${oar.getId()}"
+                            th:text="${oar.getName()}"/>
+                </select>
+            </div>
+        </div>
     </form>
 </html>
