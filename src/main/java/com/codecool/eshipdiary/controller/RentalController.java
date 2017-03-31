@@ -5,6 +5,9 @@ import com.codecool.eshipdiary.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,8 +96,8 @@ public class RentalController {
         RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
         model.addAttribute("rental", match);
         model.addAttribute("end", new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
-        model.addAttribute("submit", "return submitFinalRentalLog(" + id + ")");
         model.addAttribute("change", "return changeRental(" + id + ")");
+        model.addAttribute("submit", "return submitFinalRentalLog()");
         return "rental_log/rental_finalize";
     }
 
@@ -111,7 +115,7 @@ public class RentalController {
     public String rentalLogComment(@PathVariable("rentalId") Long id, Model model){
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         model.addAttribute("rental", rentalLog.isPresent() ? rentalLog.get() : new RentalLog());
-        model.addAttribute("submit", "return submitFinalRentalLog(" + id + ")");
+        model.addAttribute("submit", "return addAdminComment(" + id + ")");
         return "rental_log/rental_comment";
     }
 
@@ -125,19 +129,15 @@ public class RentalController {
         return result;
     }
 
-    @RequestMapping(value = "/rentals/final/transaction")
-    public String finalRentalTransaction(@RequestParam("rentalId") String rentalId,
-                                       @RequestParam("shipId") String shipId,
-                                       @RequestParam("oarId") String[] oarIds,
-                                         HttpServletResponse response) {
-        //TODO: implement rental finalize logic with injuries
-         System.out.println(rentalId);
-         System.out.println(shipId);
-         for (String oarId : oarIds) {
-             System.out.println(oarId);
-         }
-        System.out.println(response.getStatus());
-         return "rentals";
-     }
+
+    @RequestMapping(value = "/rentals/final/transaction", method = RequestMethod.GET)
+    public @ResponseBody String finalRentalTransaction(@ModelAttribute("form") String form) {
+        LOG.info(form);
+//        LOG.info("log: {}", rentalLog.getChosenShip().getName());
+//        if (rentalLog.getChosenShip().getId().equals(shipId)) {
+//            //TODO: dewet
+//        }
+        return "valami";
+    }
 
 }
