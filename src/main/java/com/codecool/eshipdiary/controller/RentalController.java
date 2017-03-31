@@ -93,8 +93,6 @@ public class RentalController {
     public String rentalLogFinalize(@PathVariable("rentalId") Long id, Model model){
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
-        model.addAttribute("ship", match.getChosenShip());
-        model.addAttribute("oars", match.getOars());
         model.addAttribute("rental", match);
         model.addAttribute("end", new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
         model.addAttribute("submit", "return submitFinalRentalLog()");
@@ -121,6 +119,7 @@ public class RentalController {
 
     @RequestMapping(value = "/rentals/final/transaction", method = RequestMethod.GET)
     public @ResponseBody String finalRentalTransaction(@ModelAttribute("form") String form) {
+        LOG.info("mukodik ez a szar");
         LOG.info(form);
 //        LOG.info("log: {}", rentalLog.getChosenShip().getName());
 //        if (rentalLog.getChosenShip().getId().equals(shipId)) {
