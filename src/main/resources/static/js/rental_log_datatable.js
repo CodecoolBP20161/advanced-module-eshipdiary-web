@@ -134,23 +134,7 @@ function processData(data) {
     return data;
 }
 
-function submitFinalRentalLog() {
-    $.ajax({
-        type: 'GET',
-        url: '/rentals/final/transaction',
-        // data: JSON.stringify($("#rentalForm").serializeObject()),
-        success: function (msg) {
-            console.log(msg);
-            $('#rentalModal').modal('hide');
-            $('#rental-table').DataTable().ajax.reload(null, false);
-        },
-        dataType: 'json',
-        contentType: 'application/json'
-    });
-    return false;
-}
-
-function addAdminComment(id) {
+function submitFinalRentalLog(id) {
     $.ajax({
         type: 'PATCH',
         url: '/api/rental/' + id,
