@@ -94,6 +94,8 @@ public class RentalController {
     public String rentalLogFinalize(@PathVariable("rentalId") Long id, Model model){
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
+        model.addAttribute("ship", match.getChosenShip());
+        model.addAttribute("oars", match.getOars());
         model.addAttribute("rental", match);
         model.addAttribute("end", new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
         model.addAttribute("change", "return changeRental(" + id + ")");
