@@ -4,6 +4,8 @@ import com.codecool.eshipdiary.model.RentalLog;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
+import java.util.List;
+
 @Projection(name="rentalOverview", types={RentalLog.class})
 public interface RentalLogOverviewProjection {
     String getId();
@@ -17,6 +19,8 @@ public interface RentalLogOverviewProjection {
     String getRentalEnd();
     @Value("#{target.cox != null ? target.cox.lastName+' '+target.cox.firstName : 'nincs kormányos'}")
     String getCox();
-    String getDistance();
+    String getItinerary();
     boolean getFinalized();
+    String getComment();
+    String getCrewNames();
 }

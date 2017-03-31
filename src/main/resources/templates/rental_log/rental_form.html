@@ -2,8 +2,13 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="rental-form">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="rentalModalLabel">Hajóbérlés</h4>
+    </div>
 
-    <form th:object="${rental}" onsubmit="return submitRentalLog()" class="form-horizontal" id="rentalForm">
+    <div class="modal-body">
+        <form th:object="${rental}" onsubmit="return submitRentalLog()" class="form-horizontal" id="rentalForm">
 
         <input type="hidden" th:field="*{captain}" />
         <div class="form-group">
@@ -79,7 +84,7 @@
         <div class="form-group">
             <label class="control-label col-sm-4" th:for="distance">Távolság (km)</label>
             <div class="col-sm-8">
-                <input th:field="*{distance}" type="number" class="form-control"/>
+                <input th:field="*{distance}" type="number" class="form-control" />
             </div>
         </div>
 
@@ -89,6 +94,12 @@
                 <textarea th:field="*{comment}" class="form-control" placeholder="Megjegyzés" rows="3"></textarea>
             </div>
         </div>
-    </form>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" id="rentalSubmit" class="btn btn-primary" form="rentalForm">Mentés</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+    </div>
 </div>
 </html>

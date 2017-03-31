@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="rentalModalLabel">Hajóbérlés befejezése</h4>
+</div>
+
+<div class="modal-body">
     <form th:object="${rental}" th:onsubmit="${submit}" class="form-horizontal" id="rentalForm">
         <input type="hidden" name="rentalEnd" th:value="${end}" />
         <input type="hidden" name="finalized" th:value="true" />
@@ -10,4 +17,11 @@
             </div>
         </div>
     </form>
+</div>
+
+<div class="modal-footer">
+    <button type="submit" id="rentalSubmit" class="btn btn-primary" form="rentalForm">Befejezés</button>
+    <a class="btn btn-warning" role="button" th:onclick="${change}">Csere</a>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+</div>
 </html>

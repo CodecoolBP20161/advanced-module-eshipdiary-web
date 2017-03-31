@@ -8,8 +8,13 @@ $(document).ready( function () {
             dataSrc: '_embedded.rental'
         },
         columns: [
-            {data: 'ship'},
-            {data: 'captain'},
+            {   data: 'ship'
+            },
+            {   data: 'crewNames',
+                render: $.fn.dataTable.render.ellipsis(15, true, false)
+            },
+            {   data: 'cox'
+            },
             {
                 data: 'rentalStart',
                 searchable: false
@@ -19,12 +24,11 @@ $(document).ready( function () {
                 searchable: false
             },
             {
-                data: 'cox',
-                searchable: false
+                data: 'itinerary'
             },
             {
-                data: 'distance',
-                searchable: false
+                data: 'comment',
+                render: $.fn.dataTable.render.ellipsis(15, true, false)
             },
             {
                 sortable: false,
@@ -57,7 +61,6 @@ function rentalModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés";
             document.getElementById('rentalUpdate').innerHTML = result;
             document.getElementById('rentalSubmit').style.display = "inline";
             $('#cox').hide();
@@ -75,9 +78,7 @@ function rentalFinalModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés befejezése";
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
         }
     });
@@ -88,9 +89,7 @@ function rentalCommentModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Megjegyzés hozzáfűzése";
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
         }
     });
@@ -101,9 +100,7 @@ function rentalDetailsModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Bérlés részletei";
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "none";
         }
     });
 }
@@ -155,10 +152,37 @@ function submitFinalRentalLog(id) {
     return false;
 }
 
+function changeRental(id) {
+    $.ajax({
+        type: 'PATCH',
+        url: '/api/rental/' + id,
+        data: JSON.stringify($("#rentalForm").serializeObject()),
+        success: function (msg) {
+            $('#rental-table').DataTable().ajax.reload(null, false);
+        },
+        dataType: 'json',
+        contentType: 'application/json'
+    });
+    rentalModal("/rentals/final-and-change/" + id);
+}
+
 function loadValidate() {
+    $('#crew').on('change', function () {
+        this.setCustomValidity(validateCaptainPresence());
+    });
     $('#rentalPeriod').on('input', function () {
         this.setCustomValidity(validateRentalPeriod(this.value));
-    })
+    });
+}
+
+function validateCaptainPresence() {
+    var crew = $('#crew').val();
+    crew.push($('#cox').val());
+    if($('#role').val()!=='ADMIN' && !crew.includes($('#captain').val())) {
+        return "Felhasználó nincs a legénységben"
+    } else {
+        return ""
+    }
 }
 
 function validateRentalPeriod(rentalPeriod) {
@@ -235,3 +259,45 @@ function displayCox(id) {
         }
     });
 }
+
+$.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {
+    var esc = function ( t ) {
+        return t
+            .replace( /&/g, '&amp;' )
+            .replace( /</g, '&lt;' )
+            .replace( />/g, '&gt;' )
+            .replace( /"/g, '&quot;' );
+    };
+
+    return function ( d, type, row ) {
+        // Order, search and type get the original data
+        if ( type !== 'display' ) {
+            return d;
+        }
+
+        if ( typeof d !== 'number' && typeof d !== 'string' ) {
+            console.log("wrong type inserted to ellpsis function: " + typeof d)
+            return d;
+        }
+
+        d = d.toString(); // cast numbers
+
+        if ( d.length < cutoff ) {
+            return d;
+        }
+
+        var shortened = d.substr(0, cutoff-1);
+
+        // Find the last white space character in the string
+        if ( wordbreak ) {
+            shortened = shortened.replace(/\s([^\s]*)$/, '');
+        }
+
+        // Protect against uncontrolled HTML input
+        if ( escapeHtml ) {
+            shortened = esc( shortened );
+        }
+
+        return '<span class="ellipsis" title="'+esc(d)+'">'+shortened+'&#8230;</span>';
+    };
+};

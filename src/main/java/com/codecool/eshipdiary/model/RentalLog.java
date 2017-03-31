@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +67,24 @@ public class RentalLog {
 
     public String  getFormattedDate(Date date) {
         return new SimpleDateFormat("yyyy. MM. dd. HH:mm").format(date);
+    }
+
+    public String getCrewNames() {
+        String names = "";
+        for (User crewMember : crew) {
+            String name = crewMember.getLastName() + " " + crewMember.getFirstName() + ", ";
+            names += name;
+        }
+        return names.substring(0, names.length()-2);
+    }
+
+    public void copyRelevantFields(RentalLog previousRental) {
+        chosenShip = previousRental.getChosenShip();
+        captain = previousRental.getCaptain();
+        cox = previousRental.getCox();
+        crew = previousRental.getCrew();
+        oars = previousRental.getOars();
+        itinerary = previousRental.getItinerary();
     }
 
 }

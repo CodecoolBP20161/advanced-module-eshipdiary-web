@@ -93,7 +93,18 @@ public class RentalController {
         model.addAttribute("rental", match);
         model.addAttribute("end", new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
         model.addAttribute("submit", "return submitFinalRentalLog(" + id + ")");
+        model.addAttribute("change", "return changeRental(" + id + ")");
         return "rental_log/rental_finalize";
+    }
+
+    @RequestMapping(value = "/rentals/final-and-change/{rentalId}", method = RequestMethod.OPTIONS)
+    public String rentalLogFinalizeAndChange(@PathVariable("rentalId") Long id, Model model){
+        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
+        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
+        RentalLog newRental = new RentalLog();
+        newRental.copyRelevantFields(match);
+        model.addAttribute("rental", newRental);
+        return "rental_log/rental_form";
     }
 
     @RequestMapping(value = "/rentals/comment/{rentalId}", method = RequestMethod.OPTIONS)
