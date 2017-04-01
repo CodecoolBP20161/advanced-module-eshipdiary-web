@@ -96,7 +96,7 @@ public class RentalController {
         RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
         model.addAttribute("ship", match.getChosenShip());
         model.addAttribute("oars", match.getOars());
-        model.addAttribute("rental", match);
+        model.addAttribute("comment", match.getComment());
         model.addAttribute("end", new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
         model.addAttribute("change", "return changeRental(" + id + ")");
         model.addAttribute("submit", "return submitFinalRentalLog()");
