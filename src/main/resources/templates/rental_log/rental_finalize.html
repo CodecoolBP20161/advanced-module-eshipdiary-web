@@ -9,6 +9,7 @@
 <div class="modal-body">
     <form th:onsubmit="${submit}" class="form-horizontal" id="rentalForm">
         <input type="hidden" name="rentalEnd" th:value="${end}" />
+        <input type="hidden" name="rentalId" th:value="${rentalId}" />
         <div class="form-group">
             <label class="control-label col-sm-4">Megjegyzés</label>
             <div class="col-sm-8">
@@ -23,7 +24,7 @@
                 </div>
                 <label class="control-label col-sm-4">Lapát sérülés</label>
                 <div class="col-sm-8">
-                    <select name="injuredOar" class="multi-select form-control" multiple="multiple">
+                    <select name="injuredOars" class="multi-select form-control" multiple="multiple">
                         <option th:each="oar : ${oars}"
                                 th:value="${oar.getId()}"
                                 th:text="${oar.getName()}"/>
