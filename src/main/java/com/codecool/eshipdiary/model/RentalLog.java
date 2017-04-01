@@ -23,6 +23,9 @@ public class RentalLog {
     private Ship chosenShip;
 
     @ManyToOne
+    private Ship injuredShip;
+
+    @ManyToOne
     private User captain;
 
     @Column
@@ -44,6 +47,9 @@ public class RentalLog {
 
     @ManyToMany
     private List<Oar> oars;
+
+    @ManyToMany
+    private List<Oar> injuredOars;
 
     @Column
     private String itinerary;
