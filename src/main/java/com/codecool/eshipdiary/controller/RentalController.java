@@ -2,6 +2,7 @@ package com.codecool.eshipdiary.controller;
 
 import com.codecool.eshipdiary.model.*;
 import com.codecool.eshipdiary.service.*;
+import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Controller
@@ -94,6 +94,7 @@ public class RentalController {
     public String rentalLogFinalize(@PathVariable("rentalId") Long id, Model model){
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
+        model.addAttribute("rentalId", match.getId());
         model.addAttribute("ship", match.getChosenShip());
         model.addAttribute("oars", match.getOars());
         model.addAttribute("comment", match.getComment());
@@ -132,14 +133,51 @@ public class RentalController {
     }
 
 
-    @RequestMapping(value = "/rentals/final/transaction", method = RequestMethod.GET)
-    public @ResponseBody String finalRentalTransaction(@ModelAttribute("form") String form) {
-        LOG.info(form);
-//        LOG.info("log: {}", rentalLog.getChosenShip().getName());
-//        if (rentalLog.getChosenShip().getId().equals(shipId)) {
-//            //TODO: dewet
-//        }
-        return "valami";
+    @RequestMapping(value = "/rentals/final/transaction", produces = "application/json")
+    public @ResponseBody HashMap<String, String> finalRentalTransaction(@ModelAttribute("form") String form)
+            throws ParseException {
+        LOG.info("Form data: {}", form);
+
+        HashMap<String, String> returnData = new HashMap<>();
+        JsonObject formObject = new Gson().fromJson(form, JsonObject.class);
+
+        //load rental
+        Long id = formObject.get("rentalId").getAsLong();
+        Optional<RentalLog> rentalOptional = rentalLogRepositoryService.getRentalLogById(id);
+        RentalLog rental = rentalOptional.isPresent() ? rentalOptional.get() : null;
+        assert rental != null;
+
+        //set finalized
+        rental.setFinalized(true);
+
+        //set rentalEnd
+        DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+        Date end = formatter.parse(formObject.get("rentalEnd").getAsString());
+        rental.setRentalEnd(end);
+
+        //set comment
+        rental.setComment(formObject.get("comment").getAsString());
+
+        //set injuredShip and set injured Ship activity to false
+        Optional<Ship> injuredShipOptional = shipRepositoryService.getShipById(formObject.get("injuredShip").getAsLong());
+        Ship injuredShip = injuredShipOptional.isPresent() ? injuredShipOptional.get() : new Ship();
+        injuredShip.setActive(false);
+        rental.setInjuredShip(injuredShip);
+
+        //set injuredOars and set injured oars activity to false
+        JsonArray injuredOarsJsonArray = formObject.get("injuredOars").getAsJsonArray();
+        List<Oar> injuredOars = new ArrayList<>();
+        for (JsonElement oarIdJson : injuredOarsJsonArray) {
+            Long oarId = oarIdJson.getAsLong();
+            LOG.info("oar: {}", oarId);
+            Optional<Oar> injuredOarOptional = oarRepositoryService.getOarById(oarId);
+            Oar injuredOar = injuredOarOptional.isPresent() ? injuredOarOptional.get() : new Oar();
+            injuredOar.setActive(false);
+            injuredOars.add(injuredOar); //TODO: this shit doesn't seem to work for the last element...
+        }
+        rental.setInjuredOars(injuredOars);
+
+        return returnData;
     }
 
 }
