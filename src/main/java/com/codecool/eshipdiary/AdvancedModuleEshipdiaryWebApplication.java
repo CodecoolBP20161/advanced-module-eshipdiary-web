@@ -133,6 +133,12 @@ public class AdvancedModuleEshipdiaryWebApplication {
             oar.setType(kayak);
             oar.setClub(bee);
             oarRepository.save(oar);
+
+            Oar oar2 = new Oar();
+            oar2.setName("testOar2");
+            oar2.setType(kayak);
+            oar2.setClub(bee);
+            oarRepository.save(oar2);
         };
     }
 }

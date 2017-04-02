@@ -137,7 +137,22 @@ function processData(data) {
     return data;
 }
 
-function submitFinalRentalLog(id) {
+function submitFinalRentalLog() {
+    $.ajax({
+        type: 'GET',
+        url: '/rentals/final/transaction',
+        data: {"form": JSON.stringify($("#rentalForm").serializeObject())},
+        success: function (msg) {
+            $('#rentalModal').modal('hide');
+            $('#rental-table').DataTable().ajax.reload(null, false);
+        },
+        dataType: 'json',
+        contentType: 'application/json'
+    });
+    return false;
+}
+
+function addAdminComment(id) {
     $.ajax({
         type: 'PATCH',
         url: '/api/rental/' + id,
