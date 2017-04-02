@@ -24,13 +24,13 @@ public class EmailService {
     @Autowired
     private EmailContentBuilder emailContentBuilder;
 
-    public MimeMessagePreparator prepareRegistrationEmail(User user) {
+    public MimeMessagePreparator prepareRegistrationEmail(User user, String link) {
         LOG.debug("Sending email to the following user {}", user.toString());
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             messageHelper.setTo(user.getEmailAddress());
             messageHelper.setSubject("Sikeres regisztráció");
-            String content = emailContentBuilder.build(user);
+            String content = emailContentBuilder.build(user, link);
             messageHelper.setText(content, true);
         };
 

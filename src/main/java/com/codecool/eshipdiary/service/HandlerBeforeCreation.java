@@ -51,7 +51,7 @@ public class HandlerBeforeCreation {
         }
         user.setRole(userRole);
 
-        emailService.sendEmail(emailService.prepareRegistrationEmail(user));
+        emailService.sendEmail(emailService.prepareRegistrationEmail(user, "www.example.com/"));
     }
 
     @HandleBeforeCreate(Oar.class)
