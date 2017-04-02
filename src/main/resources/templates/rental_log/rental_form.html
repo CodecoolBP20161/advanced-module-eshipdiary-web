@@ -35,7 +35,8 @@
         <div class="form-group" id="cox">
             <label class="control-label col-sm-4" th:for="cox">Kormányos</label>
             <div class="col-sm-8">
-                <select th:field="*{cox}" class="multi-select form-control">
+                <select onchange="removeCoxFromCrew()" th:field="*{cox}" class="multi-select form-control">
+                    <option value="0">Nincs kormányos</option>
                     <option th:each="possibleCox : ${users}"
                             th:value="${possibleCox.getId()}"
                             th:text="${possibleCox.getLastName()} + ' ' + ${possibleCox.getFirstName()}"
@@ -44,7 +45,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="crew">
             <label class="control-label col-sm-4" th:for="crew">Legénység</label>
             <div class="col-sm-8">
                 <select th:field="*{crew}" class="multi-select form-control" multiple="multiple" required="required">

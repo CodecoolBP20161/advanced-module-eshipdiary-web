@@ -260,6 +260,7 @@ function displayCox(id) {
     });
 }
 
+
 $.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {
     var esc = function ( t ) {
         return t
@@ -301,3 +302,4 @@ $.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {
         return '<span class="ellipsis" title="'+esc(d)+'">'+shortened+'&#8230;</span>';
     };
 };
+
