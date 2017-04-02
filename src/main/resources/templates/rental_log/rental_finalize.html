@@ -1,13 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <form th:object="${rental}" th:onsubmit="${submit}" class="form-horizontal" id="rentalForm">
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="rentalModalLabel">Hajóbérlés befejezése</h4>
+</div>
+
+<div class="modal-body">
+    <form th:onsubmit="${submit}" class="form-horizontal" id="rentalForm">
         <input type="hidden" name="rentalEnd" th:value="${end}" />
-        <input type="hidden" name="finalized" th:value="true" />
+        <input type="hidden" name="rentalId" th:value="${rentalId}" />
         <div class="form-group">
-            <label class="control-label col-sm-4" th:for="comment">Megjegyzés</label>
+            <label class="control-label col-sm-4">Megjegyzés</label>
             <div class="col-sm-8">
-                <textarea th:field="*{comment}" rows="3" class="form-control" placeholder="Megjegyzés..."></textarea>
+                <textarea name="comment" rows="3" class="form-control" placeholder="Megjegyzés..."></textarea>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div>
+                <label class="control-label col-sm-4">Hajó sérülés</label>
+                <div class="checkbox col-sm-8">
+                    <label><input type="checkbox" name="injuredShip" th:value="${ship.getId()}" th:text="${ship.getName()}"/></label>
+                </div>
+                <label class="control-label col-sm-4">Lapát sérülés</label>
+                <div class="col-sm-8">
+                    <select name="injuredOars" class="multi-select form-control" multiple="multiple">
+                        <option th:each="oar : ${oars}"
+                                th:value="${oar.getId()}"
+                                th:text="${oar.getName()}"/>
+                    </select>
+                </div>
             </div>
         </div>
     </form>
+</div>
+
+<div class="modal-footer">
+    <button type="submit" id="rentalSubmit" class="btn btn-primary" form="rentalForm">Befejezés</button>
+    <a class="btn btn-warning" role="button" th:onclick="${change}">Csere</a>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+</div>
 </html>

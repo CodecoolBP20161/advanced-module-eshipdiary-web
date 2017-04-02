@@ -8,23 +8,27 @@ $(document).ready( function () {
             dataSrc: '_embedded.rental'
         },
         columns: [
-            {data: 'captain'},
-            {data: 'ship'},
+            {   data: 'ship'
+            },
+            {   data: 'crewNames',
+                render: $.fn.dataTable.render.ellipsis(15, true, false)
+            },
+            {   data: 'cox'
+            },
             {
                 data: 'rentalStart',
                 searchable: false
             },
             {
-                data: 'rentalPeriod',
+                data: 'rentalEnd',
                 searchable: false
             },
             {
-                data: 'cox',
-                searchable: false
+                data: 'itinerary'
             },
             {
-                data: 'distance',
-                searchable: false
+                data: 'comment',
+                render: $.fn.dataTable.render.ellipsis(15, true, false)
             },
             {
                 sortable: false,
@@ -47,7 +51,8 @@ function multipleSelect () {
     $('.multi-select').multiselect({
         enableCaseInsensitiveFiltering: true,
         filterPlaceholder: 'Keresés...',
-        buttonWidth : '100%'
+        buttonWidth : '100%',
+        nonSelectedText: ' '
     });
 }
 
@@ -56,10 +61,14 @@ function rentalModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés";
             document.getElementById('rentalUpdate').innerHTML = result;
             document.getElementById('rentalSubmit').style.display = "inline";
+            $('#cox').hide();
             multipleSelect();
+            loadValidate();
+            selectShipsByType();
+            selectShipsByName();
+            displayCox();
         }
     });
 }
@@ -69,9 +78,7 @@ function rentalFinalModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Hajóbérlés befejezése";
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
         }
     });
@@ -82,9 +89,7 @@ function rentalCommentModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Megjegyzés hozzáfűzése";
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "inline";
             multipleSelect();
         }
     });
@@ -95,9 +100,7 @@ function rentalDetailsModal(link) {
         url: link,
         type: "OPTIONS",
         success: function (result) {
-            document.getElementById('rentalModalLabel').innerHTML = "Bérlés részletei";
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "none";
         }
     });
 }
@@ -134,7 +137,22 @@ function processData(data) {
     return data;
 }
 
-function submitFinalRentalLog(id) {
+function submitFinalRentalLog() {
+    $.ajax({
+        type: 'GET',
+        url: '/rentals/final/transaction',
+        data: {"form": JSON.stringify($("#rentalForm").serializeObject())},
+        success: function (msg) {
+            $('#rentalModal').modal('hide');
+            $('#rental-table').DataTable().ajax.reload(null, false);
+        },
+        dataType: 'json',
+        contentType: 'application/json'
+    });
+    return false;
+}
+
+function addAdminComment(id) {
     $.ajax({
         type: 'PATCH',
         url: '/api/rental/' + id,
@@ -148,3 +166,153 @@ function submitFinalRentalLog(id) {
     });
     return false;
 }
+
+function changeRental(id) {
+    $.ajax({
+        type: 'PATCH',
+        url: '/api/rental/' + id,
+        data: JSON.stringify($("#rentalForm").serializeObject()),
+        success: function (msg) {
+            $('#rental-table').DataTable().ajax.reload(null, false);
+        },
+        dataType: 'json',
+        contentType: 'application/json'
+    });
+    rentalModal("/rentals/final-and-change/" + id);
+}
+
+function loadValidate() {
+    $('#crew').on('change', function () {
+        this.setCustomValidity(validateCaptainPresence());
+    });
+    $('#rentalPeriod').on('input', function () {
+        this.setCustomValidity(validateRentalPeriod(this.value));
+    });
+}
+
+function validateCaptainPresence() {
+    var crew = $('#crew').val();
+    crew.push($('#cox').val());
+    if($('#role').val()!=='ADMIN' && !crew.includes($('#captain').val())) {
+        return "Felhasználó nincs a legénységben"
+    } else {
+        return ""
+    }
+}
+
+function validateRentalPeriod(rentalPeriod) {
+    if(rentalPeriod > minutesUntilMidnight()) {
+        return "A bérlési idő maximum a nap végéig tart"
+    } else if (rentalPeriod < 15) {
+        return "A bérlési idő minimum 15 perc"
+    } else if (rentalPeriod % 15 != 0) {
+        return "Negyedórás időközt használj"
+    } else {
+        return ""
+    }
+}
+
+function minutesUntilMidnight() {
+    var now = new Date();
+    var midnight = new Date();
+    midnight.setHours(24, 0, 0, 0);
+    return (midnight.getTime() - now.getTime())/ 1000 / 60;
+}
+
+function getShipsByType(id) {
+    $.ajax({
+        type: "GET",
+        url: "shipsByType",
+        data: {"typeId": id},
+        dataType: 'json',
+        success: function(data) {
+            var shipByName = $('#shipByName');
+            shipByName.empty();
+            $.each(data, function(index, value) {
+                shipByName.append($('<option></option>').text(value['name']).val(value['id']));
+                });
+            shipByName.multiselect('setOptions', {nonSelectedText: $('#shipByType option:selected').text()})
+            shipByName.val('').multiselect('rebuild');
+        }
+    });
+}
+
+function selectShipsByType() {
+    $('#shipByType').val('').multiselect({
+        buttonWidth: '100%',
+        nonSelectedText: 'Minden típus',
+        onChange: function (option, checked, select) {
+            getShipsByType(option.val());
+        }
+    })
+}
+
+function selectShipsByName() {
+    $('#shipByName').val('').multiselect({
+        enableCaseInsensitiveFiltering: true,
+        filterPlaceholder: 'Keresés...',
+        buttonWidth: '100%',
+        nonSelectedText: 'Minden hajó',
+        onChange: function (option, checked, select) {
+            displayCox(option.val());
+        }
+    })
+}
+
+function displayCox(id) {
+    $.ajax({
+        type: "GET",
+        url: "isShipCoxed",
+        data: {"shipId": id},
+        dataType: 'json',
+        success: function(data) {
+            if(data) {
+                $('#cox').show();
+            } else {
+                $('#cox').hide();
+            }
+        }
+    });
+}
+
+$.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {
+    var esc = function ( t ) {
+        return t
+            .replace( /&/g, '&amp;' )
+            .replace( /</g, '&lt;' )
+            .replace( />/g, '&gt;' )
+            .replace( /"/g, '&quot;' );
+    };
+
+    return function ( d, type, row ) {
+        // Order, search and type get the original data
+        if ( type !== 'display' ) {
+            return d;
+        }
+
+        if ( typeof d !== 'number' && typeof d !== 'string' ) {
+            console.log("wrong type inserted to ellpsis function: " + typeof d)
+            return d;
+        }
+
+        d = d.toString(); // cast numbers
+
+        if ( d.length < cutoff ) {
+            return d;
+        }
+
+        var shortened = d.substr(0, cutoff-1);
+
+        // Find the last white space character in the string
+        if ( wordbreak ) {
+            shortened = shortened.replace(/\s([^\s]*)$/, '');
+        }
+
+        // Protect against uncontrolled HTML input
+        if ( escapeHtml ) {
+            shortened = esc( shortened );
+        }
+
+        return '<span class="ellipsis" title="'+esc(d)+'">'+shortened+'&#8230;</span>';
+    };
+};

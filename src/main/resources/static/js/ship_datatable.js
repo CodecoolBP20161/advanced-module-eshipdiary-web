@@ -27,7 +27,7 @@ function shipActionButtons( data, type, row ) {
     var shouldBeActive = !(row.active);
     var activationLabel = shouldBeActive ? 'Aktiválás' : 'Inaktiválás';
     var buttonType = shouldBeActive ? 'success' : 'warning';
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/ships/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/ships/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipDeleteModal" role="button" onclick="shipDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setShipStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
     return editButton + deleteButton + statusChangeButton;
