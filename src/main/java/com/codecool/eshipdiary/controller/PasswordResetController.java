@@ -22,4 +22,9 @@ public class PasswordResetController {
         LOG.info("Password reset requested for email address: " + userEmail);
         return "redirect:/login";
     }
+
+    @RequestMapping(value = "/reset-password")
+    public String resetPassword() {
+        return "password/reset_password";
+    }
 }
