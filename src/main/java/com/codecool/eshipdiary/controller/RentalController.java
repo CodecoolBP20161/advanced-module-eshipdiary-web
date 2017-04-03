@@ -6,19 +6,19 @@ import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -132,7 +132,6 @@ public class RentalController {
         return result;
     }
 
-
     @RequestMapping(value = "/rentals/final/transaction", produces = "application/json")
     public @ResponseBody HashMap<String, String> finalRentalTransaction(@ModelAttribute("form") String form)
             throws ParseException {
@@ -179,5 +178,4 @@ public class RentalController {
 
         return returnData;
     }
-
 }
