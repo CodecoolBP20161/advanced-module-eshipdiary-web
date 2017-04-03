@@ -22,12 +22,16 @@
             <strong>Bejelentkezés szükséges.</strong>
         </div>
         <label for="inputUsername" class="sr-only">Felhasználónév</label>
-        <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Felhasználónév"
+        <div class="input-group"> <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+            <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Felhasználónév"
                required="required" autofocus="autofocus"/>
+        </div>
 
         <label for="inputPassword" class="sr-only">Jelszó</label>
-        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Jelszó"
+        <div class="input-group"> <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+            <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Jelszó"
                required="required"/>
+        </div>
 
         <div class="checkbox">
             <label>
