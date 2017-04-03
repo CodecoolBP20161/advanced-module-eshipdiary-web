@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PasswordResetController {
     private static final Logger LOG = LoggerFactory.getLogger(PasswordResetController.class);
 
-    @RequestMapping(value = {"forgot-password"})
+    @RequestMapping(value = "/forgot-password")
     public String getForgotPasswordPage() {
         return "password/forgot_password";
     }
 
-    @RequestMapping(value = "/password-reset", method = RequestMethod.POST)
+    @RequestMapping(value = "/forgot-password", method = RequestMethod.POST)
     public String sendEmailWithPasswordResetToken(@RequestParam("email") String userEmail){
         LOG.info("Password reset requested for email address: " + userEmail);
         return "redirect:/login";
