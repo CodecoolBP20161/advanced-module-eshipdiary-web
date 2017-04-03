@@ -63,7 +63,7 @@ function rentalModal(link) {
         success: function (result) {
             document.getElementById('rentalUpdate').innerHTML = result;
             document.getElementById('rentalSubmit').style.display = "inline";
-            $('#cox').hide();
+            $('#coxSelect').hide();
             multipleSelect();
             loadValidate();
             selectShipsByType();
@@ -185,6 +185,9 @@ function loadValidate() {
     $('#crew').on('change', function () {
         this.setCustomValidity(validateCaptainPresence());
     });
+    $('#cox').on('change', function () {
+        this.setCustomValidity(validateCaptainPresence());
+    });
     $('#rentalPeriod').on('input', function () {
         this.setCustomValidity(validateRentalPeriod(this.value));
     });
@@ -267,9 +270,9 @@ function displayCox(id) {
         dataType: 'json',
         success: function(data) {
             if(data) {
-                $('#cox').show();
+                $('#coxSelect').show();
             } else {
-                $('#cox').hide();
+                $('#coxSelect').hide();
             }
         }
     });
@@ -317,4 +320,3 @@ $.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {
         return '<span class="ellipsis" title="'+esc(d)+'">'+shortened+'&#8230;</span>';
     };
 };
-
