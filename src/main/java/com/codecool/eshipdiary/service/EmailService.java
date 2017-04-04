@@ -30,7 +30,20 @@ public class EmailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             messageHelper.setTo(user.getEmailAddress());
             messageHelper.setSubject("Sikeres regisztráció");
-            String content = emailContentBuilder.build(user, link);
+            String content = emailContentBuilder.buildWelcome(user, link);
+            messageHelper.setText(content, true);
+        };
+
+        return messagePreparator;
+    }
+
+    public MimeMessagePreparator prepareForgotPasswordEmail(User user, String link) {
+        LOG.debug("Sending email to the following user {}", user.toString());
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            messageHelper.setTo(user.getEmailAddress());
+            messageHelper.setSubject("Új jelszó kérése");
+            String content = emailContentBuilder.buildPasswordReset(user, link);
             messageHelper.setText(content, true);
         };
 
