@@ -7,7 +7,7 @@
         <p th:text="${user.getUserName()} + ' felhasználónévvel sikeresen regisztráltál a hajófoglalási rendszerbe.'
         + ' Ideiglenes jelszavad a választott felhasználóneved alapján: '
         + ${user.getUserName()}"></p>
-        <p>A jelszót az alábbi linken tudod módosítani: </p> <a th:href="${link}">LINK</a>
+        <p>A jelszót <a th:href="${link}">ezen a linken</a> tudod módosítani.</p>
     </div>
 </body>
 </html>
