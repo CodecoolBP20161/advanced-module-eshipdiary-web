@@ -3,6 +3,7 @@ package com.codecool.eshipdiary.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 
 @Data
@@ -26,7 +27,14 @@ public class PasswordResetToken {
     public PasswordResetToken(String token, User user) {
         this.token = token;
         this.user = user;
-        this.expiryDate = new Date();
+        this.expiryDate = calculateExpiryDate(EXPIRATION);
 
+    }
+
+    private Date calculateExpiryDate(final int expiryTimeInMinutes) {
+        final Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(new Date().getTime());
+        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
+        return new Date(cal.getTime().getTime());
     }
 }
