@@ -90,8 +90,9 @@ public class ShipController {
     public @ResponseBody List<Ship> getShipsByShipType(@RequestParam("typeId") Long id) {
         Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
         List<Ship> shipsByType = new ArrayList<>();
-
-        if(type.isPresent()) {
+        if (id == 0) {
+            shipRepositoryService.getAllShips().forEach(shipsByType::add);
+        } else if (type.isPresent()) {
             shipRepositoryService.getAllShipsByType(type.get()).forEach(shipsByType::add);
         }
         return shipsByType;
