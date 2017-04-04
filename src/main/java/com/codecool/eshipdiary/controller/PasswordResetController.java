@@ -39,8 +39,8 @@ public class PasswordResetController {
         LOG.info("Password reset requested for email address: " + userEmail);
         Optional<User> user = userRepository.findOneByEmailAddress(userEmail);
         if (!user.isPresent()) {
+            LOG.info("No user found with email address: " + userEmail);
             return "redirect:/login";
-//            TODO: do something, e.g. throw new UserNotFoundException();
         }
         User match = user.get();
         String token = UUID.randomUUID().toString(); // generate token
@@ -48,7 +48,7 @@ public class PasswordResetController {
         LOG.info("constructed password reset link: " + link);
 
         userService.createPasswordResetTokenForUser(match, token); // save token to user in DB
-        emailService.sendEmail(emailService.prepareRegistrationEmail(match, link));
+        emailService.sendEmail(emailService.prepareForgotPasswordEmail(match, link));
         return "redirect:/login";
     }
 
