@@ -18,7 +18,7 @@ public class HomeController {
         if(auth.getAuthorities().toString().contains("ADMIN")){
             return "redirect:/users";
         }
-        return "index";
+        return "redirect:/rentals";
     }
 
 }
