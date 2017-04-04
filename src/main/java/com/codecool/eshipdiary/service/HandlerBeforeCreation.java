@@ -4,10 +4,15 @@ import com.codecool.eshipdiary.model.*;
 import com.codecool.eshipdiary.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.core.annotation.HandleAfterCreate;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Component
 @RepositoryEventHandler
@@ -17,14 +22,23 @@ public class HandlerBeforeCreation {
     private final ClubRepository clubRepository;
     private final RoleRepository roleRepository;
     private final EmailService emailService;
+    private final UserRepositoryService userRepositoryService;
     private Club club;
+    private HttpServletRequest context;
 
     @Autowired
-    public HandlerBeforeCreation(UserRepository userRepository, ClubRepository clubRepository, RoleRepository roleRepository, EmailService emailService) {
+    public HandlerBeforeCreation(UserRepository userRepository,
+                                 ClubRepository clubRepository,
+                                 RoleRepository roleRepository,
+                                 EmailService emailService,
+                                 UserRepositoryService userRepositoryService,
+                                 HttpServletRequest httpServletRequest) {
         this.userRepository = userRepository;
         this.clubRepository = clubRepository;
         this.roleRepository = roleRepository;
         this.emailService = emailService;
+        this.userRepositoryService = userRepositoryService;
+        this.context = httpServletRequest;
     }
 
 
@@ -51,7 +65,16 @@ public class HandlerBeforeCreation {
         }
         user.setRole(userRole);
 
-        emailService.sendEmail(emailService.prepareRegistrationEmail(user, "www.example.com/"));
+
+    }
+
+    @HandleAfterCreate(User.class)
+    public void welcomeUser(User user) {
+        String token = UUID.randomUUID().toString(); // generate token
+        String link = getAppUrl(context) + "/reset-password?token=" + token;
+        log.info("constructed password reset link: " + link);
+        userRepositoryService.createPasswordResetTokenForUser(user, token); // save token to user in DB
+        emailService.sendEmail(emailService.prepareRegistrationEmail(user, link));
     }
 
     @HandleBeforeCreate(Oar.class)
@@ -86,5 +109,9 @@ public class HandlerBeforeCreation {
             clubRepository.save(newClub);
             club = newClub;
         }
+    }
+
+    private String getAppUrl(HttpServletRequest request) {
+        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 }
