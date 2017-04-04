@@ -46,15 +46,15 @@ public class PasswordResetController {
         Optional<User> user = userRepository.findOneByEmailAddress(userEmail);
         if (!user.isPresent()) {
             LOG.info("No user found with email address: " + userEmail);
-            return "redirect:/login";
-        }
-        User match = user.get();
-        String token = UUID.randomUUID().toString(); // generate token
-        String link = getAppUrl(request) + "/reset-password/" + token;
-        LOG.info("constructed password reset link: " + link);
+        } else {
+            User match = user.get();
+            String token = UUID.randomUUID().toString(); // generate token
+            String link = getAppUrl(request) + "/reset-password/" + token;
+            LOG.info("constructed password reset link: " + link);
 
-        userService.createPasswordResetTokenForUser(match, token); // save token to user in DB
-        emailService.sendEmail(emailService.prepareForgotPasswordEmail(match, link));
+            userService.createPasswordResetTokenForUser(match, token); // save token to user in DB
+            emailService.sendEmail(emailService.prepareForgotPasswordEmail(match, link));
+        }
         return "redirect:/login?forgot";
     }
 
