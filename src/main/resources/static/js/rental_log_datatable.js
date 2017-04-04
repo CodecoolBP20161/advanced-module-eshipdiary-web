@@ -79,7 +79,10 @@ function rentalFinalModal(link) {
         type: "OPTIONS",
         success: function (result) {
             document.getElementById('rentalUpdate').innerHTML = result;
-            multipleSelect();
+            $('#injuredOars').val('').multiselect({
+                nonSelectedText: ' ',
+                buttonWidth: '100%'
+            });
         }
     });
 }

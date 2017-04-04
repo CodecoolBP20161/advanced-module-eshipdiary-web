@@ -16,20 +16,18 @@
                 <textarea name="comment" rows="3" class="form-control" placeholder="Megjegyzés..."></textarea>
             </div>
         </div>
-        <div class="col-sm-12">
-            <div>
-                <label class="control-label col-sm-4">Hajó sérülés</label>
-                <div class="checkbox col-sm-8">
-                    <label><input type="checkbox" name="injuredShip" th:value="${ship.getId()}" th:text="${ship.getName()}"/></label>
-                </div>
-                <label class="control-label col-sm-4">Lapát sérülés</label>
-                <div class="col-sm-8">
-                    <select name="injuredOars" class="multi-select form-control" multiple="multiple">
-                        <option th:each="oar : ${oars}"
-                                th:value="${oar.getId()}"
-                                th:text="${oar.getName()}"/>
-                    </select>
-                </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4">Hajó sérülés</label>
+            <div class="checkbox col-sm-8">
+                <label><input type="checkbox" name="injuredShip" th:value="${ship.getId()}" th:text="${ship.getName()}"/></label>
+            </div>
+            <label class="control-label col-sm-4">Lapát sérülés</label>
+            <div class="col-sm-8">
+                <select name="injuredOars" id="injuredOars" class="form-control" multiple="multiple">
+                    <option th:each="oar : ${oars}"
+                            th:value="${oar.getId()}"
+                            th:text="${oar.getName()}"/>
+                </select>
             </div>
         </div>
     </form>
@@ -37,7 +35,7 @@
 
 <div class="modal-footer">
     <button type="submit" id="rentalSubmit" class="btn btn-primary" form="rentalForm">Befejezés</button>
-    <a class="btn btn-warning" role="button" th:onclick="${change}">Csere</a>
+        <a class="btn btn-warning" role="button" th:onclick="${change}">Csere</a>
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
 </div>
 </html>
