@@ -52,7 +52,25 @@ function multipleSelect () {
         enableCaseInsensitiveFiltering: true,
         filterPlaceholder: 'Keresés...',
         buttonWidth : '100%',
-        nonSelectedText: ' '
+        nonSelectedText: ' ',
+        buttonText: function(options, select) {
+            if (options.length === 0) {
+                return ' ';
+            } else if (options.length > 2) {
+                return options.length + ' választott';
+            } else {
+                var labels = [];
+                options.each(function() {
+                    if ($(this).attr('label') !== undefined) {
+                        labels.push($(this).attr('label'));
+                    }
+                    else {
+                        labels.push($(this).html());
+                    }
+                });
+                return labels.join(', ') + '';
+            }
+        }
     });
 }
 
@@ -68,7 +86,6 @@ function rentalModal(link) {
             loadValidate();
             selectShipsByType();
             selectShipsByName();
-            displayCox();
         }
     });
 }
@@ -200,7 +217,7 @@ function validateCaptainPresence() {
     var crew = $('#crew').val();
     crew.push($('#cox').val());
     if($('#role').val()!=='ADMIN' && !crew.includes($('#captain').val())) {
-        return "Felhasználó nincs a legénységben"
+        return "Bejelentkezett felhasználó nincs a legénységben"
     } else {
         return ""
     }
