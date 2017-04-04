@@ -9,4 +9,14 @@ function resetPass(){
     });
 }
 
+function checkPass() {
+    var password = document.getElementById('password');
+    var confirm = document.getElementById('confirm');
+
+    if (password.value == confirm.value) {
+        confirm.setCustomValidity("");
+    } else {
+        confirm.setCustomValidity("A jelszó nem egyezik");
+    }
+}
 
