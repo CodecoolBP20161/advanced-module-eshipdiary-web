@@ -71,7 +71,7 @@ public class HandlerBeforeCreation {
     @HandleAfterCreate(User.class)
     public void welcomeUser(User user) {
         String token = UUID.randomUUID().toString(); // generate token
-        String link = getAppUrl(context) + "/reset-password?token=" + token;
+        String link = getAppUrl(context) + "/reset-password/" + token;
         log.info("constructed password reset link: " + link);
         userRepositoryService.createPasswordResetTokenForUser(user, token); // save token to user in DB
         emailService.sendEmail(emailService.prepareRegistrationEmail(user, link));
