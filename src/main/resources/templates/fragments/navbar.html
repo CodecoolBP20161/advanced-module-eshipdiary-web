@@ -7,8 +7,7 @@
             <ul class="nav navbar-nav">
                 <li><img alt="Brand" th:src="@{/images/banner.png}" height="50px" /></li>
                 <li><a th:href="@{/rentals}">Hajónapló</a></li>
-                <div sec:authorize="hasAuthority('ADMIN')">
-                <li class="dropdown">
+                <li sec:authorize="hasAuthority('ADMIN')" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a th:href="@{/users}">Tagok</a></li>
@@ -18,7 +17,6 @@
                         <li><a th:href="@{/oars}">Evezők</a></li>
                     </ul>
                 </li>
-                </div>
             </ul>
         <ul class="nav navbar-nav navbar-right">
             <li th:inline="text">
