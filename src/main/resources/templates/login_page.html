@@ -18,6 +18,12 @@
         <div class="alert alert-success" role="alert" th:if="${param.logout}">
             <strong>Sikeres kijelentkezés.</strong>
         </div>
+        <div class="alert alert-success" role="alert" th:if="${param.reset}">
+            <strong>Sikeres jelszóváltoztatás</strong>
+        </div>
+        <div class="alert alert-success" role="alert" th:if="${param.forgot}">
+            <strong>Link elküldve a megadott E-mail címre</strong>
+        </div>
         <div class="alert alert-warning" role="alert" th:if="${param.required}">
             <strong>Bejelentkezés szükséges.</strong>
         </div>
