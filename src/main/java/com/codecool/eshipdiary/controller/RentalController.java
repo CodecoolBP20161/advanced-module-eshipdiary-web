@@ -2,24 +2,15 @@ package com.codecool.eshipdiary.controller;
 
 import com.codecool.eshipdiary.model.*;
 import com.codecool.eshipdiary.service.*;
-import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -154,8 +145,6 @@ public class RentalController {
 
         if (rental.getInjuredShip() != null) {
             Ship injuredShip = rental.getInjuredShip();
-//            Optional<Ship> shipOptional = shipRepositoryService.getShipById(rental.getInjuredShip().getId());
-//            Ship injuredShip = shipOptional.isPresent() ? shipOptional.get() : new Ship();
             injuredShip.setActive(false);
             shipRepositoryService.save(injuredShip);
             match.setInjuredShip(injuredShip);
@@ -164,10 +153,6 @@ public class RentalController {
         if (rental.getInjuredOars() != null) {
             match.setInjuredOars(rental.getInjuredOars());
             for (Oar oar : match.getInjuredOars()) {
-//                Optional<Oar> oarOptional = oarRepositoryService.getOarById(oar.getId());
-//                Oar injuredOar = oarOptional.isPresent() ? oarOptional.get() : new Oar();
-//                injuredOar.setActive(false);
-//                oarRepositoryService.save(injuredOar);
                 oar.setActive(false);
                 oarRepositoryService.save(oar);
             }
@@ -175,7 +160,6 @@ public class RentalController {
 
         match.setFinalized(true);
         rentalLogRepositoryService.save(match);
-        LOG.info("rental updated? {}", match.isFinalized());
         return "redirect:/rentals";
     }
 
