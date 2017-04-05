@@ -18,3 +18,10 @@ server:
     session:
         cookie.max-age: 1800
         timeout: 1800
+
+purge:
+    cron:
+#        5am every day
+        expression: 0 0 5 * * ?
+#        every 10 seconds
+#        expression: "*/10 * * * * *"
