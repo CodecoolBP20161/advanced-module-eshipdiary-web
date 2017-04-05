@@ -25,7 +25,7 @@ function oarActionButtons( data, type, row ) {
     var shouldBeActive = !(row.active);
     var activationLabel = shouldBeActive ? 'Aktiválás' : 'Inaktiválás';
     var buttonType = shouldBeActive ? 'success' : 'warning';
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/admin/oars/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#oarDeleteModal" role="button" onclick="oarDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setOarStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
     return editButton + deleteButton + statusChangeButton;
@@ -69,7 +69,7 @@ function oarModal(link, name){
 
 function validateOar(id){
     $.ajax({
-        url:'/oars/' + id,
+        url:'/admin/oars/' + id,
         type:'POST',
         data:$('#oarForm').serialize(),
         success:function(result){
@@ -82,11 +82,11 @@ function validateOar(id){
 
 function submitOar(id){
     var data = $("#oarForm").serializeObject();
-    data.owner = window.location.origin + 'api/user/' + data.owner;
+    data.owner = window.location.origin + '/api/user/' + data.owner;
     data.type = window.location.origin + "/api/shipType/" + data.type;
     $.ajax({
         type: id == 0 ? 'POST' : 'PATCH',
-        url: id == 0 ? '/api/oar' : 'api/oar/' + id,
+        url: id == 0 ? '/api/oar' : '/api/oar/' + id,
         data: JSON.stringify(data),
         success: function (msg) {
             document.getElementById('oarModalLabel').innerHTML = "";

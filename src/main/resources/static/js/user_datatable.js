@@ -22,9 +22,9 @@ $(document).ready( function () {
 });
 
 function userActionButtons( data, type, row ) {
-    var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
-    var shipButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/ships/user/'+row.id+'\', \'Új hajó\');">Hajó</a>';
-    var oarButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/user/'+row.id+'\', \'Új evező\');">Evező</a>';
+    var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/admin/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
+    var shipButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/admin/ships/user/'+row.id+'\', \'Új hajó\');">Hajó</a>';
+    var oarButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/admin/oars/user/'+row.id+'\', \'Új evező\');">Evező</a>';
     var current = '';
     if(document.getElementById("current").value !== row.id) {
         current = deleteButton(row);
@@ -98,7 +98,7 @@ function updateModal(link, name){
 
 function validateForm(id){
     $.ajax({
-        url:'/users/' + id,
+        url:'/admin/users/' + id,
         type:'POST',
         data:$('#userForm').serialize(),
         success:function(result){
@@ -113,7 +113,7 @@ function submitForm(id){
     var data = $("#userForm").serializeObject();
     $.ajax({
         type: id == 0 ? 'POST' : 'PATCH',
-        url: id == 0 ? '/api/user' : 'api/user/' + id,
+        url: id == 0 ? '/api/user' : '/api/user/' + id,
         data: JSON.stringify(data),
         success: function (msg) {
             document.getElementById('updateModalLabel').innerHTML = "";

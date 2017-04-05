@@ -52,12 +52,12 @@ public class ShipController {
         return (List<ShipType>) shipTypeRepositoryService.getAllShipType();
     }
 
-    @RequestMapping(value = {"/ships", "/ships/**"})
+    @RequestMapping(value = {"/admin/ships", "/admin/ships/**"})
     public String getShipTable() {
         return "ships";
     }
 
-    @RequestMapping(value = "/ships/{shipId}", method = RequestMethod.OPTIONS)
+    @RequestMapping(value = "/admin/ships/{shipId}", method = RequestMethod.OPTIONS)
     public String updateShipForm(@PathVariable("shipId") Long id, Model model){
         Optional<Ship> ship = shipRepositoryService.getShipById(id);
         model.addAttribute("ship", ship.isPresent() ? ship.get() : new Ship());
@@ -65,7 +65,7 @@ public class ShipController {
         return "ships/ship_form";
     }
 
-    @RequestMapping(value = "/ships/user/{userId}", method = RequestMethod.OPTIONS)
+    @RequestMapping(value = "/admin/ships/user/{userId}", method = RequestMethod.OPTIONS)
     public String createShip(@PathVariable("userId") Long id, Model model){
         Optional<User> user = userRepositoryService.getUserById(id);
         Ship ship = new Ship();
@@ -75,7 +75,7 @@ public class ShipController {
         return "ships/ship_form";
     }
 
-    @RequestMapping(value = "ships/{shipId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/ships/{shipId}", method = RequestMethod.POST)
     public String updateShip(@PathVariable("shipId") Long id, @ModelAttribute("ship") @Valid Ship ship, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateShip(" + id + ")");
         if(result.hasErrors()) {
