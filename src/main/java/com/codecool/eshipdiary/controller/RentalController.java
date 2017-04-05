@@ -5,6 +5,9 @@ import com.codecool.eshipdiary.service.*;
 import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -46,6 +49,13 @@ public class RentalController {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<User> user = userRepositoryService.getUserByUserName(userName);
         rentalLog.setCaptain(user.isPresent() ? user.get() : null);
+        return rentalLog;
+    }
+
+    @ModelAttribute("finalRental")
+    public RentalLog finalRental() {
+        RentalLog rentalLog = new RentalLog();
+        rentalLog.setRentalEnd(new Date());
         return rentalLog;
     }
 
@@ -98,9 +108,8 @@ public class RentalController {
         model.addAttribute("ship", match.getChosenShip());
         model.addAttribute("oars", match.getOars());
         model.addAttribute("comment", match.getComment());
-        model.addAttribute("end", new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date()));
-        model.addAttribute("change", "return changeRental(" + id + ")");
-        model.addAttribute("submit", "return submitFinalRentalLog()");
+//        model.addAttribute("change", "return changeRental(" + id + ")");
+        model.addAttribute("link", "/rentals/final/transaction/" + id);
         return "rental_log/rental_finalize";
     }
 
@@ -132,50 +141,42 @@ public class RentalController {
         return result;
     }
 
-    @RequestMapping(value = "/rentals/final/transaction", produces = "application/json")
-    public @ResponseBody HashMap<String, String> finalRentalTransaction(@ModelAttribute("form") String form)
-            throws ParseException {
-        LOG.info("Form data: {}", form);
+    @RequestMapping(value = "/rentals/final/transaction/{rentalId}", method = RequestMethod.POST)
+    public String finalRentalTransaction(@PathVariable("rentalId") Long id, @ModelAttribute RentalLog rental) {
+        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
+        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
 
-        HashMap<String, String> returnData = new HashMap<>();
-        JsonObject formObject = new Gson().fromJson(form, JsonObject.class);
+        match.setRentalEnd(rental.getRentalEnd());
 
-        //load rental
-        Long id = formObject.get("rentalId").getAsLong();
-        Optional<RentalLog> rentalOptional = rentalLogRepositoryService.getRentalLogById(id);
-        RentalLog rental = rentalOptional.isPresent() ? rentalOptional.get() : null;
-        assert rental != null;
-
-        //set finalized
-        rental.setFinalized(true);
-
-        //set rentalEnd
-        DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-        Date end = formatter.parse(formObject.get("rentalEnd").getAsString());
-        rental.setRentalEnd(end);
-
-        //set comment
-        rental.setComment(formObject.get("comment").getAsString());
-
-        //set injuredShip and set injured Ship activity to false
-        Optional<Ship> injuredShipOptional = shipRepositoryService.getShipById(formObject.get("injuredShip").getAsLong());
-        Ship injuredShip = injuredShipOptional.isPresent() ? injuredShipOptional.get() : new Ship();
-        injuredShip.setActive(false);
-        rental.setInjuredShip(injuredShip);
-
-        //set injuredOars and set injured oars activity to false
-        JsonArray injuredOarsJsonArray = formObject.get("injuredOars").getAsJsonArray();
-        List<Oar> injuredOars = new ArrayList<>();
-        for (JsonElement oarIdJson : injuredOarsJsonArray) {
-            Long oarId = oarIdJson.getAsLong();
-            LOG.info("oar: {}", oarId);
-            Optional<Oar> injuredOarOptional = oarRepositoryService.getOarById(oarId);
-            Oar injuredOar = injuredOarOptional.isPresent() ? injuredOarOptional.get() : new Oar();
-            injuredOar.setActive(false);
-            injuredOars.add(injuredOar); //TODO: this shit doesn't seem to work for the last element...
+        if (rental.getComment() != null) {
+            match.setComment(rental.getComment());
         }
-        rental.setInjuredOars(injuredOars);
 
-        return returnData;
+        if (rental.getInjuredShip() != null) {
+            Ship injuredShip = rental.getInjuredShip();
+//            Optional<Ship> shipOptional = shipRepositoryService.getShipById(rental.getInjuredShip().getId());
+//            Ship injuredShip = shipOptional.isPresent() ? shipOptional.get() : new Ship();
+            injuredShip.setActive(false);
+            shipRepositoryService.save(injuredShip);
+            match.setInjuredShip(injuredShip);
+        }
+
+        if (rental.getInjuredOars() != null) {
+            match.setInjuredOars(rental.getInjuredOars());
+            for (Oar oar : match.getInjuredOars()) {
+//                Optional<Oar> oarOptional = oarRepositoryService.getOarById(oar.getId());
+//                Oar injuredOar = oarOptional.isPresent() ? oarOptional.get() : new Oar();
+//                injuredOar.setActive(false);
+//                oarRepositoryService.save(injuredOar);
+                oar.setActive(false);
+                oarRepositoryService.save(oar);
+            }
+        }
+
+        match.setFinalized(true);
+        rentalLogRepositoryService.save(match);
+        LOG.info("rental updated? {}", match.isFinalized());
+        return "redirect:/rentals";
     }
+
 }
