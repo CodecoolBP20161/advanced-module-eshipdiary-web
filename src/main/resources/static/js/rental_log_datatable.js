@@ -191,7 +191,7 @@ function loadValidate() {
         this.setCustomValidity(validateCaptainPresence());
     });
     $('#cox').on('change', function () {
-        this.setCustomValidity(validateCaptainPresence());
+        document.getElementById('crew').setCustomValidity(validateCaptainPresence());
     });
     $('#rentalPeriod').on('input', function () {
         this.setCustomValidity(validateRentalPeriod(this.value));
