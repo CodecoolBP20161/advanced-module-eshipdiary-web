@@ -45,9 +45,7 @@ public class RentalController {
 
     @ModelAttribute("finalRental")
     public RentalLog finalRental() {
-        RentalLog rentalLog = new RentalLog();
-        rentalLog.setRentalEnd(new Date());
-        return rentalLog;
+        return new RentalLog();
     }
 
     @ModelAttribute("users")
@@ -137,7 +135,7 @@ public class RentalController {
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
 
-        match.setRentalEnd(rental.getRentalEnd());
+        match.setRentalEnd(new Date());
 
         if (rental.getComment() != null) {
             match.setComment(rental.getComment());
