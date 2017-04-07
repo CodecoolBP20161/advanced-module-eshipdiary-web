@@ -16,9 +16,9 @@ public class HomeController {
     public String index() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(auth.getAuthorities().toString().contains("ADMIN")){
-            return "redirect:/users";
+            return "redirect:/admin/users";
         }
-        return "index";
+        return "redirect:/rentals";
     }
 
 }

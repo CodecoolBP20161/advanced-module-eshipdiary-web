@@ -230,7 +230,7 @@ function minutesUntilMidnight() {
 function getShipsByType(id) {
     $.ajax({
         type: "GET",
-        url: "shipsByType",
+        url: "/shipsByType",
         data: {"typeId": id},
         dataType: 'json',
         success: function(data) {
@@ -270,7 +270,7 @@ function selectShipsByName() {
 function displayCox(id) {
     $.ajax({
         type: "GET",
-        url: "isShipCoxed",
+        url: "/isShipCoxed",
         data: {"shipId": id},
         dataType: 'json',
         success: function(data) {

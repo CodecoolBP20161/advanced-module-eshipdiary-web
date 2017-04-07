@@ -58,10 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/api_login").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/forgot-password").permitAll()
+                .antMatchers("/reset-password/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/**").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/api/**").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority("ADMIN")
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
 
                     .and()

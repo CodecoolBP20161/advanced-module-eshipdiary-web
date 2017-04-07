@@ -20,7 +20,7 @@ $(document).ready( function () {
 
 
 function shipTypeActionButtons( data, type, row ) {
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipTypeModal" role="button" onclick="shipTypeModal(\'/shiptypes/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipTypeModal" role="button" onclick="shipTypeModal(\'/admin/shiptypes/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     return editButton + deleteButton(row);
 }
 
@@ -56,7 +56,7 @@ function shipTypeModal(link, name){
 
 function validateShipType(id){
     $.ajax({
-        url:'/shiptypes/' + id,
+        url:'/admin/shiptypes/' + id,
         type:'POST',
         data:$('#shipTypeForm').serialize(),
         success:function(result){
@@ -71,7 +71,7 @@ function submitShipType(id){
     var data = $("#shipTypeForm").serializeObject();
     $.ajax({
         type: id == 0 ? 'POST' : 'PATCH',
-        url: id == 0 ? '/api/shipType' : 'api/shipType/' + id,
+        url: id == 0 ? '/api/shipType' : '/api/shipType/' + id,
         data: JSON.stringify(data),
         success: function (msg) {
             document.getElementById('shipTypeModalLabel').innerHTML = "";

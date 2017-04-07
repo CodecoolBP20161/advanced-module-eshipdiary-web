@@ -13,10 +13,18 @@ public class EmailContentBuilder {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public String build(User user) {
+    public String buildWelcome(User user, String link) {
         Context context = new Context();
         context.setVariable("user", user);
+        context.setVariable("link", link);
         return templateEngine.process("email/registration_email", context);
+    }
+
+    public String buildPasswordReset(User user, String link) {
+        Context context = new Context();
+        context.setVariable("user", user);
+        context.setVariable("link", link);
+        return templateEngine.process("email/password_reset_email", context);
     }
 }
 

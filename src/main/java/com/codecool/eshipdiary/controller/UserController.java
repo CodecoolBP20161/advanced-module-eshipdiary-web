@@ -31,14 +31,14 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    @RequestMapping(value = "/users")
+    @RequestMapping(value = "/admin/users")
     public String getUserTable(Model model) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("current", userRepositoryService.getUserByUserName(userName).get().getId());
         return "users";
     }
 
-    @RequestMapping(value = "/users/{userId}")
+    @RequestMapping(value = "/admin/users/{userId}")
     public String updateUser(@PathVariable("userId") Long id, Model model){
         Optional<User> match = userRepositoryService.getUserById(id);
         model.addAttribute("user", match.isPresent() ? match.get() : new User());
@@ -46,7 +46,7 @@ public class UserController {
         return "users/user_form";
     }
 
-    @RequestMapping(value = "/users/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/users/{userId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("userId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateForm(" + id + ")");
         if(userRepositoryService.getUserByUserName(user.getUserName())

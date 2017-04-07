@@ -24,12 +24,12 @@ public class ShipTypeController {
     @Autowired
     ShipTypeRepositoryService shipTypeRepositoryService;
 
-    @RequestMapping(value = {"/shiptypes", "/shiptypes/**"})
+    @RequestMapping(value = {"/admin/shiptypes", "/admin/shiptypes/**"})
     public String getShipTypeTable() {
         return "shiptypes";
     }
 
-    @RequestMapping(value = "/shiptypes/{shipTypeId}", method = RequestMethod.OPTIONS)
+    @RequestMapping(value = "/admin/shiptypes/{shipTypeId}", method = RequestMethod.OPTIONS)
     public String updateShipType(@PathVariable("shipTypeId") Long id, Model model){
         Optional<ShipType> shipType = shipTypeRepositoryService.getShipTypeById(id);
         model.addAttribute("shipType", shipType.isPresent() ? shipType.get() : new ShipType());
@@ -37,7 +37,7 @@ public class ShipTypeController {
         return "shiptypes/shiptype_form";
     }
 
-    @RequestMapping(value = "/shiptypes/{shipTypeId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/shiptypes/{shipTypeId}", method = RequestMethod.POST)
     public String saveShipType(@PathVariable("shipTypeId") Long id, @ModelAttribute("shipType") @Valid ShipType shipType, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateShipType(" + id + ")");
         if(result.hasErrors()) {

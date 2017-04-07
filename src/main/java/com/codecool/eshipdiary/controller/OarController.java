@@ -45,12 +45,12 @@ public class OarController {
         return (List<ShipType>) shipTypeRepositoryService.getAllShipType();
     }
 
-    @RequestMapping(value = {"/oars", "/oars/**"})
+    @RequestMapping(value = {"/admin/oars", "/admin/oars/**"})
     public String getOarTable() {
         return "oars";
     }
 
-    @RequestMapping(value = "/oars/{oarId}", method = RequestMethod.OPTIONS)
+    @RequestMapping(value = "/admin/oars/{oarId}", method = RequestMethod.OPTIONS)
     public String updateOar(@PathVariable("oarId") Long id, Model model){
         Optional<Oar> oar = oarRepositoryService.getOarById(id);
         model.addAttribute("oar", oar.isPresent() ? oar.get() : new Oar());
@@ -58,7 +58,7 @@ public class OarController {
         return "oars/oar_form";
     }
 
-    @RequestMapping(value = "/oars/user/{userId}", method = RequestMethod.OPTIONS)
+    @RequestMapping(value = "/admin/oars/user/{userId}", method = RequestMethod.OPTIONS)
     public String createOar(@PathVariable("userId") Long id, Model model){
         Optional<User> user = userRepositoryService.getUserById(id);
         Oar oar = new Oar();
@@ -68,7 +68,7 @@ public class OarController {
         return "oars/oar_form";
     }
 
-    @RequestMapping(value = "/oars/{oarId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/oars/{oarId}", method = RequestMethod.POST)
     public String saveOar(@PathVariable("oarId") Long id, @ModelAttribute("oar") @Valid Oar oar, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateOar(" + id + ")");
         if(result.hasErrors()) {
