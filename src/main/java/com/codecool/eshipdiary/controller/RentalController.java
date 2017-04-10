@@ -82,32 +82,28 @@ public class RentalController {
 
     @RequestMapping(value = "/rentals/details/{rentalId}", method = RequestMethod.OPTIONS)
     public String rentalLogDetails(@PathVariable("rentalId") Long id, Model model){
-        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
-        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
-        model.addAttribute("rental", match);
-        model.addAttribute("crewDetails", crewDetails(match));
+        RentalLog originalRental = getRentalLogById(id);
+        model.addAttribute("rental", originalRental);
+        model.addAttribute("crewDetails", crewDetails(originalRental));
         return "rental_log/rental_details";
     }
 
     @RequestMapping(value = "/rentals/final/{rentalId}", method = RequestMethod.OPTIONS)
     public String rentalLogFinalize(@PathVariable("rentalId") Long id, Model model){
-        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
-        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
-        model.addAttribute("rentalId", match.getId());
-        model.addAttribute("ship", match.getChosenShip());
-        model.addAttribute("oars", match.getOars());
-        model.addAttribute("comment", match.getComment());
-//        model.addAttribute("change", "return changeRental(" + id + ")");
+        RentalLog originalRental = getRentalLogById(id);
+        model.addAttribute("rentalId", originalRental.getId());
+        model.addAttribute("ship", originalRental.getChosenShip());
+        model.addAttribute("oars", originalRental.getOars());
+        model.addAttribute("comment", originalRental.getComment());
         model.addAttribute("link", "/rentals/final/transaction/" + id);
         return "rental_log/rental_finalize";
     }
 
     @RequestMapping(value = "/rentals/final-and-change/{rentalId}", method = RequestMethod.OPTIONS)
     public String rentalLogFinalizeAndChange(@PathVariable("rentalId") Long id, Model model){
-        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
-        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
+        RentalLog originalRental = getRentalLogById(id);
         RentalLog newRental = new RentalLog();
-        newRental.copyRelevantFields(match);
+        newRental.copyRelevantFields(originalRental);
         model.addAttribute("rental", newRental);
         return "rental_log/rental_form";
     }
@@ -131,34 +127,16 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals/final/transaction/{rentalId}", method = RequestMethod.POST)
-    public String finalRentalTransaction(@PathVariable("rentalId") Long id, @ModelAttribute RentalLog rental) {
-        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
-        RentalLog match = rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
-
-        match.setRentalEnd(new Date());
-
-        if (rental.getComment() != null) {
-            match.setComment(rental.getComment());
-        }
-
-        if (rental.getInjuredShip() != null) {
-            Ship injuredShip = rental.getInjuredShip();
-            injuredShip.setActive(false);
-            shipRepositoryService.save(injuredShip);
-            match.setInjuredShip(injuredShip);
-        }
-
-        if (rental.getInjuredOars() != null) {
-            match.setInjuredOars(rental.getInjuredOars());
-            for (Oar oar : match.getInjuredOars()) {
-                oar.setActive(false);
-                oarRepositoryService.save(oar);
-            }
-        }
-
-        match.setFinalized(true);
-        rentalLogRepositoryService.save(match);
+    public String finalRentalTransaction(@PathVariable("rentalId") Long id,
+                                         @ModelAttribute RentalLog rentalFinalDetails) {
+        RentalLog originalRental = getRentalLogById(id);
+        rentalLogRepositoryService.finalize(originalRental, rentalFinalDetails);
         return "redirect:/rentals";
+    }
+
+    private RentalLog getRentalLogById(Long id) {
+        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
+        return rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
     }
 
 }
