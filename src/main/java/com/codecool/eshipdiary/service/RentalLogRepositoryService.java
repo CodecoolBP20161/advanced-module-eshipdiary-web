@@ -36,6 +36,7 @@ public class RentalLogRepositoryService {
 
     public void save(RentalLog rentalLog) { rentalLogRepository.save(rentalLog); }
 
+    @Transactional
     public void finalize(RentalLog original, RentalLog finalDetails) {
         original.setRentalEnd(new Date());
 
