@@ -99,15 +99,6 @@ public class RentalController {
         return "rental_log/rental_finalize";
     }
 
-    @RequestMapping(value = "/rentals/final-and-change/{rentalId}", method = RequestMethod.OPTIONS)
-    public String rentalLogFinalizeAndChange(@PathVariable("rentalId") Long id, Model model){
-        RentalLog originalRental = getRentalLogById(id);
-        RentalLog newRental = new RentalLog();
-        newRental.copyRelevantFields(originalRental);
-        model.addAttribute("rental", newRental);
-        return "rental_log/rental_form";
-    }
-
     @RequestMapping(value = "/rentals/comment/{rentalId}", method = RequestMethod.OPTIONS)
     public String rentalLogComment(@PathVariable("rentalId") Long id, Model model){
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
