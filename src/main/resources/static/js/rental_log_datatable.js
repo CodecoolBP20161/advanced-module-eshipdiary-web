@@ -44,7 +44,8 @@ function rentalActionButtons( data, type, row ) {
     var final = row.rentalEnd == "" ? ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalFinalModal(\'/rentals/final/'+row.id+'\');">Véglegesítés</a>' : '';
     var isAdmin = document.getElementById("role").value === 'ADMIN';
     var comment = isAdmin ? ' <a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalCommentModal(\'/rentals/comment/'+row.id+'\');">Megjegyzés</a>' : '';
-    return details + final + comment;
+    var injury = row.injury ? ' <button class="btn btn-danger btn-xs">!</button>' : '';
+    return details + final + comment + injury;
 }
 
 function multipleSelect () {
