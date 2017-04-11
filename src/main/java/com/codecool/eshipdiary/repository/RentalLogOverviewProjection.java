@@ -22,4 +22,6 @@ public interface RentalLogOverviewProjection {
     String getItinerary();
     String getComment();
     String getCrewNames();
+    @Value("#{(target.injuredShip != null) || (!target.injuredOars.isEmpty())}")
+    Boolean isInjury();
 }
