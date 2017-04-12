@@ -42,7 +42,8 @@ function statusButton(row){
 
 function deleteButton(row){
     if(row.member === true) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Kilépés</a>';
-    return ' <a class="btn btn-success btn-xs" role="button" onclick="reActivate(\''+row._links.self.href+'\', \''+row.name+'\');">Beiratkozás</a>';
+    return ' <a class="btn btn-success btn-xs" role="button" data-toggle="modal" data-target="#updateModal" ' +
+        'onclick="reActivate(\''+row._links.self.href+'\', \'/admin/users/'+row.id+'\', \''+row.name+'\');">Beiratkozás</a>';
 }
 
 function setUserStatus(link, shouldBeActive) {
@@ -73,7 +74,7 @@ function deleteModal(link, name){
     });
 }
 
-function reActivate(link, name){
+function reActivate(link, reactivateLink, name){
     $.ajax({
         type: 'PATCH',
         url: link,
@@ -82,6 +83,7 @@ function reActivate(link, name){
         dataType: 'json',
         contentType : 'application/json'
     });
+    updateModal(reactivateLink, name);
 }
 
 function updateModal(link, name){
