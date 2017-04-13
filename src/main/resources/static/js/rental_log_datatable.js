@@ -183,6 +183,17 @@ function loadValidate() {
     $('#rentalPeriod').on('input', function () {
         this.setCustomValidity(validateRentalPeriod(this.value));
     });
+    $('#distance').on('input', function () {
+        this.setCustomValidity(validateDistance(this.value));
+    });
+}
+
+function validateDistance(distance) {
+   if(distance < 1) {
+        return "A megadott távolság nem lehet kevesebb, mint 1 km";
+    } else {
+       return "";
+   }
 }
 
 function validateCaptainPresence() {
