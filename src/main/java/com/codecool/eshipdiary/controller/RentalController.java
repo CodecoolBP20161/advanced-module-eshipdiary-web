@@ -76,12 +76,13 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals", method = RequestMethod.OPTIONS)
-    public String rentalForm(){
+    public String rentalForm(Model model){
+        model.addAttribute("link", "/rentals/save");
         return "rental_log/rental_form";
     }
 
     @RequestMapping(value = "/rentals/details/{rentalId}", method = RequestMethod.OPTIONS)
-    public String rentalLogDetails(@PathVariable("rentalId") Long id, Model model){
+    public String rentalLogDetails(@PathVariable("rentalId") Long id, Model model) {
         RentalLog originalRental = getRentalLogById(id);
         model.addAttribute("rental", originalRental);
         model.addAttribute("crewDetails", crewDetails(originalRental));
@@ -89,7 +90,7 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals/final/{rentalId}", method = RequestMethod.OPTIONS)
-    public String rentalLogFinalize(@PathVariable("rentalId") Long id, Model model){
+    public String rentalLogFinalize(@PathVariable("rentalId") Long id, Model model) {
         RentalLog originalRental = getRentalLogById(id);
         model.addAttribute("rentalId", originalRental.getId());
         model.addAttribute("ship", originalRental.getChosenShip());
@@ -100,7 +101,7 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals/comment/{rentalId}", method = RequestMethod.OPTIONS)
-    public String rentalLogComment(@PathVariable("rentalId") Long id, Model model){
+    public String rentalLogComment(@PathVariable("rentalId") Long id, Model model) {
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         model.addAttribute("rental", rentalLog.isPresent() ? rentalLog.get() : new RentalLog());
         model.addAttribute("submit", "return addAdminComment(" + id + ")");
@@ -122,6 +123,14 @@ public class RentalController {
                                          @ModelAttribute RentalLog rentalFinalDetails) {
         RentalLog originalRental = getRentalLogById(id);
         rentalLogRepositoryService.finalize(originalRental, rentalFinalDetails);
+        return "redirect:/rentals";
+    }
+
+    @RequestMapping(value = "/rentals/save")
+    public String saveRental(@ModelAttribute RentalLog rentalLog) {
+        System.out.println("valami");
+        System.out.println(rentalLog.toString());
+        rentalLogRepositoryService.save(rentalLog);
         return "redirect:/rentals";
     }
 
