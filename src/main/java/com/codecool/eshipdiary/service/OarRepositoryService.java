@@ -1,6 +1,7 @@
 package com.codecool.eshipdiary.service;
 
 import com.codecool.eshipdiary.model.Oar;
+import com.codecool.eshipdiary.model.ShipType;
 import com.codecool.eshipdiary.repository.OarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,10 @@ public class OarRepositoryService {
 
     public Iterable<Oar> getAllOars() {
         return oarRepository.findAll();
+    }
+
+    public Iterable<Oar> getAllOarsByType(ShipType type) {
+        return oarRepository.findAllByType(type);
     }
 
     public void save(Oar oar) { oarRepository.save(oar); }

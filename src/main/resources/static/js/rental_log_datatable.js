@@ -164,6 +164,7 @@ function addAdminComment(id) {
 function loadValidate() {
     $('#crew').on('change', function () {
         this.setCustomValidity(validateCaptainPresence());
+        getOarsByType($('#shipByType').val());
     });
     $('#cox').on('change', function () {
         document.getElementById('crew').setCustomValidity(validateCaptainPresence());
@@ -264,8 +265,27 @@ function selectShipsByType() {
         nonSelectedText: 'Minden típus',
         onChange: function (option, checked, select) {
             getShipsByType(option.val());
+            getOarsByType(option.val());
         }
     })
+}
+
+function getOarsByType(id) {
+    $.ajax({
+        type: "GET",
+        url: "/oarsByType",
+        data: {"typeId": id},
+        dataType: 'json',
+        success: function(data) {
+            var oars = $('#oars');
+            oars.empty();
+            $.each(data, function(index, value) {
+                oars.append($('<option></option>').text(value['name']).val(value['id']));
+            });
+            oars.multiselect('setOptions', {nonSelectedText: $('#oarByType option:selected').text()})
+            oars.val('').multiselect('rebuild');
+        }
+    });
 }
 
 function selectShipsByName() {
@@ -295,7 +315,6 @@ function displayCox(id) {
         }
     });
 }
-
 
 $.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {
     var esc = function ( t ) {

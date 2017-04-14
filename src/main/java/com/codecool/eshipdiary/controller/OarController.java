@@ -12,12 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,5 +75,17 @@ public class OarController {
             model.addAttribute("submit", "return submitOar(" + id + ")");
         }
         return "oars/oar_form";
+    }
+
+    @RequestMapping("/oarsByType")
+    public @ResponseBody List<Oar> getShipsByShipType(@RequestParam("typeId") Long id) {
+        Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
+        List<Oar> oarsByType = new ArrayList<>();
+        if (id == 0) {
+            oarRepositoryService.getAllOars().forEach(oarsByType::add);
+        } else if (type.isPresent()) {
+            oarRepositoryService.getAllOarsByType(type.get()).forEach(oarsByType::add);
+        }
+        return oarsByType;
     }
 }
