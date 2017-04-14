@@ -26,6 +26,7 @@ public class SpringDataRestConfig {
                         Oar.class,
                         ShipSize.class,
                         ShipType.class,
+                        SubType.class,
                         RentalLog.class
                 )
                         .getProjectionConfiguration()

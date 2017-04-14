@@ -9,8 +9,8 @@ $(document).ready( function () {
         },
         columns: [
             {data: 'name'},
-            {data: 'shipType'},
-            {data: 'maxSeat'},
+            {data: 'subType'},
+            // {data: 'maxSeat'},
             {data: 'category'},
             {data: 'owner'},
             {
@@ -87,7 +87,7 @@ function submitShip(id){
     var data = $("#shipForm").serializeObject();
     data.owner = window.location.origin + "/api/user/" + data.owner;
     data.size = window.location.origin + "/api/shipSize/" + data.size;
-    data.type = window.location.origin + "/api/shipType/" + data.type;
+    data.subType = window.location.origin + "/api/subType/" + data.subType;
     $.ajax({
         type: id == 0 ? 'POST' : 'PATCH',
         url: id == 0 ? '/api/ship' : '/api/ship/' + id,

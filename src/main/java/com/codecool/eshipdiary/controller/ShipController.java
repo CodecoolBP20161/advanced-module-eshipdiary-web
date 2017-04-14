@@ -1,13 +1,7 @@
 package com.codecool.eshipdiary.controller;
 
-import com.codecool.eshipdiary.model.Ship;
-import com.codecool.eshipdiary.model.ShipSize;
-import com.codecool.eshipdiary.model.ShipType;
-import com.codecool.eshipdiary.model.User;
-import com.codecool.eshipdiary.service.ShipRepositoryService;
-import com.codecool.eshipdiary.service.ShipSizeRepositoryService;
-import com.codecool.eshipdiary.service.ShipTypeRepositoryService;
-import com.codecool.eshipdiary.service.UserRepositoryService;
+import com.codecool.eshipdiary.model.*;
+import com.codecool.eshipdiary.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +30,9 @@ public class ShipController {
 
     @Autowired
     ShipTypeRepositoryService shipTypeRepositoryService;
+
+    @Autowired
+    SubTypeRepositoryService subTypeRepositoryService;
 
     @ModelAttribute("users")
     public List<User> listUsers() {
@@ -86,16 +83,29 @@ public class ShipController {
         return "ships/ship_form";
     }
 
+//    @RequestMapping("/shipsByType")
+//    public @ResponseBody List<Ship> getShipsByShipType(@RequestParam("typeId") Long id) {
+//        Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
+//        List<Ship> shipsByType = new ArrayList<>();
+//        if (id == 0) {
+//            shipRepositoryService.getAllShips().forEach(shipsByType::add);
+//        } else if (type.isPresent()) {
+//            shipRepositoryService.getAllShipsByType(type.get()).forEach(shipsByType::add);
+//        }
+//        return shipsByType;
+//    }
+
+    // temporary
     @RequestMapping("/shipsByType")
-    public @ResponseBody List<Ship> getShipsByShipType(@RequestParam("typeId") Long id) {
-        Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
-        List<Ship> shipsByType = new ArrayList<>();
+    public @ResponseBody List<Ship> getShipsBySubType(@RequestParam("typeId") Long id) {
+        Optional<SubType> type = subTypeRepositoryService.getSubTypeById(id);
+        List<Ship> shipsBySubType = new ArrayList<>();
         if (id == 0) {
-            shipRepositoryService.getAllShips().forEach(shipsByType::add);
+            shipRepositoryService.getAllShips().forEach(shipsBySubType::add);
         } else if (type.isPresent()) {
-            shipRepositoryService.getAllShipsByType(type.get()).forEach(shipsByType::add);
+            shipRepositoryService.getAllShipsBySubType(type.get()).forEach(shipsBySubType::add);
         }
-        return shipsByType;
+        return shipsBySubType;
     }
 
     @RequestMapping("/isShipCoxed")
