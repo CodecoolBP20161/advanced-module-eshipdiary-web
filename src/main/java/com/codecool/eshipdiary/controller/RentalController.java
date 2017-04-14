@@ -128,8 +128,6 @@ public class RentalController {
 
     @RequestMapping(value = "/rentals/save")
     public String saveRental(@ModelAttribute RentalLog rentalLog) {
-        System.out.println("valami");
-        System.out.println(rentalLog.toString());
         rentalLogRepositoryService.save(rentalLog);
         return "redirect:/rentals";
     }
