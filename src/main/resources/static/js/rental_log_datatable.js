@@ -179,32 +179,22 @@ function loadValidate() {
         this.setCustomValidity(validateDistance(this.value));
     });
 
-    $('#oars').on('change', function (option) {
-        setMaxNumOfOars(option, $('#crew option:selected').length);
-    });
+    setMaxNumOfOars();
 
 }
 
-function setMaxNumOfOars(option, crewNumber) {
-    var selectedOptions = $('#oars option:selected');
-
-    if (selectedOptions.length >= crewNumber) {
-        var nonSelectedOptions = $('#oars option').filter(function () {
-            return !$(this).is(':selected');
-        });
-
-        nonSelectedOptions.each(function () {
-            var input = $('input[value="' + $(this).val() + '"]');
-            input.prop('disabled', true);
-            input.parent('li').addClass('disabled');
-        });
-    } else {
-        $('#oars option').each(function () {
-            var input = $('input[value="' + $(this).val() + '"]');
-            input.prop('disabled', false);
-            input.parent('li').addClass('disabled');
-        });
-    }
+function setMaxNumOfOars() {
+    $('#crew, #oars').change(function() {
+        var crewNum = $("select[id='crew'] option:selected").length;
+        var oarNum = $("select[id='oars'] option:selected").length;
+        if (crewNum != oarNum) {
+            $('#rentalSubmit').prop('disabled', true);
+            $('#rentalSubmitTooltip').prop('title', 'Nem egyezik a legénység és a lapátok száma.')
+        } else {
+            $('#rentalSubmit').removeAttr('disabled');
+            $('#rentalSubmitTooltip').removeAttr('title')
+        }
+    });
 }
 
 function validateDistance(distance) {
