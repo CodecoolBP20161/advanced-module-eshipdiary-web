@@ -121,13 +121,16 @@ public class RentalController {
     @RequestMapping(value = "/rentals/final/transaction/{rentalId}", method = RequestMethod.POST)
     public String finalRentalTransaction(@PathVariable("rentalId") Long id,
                                          @ModelAttribute RentalLog rentalFinalDetails) {
+        LOG.debug("Trying to update RentalLog with (only non-null properties): {}", rentalFinalDetails.toString());
         RentalLog originalRental = getRentalLogById(id);
+        LOG.debug("Existing rental to update is: {}", originalRental.toString());
         rentalLogRepositoryService.finalize(originalRental, rentalFinalDetails);
         return "redirect:/rentals";
     }
 
-    @RequestMapping(value = "/rentals/save")
+    @RequestMapping(value = "/rentals/save", method = RequestMethod.POST)
     public String saveRental(@ModelAttribute RentalLog rentalLog) {
+        LOG.debug("Trying to save RentalLog as: {}", rentalLog.toString());
         rentalLogRepositoryService.save(rentalLog);
         return "redirect:/rentals";
     }
@@ -136,5 +139,4 @@ public class RentalController {
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         return rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
     }
-
 }
