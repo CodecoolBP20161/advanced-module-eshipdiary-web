@@ -7,7 +7,7 @@
 </div>
 
 <div class="modal-body">
-    <form th:object="${finalRental}" th:action="@{${link}}" method="post" class="form-horizontal" id="rentalForm">
+    <form th:object="${finalRental}"  th:action="@{${link}}" method="post" class="form-horizontal" id="rentalForm">
         <div class="form-group">
             <label class="control-label col-sm-4">Megjegyzés</label>
             <div class="col-sm-8">
@@ -18,7 +18,8 @@
         <div class="form-group">
             <label class="control-label col-sm-4">Hajó sérülés</label>
             <div class="checkbox col-sm-8">
-                <label><input type="checkbox" th:field="*{injuredShip}"
+                <label><input id="injuredShip" type="checkbox"
+                              th:field="*{injuredShip}"
                               th:value="${ship.getId()}"
                               th:text="${ship.getName()}"/></label>
             </div>
@@ -33,8 +34,11 @@
         </div>
     </form>
 </div>
-
 <div class="modal-footer">
+    <label style="display:none" id="validateInjuriesLabel">
+        <input type="checkbox" id="validateInjuriesCheck"/>
+        Sérülések megerősítése
+    </label>
     <button type="submit" id="rentalSubmit" class="btn btn-primary" form="rentalForm">Befejezés</button>
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
 </div>

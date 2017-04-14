@@ -101,6 +101,26 @@ function rentalFinalModal(link) {
                 nonSelectedText: ' ',
                 buttonWidth: '100%'
             });
+            $('#injuredOars, #injuredShip').change(function() {
+                var oarNum = $("select[id='injuredOars'] option:selected").length;
+                var shipBool = $('#injuredShip').is(':checked');
+                if (oarNum > 0 || shipBool) {
+                    $('#validateInjuriesCheck').prop('checked', false);
+                    $('#validateInjuriesLabel').show();
+                    $('#rentalSubmit').prop('disabled', true);
+                } else {
+                    $('#validateInjuriesLabel').hide();
+                    $('#validateInjuriesCheck').prop('checked', true);
+                    $('#rentalSubmit').removeAttr('disabled');
+                }
+            });
+            $('#validateInjuriesCheck').change(function() {
+                if ($('#validateInjuriesCheck').is(':checked')) {
+                    $('#rentalSubmit').removeAttr('disabled');
+                } else {
+                    $('#rentalSubmit').prop('disabled', true);
+                }
+            });
         }
     });
 }
@@ -287,7 +307,7 @@ $.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {
         }
 
         if ( typeof d !== 'number' && typeof d !== 'string' ) {
-            console.log("wrong type inserted to ellpsis function: " + typeof d)
+            console.log("wrong type inserted to ellpsis function: " + typeof d);
             return d;
         }
 
@@ -312,3 +332,4 @@ $.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {
         return '<span class="ellipsis" title="'+esc(d)+'">'+shortened+'&#8230;</span>';
     };
 };
+
