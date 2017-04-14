@@ -101,6 +101,6 @@ public class ShipController {
     @RequestMapping("/isShipCoxed")
     public @ResponseBody Boolean isShipCoxed(@RequestParam("shipId") Long id) {
         Optional<Ship> ship = shipRepositoryService.getShipById(id);
-        return ship.isPresent() && ship.get().isCoxed();
+        return ship.isPresent() && ship.get().getSubType().isCoxed();
     }
 }
