@@ -38,8 +38,10 @@ public class RentalController {
     public RentalLog rentalLog() {
         RentalLog rentalLog = new RentalLog();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<User> user = userRepositoryService.getUserByUserName(userName);
-        rentalLog.setCaptain(user.isPresent() ? user.get() : null);
+        Optional<User> userOptional = userRepositoryService.getUserByUserName(userName);
+        User user = userOptional.isPresent() ? userOptional.get() : new User();
+        rentalLog.setCaptain(user);
+        rentalLog.setClub(user.getClub());
         return rentalLog;
     }
 
@@ -128,7 +130,7 @@ public class RentalController {
         return "redirect:/rentals";
     }
 
-    @RequestMapping(value = "/rentals/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/rentals/save")
     public String saveRental(@ModelAttribute RentalLog rentalLog) {
         LOG.debug("Trying to save RentalLog as: {}", rentalLog.toString());
         rentalLogRepositoryService.save(rentalLog);
