@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -60,6 +61,10 @@ public class RentalLog {
 
     @Column(columnDefinition="TEXT")
     private String adminComment;
+
+    @JsonIgnore
+    @ManyToOne
+    private Club club;
 
     public RentalLog() {
         this.rentalStart = new Date();

@@ -98,6 +98,13 @@ public class HandlerBeforeCreation {
         shipType.setClub(club);
     }
 
+    @HandleBeforeCreate(RentalLog.class)
+    public void setOarClubUsingSecurityContext(RentalLog rentalLog) {
+        determineClubOfCurrentUser();
+        log.debug("This oar belongs to club " + club.getName());
+        rentalLog.setClub(club);
+    }
+
     private void determineClubOfCurrentUser() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         log.debug("Found principal: " + userName);
