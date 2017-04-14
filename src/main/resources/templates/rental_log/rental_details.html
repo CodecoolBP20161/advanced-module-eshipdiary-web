@@ -28,14 +28,17 @@
         <dt class="col-sm-3">Legénység</dt>
         <dd class="col-sm-9" th:utext="${#strings.replace(#strings.escapeXml(crewDetails),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}">Legénység</dd>
 
-        <dt class="col-sm-3">Útiterv</dt>
+        <dt class="col-sm-3">Útirány</dt>
         <dd class="col-sm-9" th:text="*{itinerary!=''?itinerary:'nincs adat'}">Útiterv</dd>
 
         <dt class="col-sm-3">Táv</dt>
         <dd class="col-sm-9" th:text="*{distance+' km'}">Táv</dd>
 
         <dt class="col-sm-3">Megjegyzés</dt>
-        <dd class="col-sm-9" th:text="*{comment!=''?comment:'nincs adat'}">Megjegyzés</dd>
+        <dd class="col-sm-9" th:text="*{comment!=''?comment:'nincs'}" style="overflow:hidden; word-wrap: break-word">Megjegyzés</dd>
+
+        <dt class="col-sm-3">Adminisztrátor megjegyzése</dt>
+        <dd class="col-sm-9" th:text="*{adminComment!=''?adminComment:'nincs'}" style="overflow:hidden; word-wrap: break-word">Adminisztrátor megjegyzése</dd>
     </dl>
 </div>
 
