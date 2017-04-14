@@ -146,38 +146,6 @@ function rentalDetailsModal(link) {
     });
 }
 
-function submitRentalLog() {
-    $.ajax({
-        type: 'POST',
-        url: '/api/rental',
-        data: JSON.stringify(processData($("#rentalForm").serializeObject())),
-        success: function (msg) {
-            $('#rentalModal').modal('hide');
-            $('#rental-table').DataTable().ajax.reload(null, false);
-        },
-        dataType: 'json',
-        contentType: 'application/json'
-    });
-    return false;
-}
-
-function processData(data) {
-    data.chosenShip = window.location.origin + '/api/ship/' + data.chosenShip;
-    data.cox = window.location.origin + '/api/user/' + data.cox;
-    data.captain = window.location.origin + '/api/user/' + data.captain;
-    if(data.crew.constructor === Array) {
-        data.crew = data.crew.map(function(member, index){return window.location.origin + '/api/user/' + member});
-    } else {
-        data.crew = [window.location.origin + '/api/user/' + data.crew];
-    }
-    if(data.oars.constructor === Array) {
-        data.oars = data.oars.map(function(oar, index){return window.location.origin + '/api/oar/' + oar});
-    } else {
-        data.oars = [window.location.origin + '/api/oar/' + data.oars];
-    }
-    return data;
-}
-
 function addAdminComment(id) {
     $.ajax({
         type: 'PATCH',
