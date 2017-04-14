@@ -34,6 +34,7 @@ public class RentalLogRepositoryService {
         return rentalLogRepository.findAll();
     }
 
+    @Transactional
     public void save(RentalLog rentalLog) { rentalLogRepository.save(rentalLog); }
 
     @Transactional
