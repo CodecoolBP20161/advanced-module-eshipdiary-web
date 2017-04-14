@@ -49,7 +49,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-4" th:for="crew">Legénység</label>
                 <div class="col-sm-8">
-                    <select th:field="*{crew}" class="multi-select form-control" multiple="multiple" required="required">
+                    <select th:field="*{crew}" id="crew" class="multi-select form-control" multiple="multiple" required="required">
                         <option th:each="crewMember : ${users}"
                                 th:value="${crewMember.getId()}"
                                 th:text="${crewMember.getLastName()} + ' ' + ${crewMember.getFirstName()}"
@@ -61,7 +61,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-4" th:for="oars">Lapátok</label>
                 <div class="col-sm-8">
-                    <select th:field="*{oars}" class="multi-select form-control" multiple="multiple" required="required">
+                    <select th:field="*{oars}" id="oars" class="multi-select form-control" multiple="multiple" required="required">
                         <option th:each="oar : ${oars}"
                                 th:value="${oar.getId()}"
                                 th:text="${oar.getName()}" />
@@ -100,8 +100,10 @@
     </div>
 
     <div class="modal-footer">
-        <button type="submit" id="rentalSubmit" class="btn btn-primary" form="rentalForm">Mentés</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+        <div rel="tooltip" id="rentalSubmitTooltip">
+            <button type="submit" id="rentalSubmit" class="btn btn-primary" form="rentalForm">Mentés</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+        </div>
     </div>
 </div>
 </html>
