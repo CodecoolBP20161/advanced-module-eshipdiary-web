@@ -28,119 +28,121 @@ public class AdvancedModuleEshipdiaryWebApplication {
     public CommandLineRunner demo(UserRepository userRepository, ClubRepository clubRepository, ShipRepository shipRepository, RoleRepository roleRepository, OarRepository oarRepository, ShipTypeRepository shipTypeRepository) {
         return (args) -> {
 
-            Role admin = new Role();
-            admin.setName("ADMIN");
-            roleRepository.save(admin);
+            if (!roleRepository.findAll().iterator().hasNext()) {
 
-            Club bee = new Club();
-            bee.setName("BEE");
-            clubRepository.save(bee);
+                Role admin = new Role();
+                admin.setName("ADMIN");
+                roleRepository.save(admin);
 
-            Club dnhe = new Club();
-            dnhe.setName("DNHE");
-            clubRepository.save(dnhe);
+                Role userRole = new Role();
+                userRole.setName("USER");
+                roleRepository.save(userRole);
 
-            User ex = new User();
-            ex.setFirstName("bee");
-            ex.setLastName("admin");
-            ex.setUserName("admin");
-            ex.setBirthDate(Date.valueOf("1989-01-01"));
-            ex.setActive(true);
-            ex.setEmailAddress("admin@yahoo.com");
-            ex.setPasswordHash("password");
-            ex.setPhoneNumber("22021043");
-            ex.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
-            ex.setWeightInKg(80);
-            ex.setRole(admin);
-            ex.setClub(bee);
-            userRepository.save(ex);
+                Club bee = new Club();
+                bee.setName("BEE");
+                clubRepository.save(bee);
 
-            User dek = new User();
-            dek.setFirstName("dnhe");
-            dek.setLastName("admin");
-            dek.setUserName("admin2");
-            dek.setBirthDate(Date.valueOf("1989-01-01"));
-            dek.setActive(true);
-            dek.setEmailAddress("admin2@yahoo.com");
-            dek.setPasswordHash("password");
-            dek.setPhoneNumber("22021043");
-            dek.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
-            dek.setWeightInKg(80);
-            dek.setRole(admin);
-            dek.setClub(dnhe);
-            userRepository.save(dek);
+                Club dnhe = new Club();
+                dnhe.setName("DNHE");
+                clubRepository.save(dnhe);
 
+                User ex = new User();
+                ex.setFirstName("bee");
+                ex.setLastName("admin");
+                ex.setUserName("admin");
+                ex.setBirthDate(Date.valueOf("1989-01-01"));
+                ex.setActive(true);
+                ex.setEmailAddress("admin@yahoo.com");
+                ex.setPasswordHash("password");
+                ex.setPhoneNumber("22021043");
+                ex.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
+                ex.setWeightInKg(80);
+                ex.setRole(admin);
+                ex.setClub(bee);
+                userRepository.save(ex);
 
-            Role userRole = new Role();
-            userRole.setName("USER");
-            roleRepository.save(userRole);
+                User dek = new User();
+                dek.setFirstName("dnhe");
+                dek.setLastName("admin");
+                dek.setUserName("admin2");
+                dek.setBirthDate(Date.valueOf("1989-01-01"));
+                dek.setActive(true);
+                dek.setEmailAddress("admin2@yahoo.com");
+                dek.setPasswordHash("password");
+                dek.setPhoneNumber("22021043");
+                dek.setKnowledgeLevel(User.KnowledgeLevel.BEGINNER);
+                dek.setWeightInKg(80);
+                dek.setRole(admin);
+                dek.setClub(dnhe);
+                userRepository.save(dek);
 
-            User user = new User();
-            user.setFirstName("first");
-            user.setLastName("user");
-            user.setUserName("user");
-            user.setBirthDate(Date.valueOf("1900-01-01"));
-            user.setActive(true);
-            user.setEmailAddress("user@yahoo.com");
-            user.setPasswordHash("");
-            user.setPhoneNumber("62426180");
-            user.setKnowledgeLevel(User.KnowledgeLevel.ADVANCED);
-            user.setWeightInKg(90);
-            user.setRole(userRole);
-            user.setClub(bee);
-            userRepository.save(user);
+                User user = new User();
+                user.setFirstName("first");
+                user.setLastName("user");
+                user.setUserName("user");
+                user.setBirthDate(Date.valueOf("1900-01-01"));
+                user.setActive(true);
+                user.setEmailAddress("user@yahoo.com");
+                user.setPasswordHash("");
+                user.setPhoneNumber("62426180");
+                user.setKnowledgeLevel(User.KnowledgeLevel.ADVANCED);
+                user.setWeightInKg(90);
+                user.setRole(userRole);
+                user.setClub(bee);
+                userRepository.save(user);
 
-            ShipType kayak = new ShipType();
-            kayak.setName("kajak");
-            kayak.setClub(bee);
-            shipTypeRepository.save(kayak);
+                ShipType kayak = new ShipType();
+                kayak.setName("kajak");
+                kayak.setClub(bee);
+                shipTypeRepository.save(kayak);
 
-            ShipType canoe = new ShipType();
-            canoe.setName("kenu");
-            canoe.setClub(bee);
-            shipTypeRepository.save(canoe);
+                ShipType canoe = new ShipType();
+                canoe.setName("kenu");
+                canoe.setClub(bee);
+                shipTypeRepository.save(canoe);
 
-            Ship ship = new Ship();
-            ship.setName("Atlanta");
-            ship.setCategory(Ship.Category.TRAINING);
-            ship.setCode("4x+");
-            ship.setCoxed(true);
-            ship.setMaxSeat(4);
-            ship.setType(kayak);
-            ship.setClub(bee);
-            shipRepository.save(ship);
-            
-            Ship touringCanoe = new Ship();
-            touringCanoe.setName("Salmon");
-            touringCanoe.setCategory(Ship.Category.COMPETITION);
-            touringCanoe.setCode("4");
-            touringCanoe.setCoxed(false);
-            touringCanoe.setMaxSeat(4);
-            touringCanoe.setType(canoe);
-            touringCanoe.setClub(bee);
-            shipRepository.save(touringCanoe);
-            
-            Ship sprintCanoe = new Ship();
-            sprintCanoe.setName("Sprint Canoe");
-            sprintCanoe.setCategory(Ship.Category.TRAINING);
-            sprintCanoe.setCode("");
-            sprintCanoe.setCoxed(true);
-            sprintCanoe.setMaxSeat(1);
-            sprintCanoe.setType(canoe);
-            sprintCanoe.setClub(bee);
-            shipRepository.save(sprintCanoe);
+                Ship ship = new Ship();
+                ship.setName("Atlanta");
+                ship.setCategory(Ship.Category.TRAINING);
+                ship.setCode("4x+");
+                ship.setCoxed(true);
+                ship.setMaxSeat(4);
+                ship.setType(kayak);
+                ship.setClub(bee);
+                shipRepository.save(ship);
 
-            Oar oar = new Oar();
-            oar.setName("testOar");
-            oar.setType(kayak);
-            oar.setClub(bee);
-            oarRepository.save(oar);
+                Ship touringCanoe = new Ship();
+                touringCanoe.setName("Salmon");
+                touringCanoe.setCategory(Ship.Category.COMPETITION);
+                touringCanoe.setCode("4");
+                touringCanoe.setCoxed(false);
+                touringCanoe.setMaxSeat(4);
+                touringCanoe.setType(canoe);
+                touringCanoe.setClub(bee);
+                shipRepository.save(touringCanoe);
 
-            Oar oar2 = new Oar();
-            oar2.setName("testOar2");
-            oar2.setType(kayak);
-            oar2.setClub(bee);
-            oarRepository.save(oar2);
+                Ship sprintCanoe = new Ship();
+                sprintCanoe.setName("Sprint Canoe");
+                sprintCanoe.setCategory(Ship.Category.TRAINING);
+                sprintCanoe.setCode("");
+                sprintCanoe.setCoxed(true);
+                sprintCanoe.setMaxSeat(1);
+                sprintCanoe.setType(canoe);
+                sprintCanoe.setClub(bee);
+                shipRepository.save(sprintCanoe);
+
+                Oar oar = new Oar();
+                oar.setName("testOar");
+                oar.setType(kayak);
+                oar.setClub(bee);
+                oarRepository.save(oar);
+
+                Oar oar2 = new Oar();
+                oar2.setName("testOar2");
+                oar2.setType(kayak);
+                oar2.setClub(bee);
+                oarRepository.save(oar2);
+            }
         };
     }
 }
