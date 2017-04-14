@@ -40,7 +40,7 @@ public class Ship {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private SubType subType;
 //    @ManyToOne
 //    private ShipType type;

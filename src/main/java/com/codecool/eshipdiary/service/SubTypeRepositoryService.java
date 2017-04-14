@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary.service;
 
+import com.codecool.eshipdiary.model.ShipType;
 import com.codecool.eshipdiary.model.SubType;
 import com.codecool.eshipdiary.repository.SubTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class SubTypeRepositoryService {
 
     public Iterable<SubType> getAllSubType() {
         return subTypeRepository.findAll();
+    }
+
+    public Iterable<SubType> getAllSubTypeByShipType(ShipType type) {
+        return subTypeRepository.findAllByType(type);
     }
 
     public void save(SubType SubType) { subTypeRepository.save(SubType); }
