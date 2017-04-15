@@ -35,7 +35,7 @@
         <label class="control-label col-sm-4" th:for="maxSeat">Beülők száma</label>
         <div class="col-sm-8">
             <input th:field="*{maxSeat}" type="number" min="1" max="25" class="form-control" required="" />
-            <div th:errors="*{maxSeat}">Username Error</div>
+            <div th:errors="*{maxSeat}"></div>
         </div>
     </div>
 
