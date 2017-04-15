@@ -44,6 +44,14 @@ public class SubTypeController {
         return "subtypes/subtype_form";
     }
 
+    @RequestMapping(value = "/admin/subtypes/{subTypeId}", method = RequestMethod.OPTIONS)
+    public String updateSubType(@PathVariable("subTypeId") Long id, Model model){
+        Optional<SubType> subType = subTypeRepositoryService.getSubTypeById(id);
+        model.addAttribute("subType", subType.isPresent() ? subType.get() : new SubType());
+        model.addAttribute("validate", "return validateSubType(" + id + ")");
+        return "subtypes/subtype_form";
+    }
+
     @RequestMapping(value = "/admin/subtypes/{subTypeId}", method = RequestMethod.POST)
     public String saveSubType(@PathVariable("subTypeId") Long id, @ModelAttribute("subType") @Valid SubType subType, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateSubType(" + id + ")");

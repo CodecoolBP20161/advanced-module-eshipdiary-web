@@ -4,11 +4,16 @@ $(document).ready( function () {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
         },
         ajax: {
-            url: '/api/shipType',
+            url: '/api/shipType?projection=shipTypeOverview',
             dataSrc: '_embedded.shipType'
         },
         columns: [
             {data: 'name'},
+            {
+                sortable: false,
+                searchable: false,
+                render: subTypeButtons
+            },
             {
                 sortable: false,
                 searchable: false,
@@ -18,6 +23,13 @@ $(document).ready( function () {
     });
 });
 
+function subTypeButtons( data, type, row) {
+    var buttons = '';
+    for(var i in row.subTypes){
+        buttons+= ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#subTypeModal" role="button" onclick="subTypeModal(\'/admin/subtypes/'+row.subTypes[i].id+'\', \''+row.subTypes[i].code+'\');">'+row.subTypes[i].code+'</a>';
+    }
+    return buttons;
+}
 
 function shipTypeActionButtons( data, type, row ) {
     var subTypeButton = ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#subTypeModal" role="button" onclick="subTypeModal(\'/admin/subtypes/shiptype/'+row.id+'\', \'Új\');">Altípus</a>';
