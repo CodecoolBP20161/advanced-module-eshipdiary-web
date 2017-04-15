@@ -13,4 +13,5 @@ public interface ShipTypeOverviewProjection {
     String getName();
     @Value("#{target.subTypes}")
     List<SubType> getSubTypes();
+    int getOars();
 }

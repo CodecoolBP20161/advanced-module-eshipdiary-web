@@ -33,8 +33,8 @@ public class ShipType {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<SubType> subTypes;
 
-    @Formula("(select count(*) from ship where ship.type_id = id)")
-    int ships;
+//    @Formula("(select count(*) from ship where ship.type_id = id)")
+//    int ships;
 
     @Formula("(select count(*) from oar where oar.type_id = id)")
     int oars;

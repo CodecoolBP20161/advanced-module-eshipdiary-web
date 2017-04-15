@@ -2,6 +2,8 @@ package com.codecool.eshipdiary.model;
 
 
 import lombok.Data;
+import lombok.ToString;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -29,6 +31,9 @@ public class SubType {
 
     @ManyToOne
     private ShipType type;
+
+    @Formula("(select count(*) from ship where ship.sub_type_id = id)")
+    int ships;
 
     public SubType() {
         this.setMaxSeat(1);
