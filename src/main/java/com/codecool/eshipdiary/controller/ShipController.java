@@ -72,6 +72,16 @@ public class ShipController {
         return "ships/ship_form";
     }
 
+    @RequestMapping(value = "/admin/ships/subtype/{subTypeId}", method = RequestMethod.OPTIONS)
+    public String subTypeShip(@PathVariable("subTypeId") Long id, Model model){
+        SubType subType = subTypeRepositoryService.getSubTypeById(id).get();
+        Ship ship = new Ship();
+        ship.setSubType(subType);
+        model.addAttribute("ship", ship);
+        model.addAttribute("validate", "return validateShip(0)");
+        return "ships/ship_form";
+    }
+
     @RequestMapping(value = "/admin/ships/{shipId}", method = RequestMethod.POST)
     public String updateShip(@PathVariable("shipId") Long id, @ModelAttribute("ship") @Valid Ship ship, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateShip(" + id + ")");

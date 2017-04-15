@@ -9,7 +9,7 @@ function subTypeButtons( data, type, row) {
                 '<ul class="dropdown-menu">' +
                     '<li><a data-toggle="modal" data-target="#subTypeModal" role="button" onclick="subTypeModal(\'/admin/subtypes/'+row.subTypes[i].id+'\', \''+row.subTypes[i].code+'\');">Szerkesztés</a></li>' +
                     deleteSubType(row.subTypes[i]) +
-                    '<li><a href="#">Hajó</a></li>' +
+                    '<li><a data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/admin/ships/subtype/'+row.subTypes[i].id+'\', \'Új hajó\');">Hajó</a></li>' +
                 '</ul>' +
             '</div>';
     }
