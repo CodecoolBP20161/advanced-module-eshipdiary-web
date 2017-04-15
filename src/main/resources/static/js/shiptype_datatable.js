@@ -24,7 +24,7 @@ $(document).ready( function () {
 });
 
 function shipTypeActionButtons( data, type, row ) {
-    var subTypeButton = ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#subTypeModal" role="button" onclick="subTypeModal(\'/admin/subtypes/shiptype/'+row.id+'\', \'Új\');">Altípus</a>';
+    var subTypeButton = ' <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#subTypeModal" role="button" onclick="subTypeModal(\'/admin/subtypes/shiptype/'+row.id+'\', \'Új\');">Altípus</a>';
     var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipTypeModal" role="button" onclick="shipTypeModal(\'/admin/shiptypes/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var oarButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/admin/oars/shiptype/'+row.id+'\', \'Új evező\');">Evező</a>';
     return subTypeButton + editButton + deleteButton(row) + oarButton;
