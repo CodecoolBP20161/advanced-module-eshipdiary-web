@@ -168,7 +168,6 @@ function addAdminComment(id) {
 function loadValidate() {
     $('#crew').on('change', function () {
         this.setCustomValidity(validateCaptainPresence());
-        getOarsByType($('#shipByType').val());
     });
     $('#cox').on('change', function () {
         document.getElementById('crew').setCustomValidity(validateCaptainPresence());
