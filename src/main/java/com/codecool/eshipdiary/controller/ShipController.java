@@ -74,9 +74,8 @@ public class ShipController {
 
     @RequestMapping(value = "/admin/ships/subtype/{subTypeId}", method = RequestMethod.OPTIONS)
     public String subTypeShip(@PathVariable("subTypeId") Long id, Model model){
-        SubType subType = subTypeRepositoryService.getSubTypeById(id).get();
         Ship ship = new Ship();
-        ship.setSubType(subType);
+        ship.setSubType(subTypeRepositoryService.getSubTypeById(id).get());
         model.addAttribute("ship", ship);
         model.addAttribute("validate", "return validateShip(0)");
         return "ships/ship_form";
