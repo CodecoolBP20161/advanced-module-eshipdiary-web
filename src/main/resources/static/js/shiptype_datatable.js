@@ -30,7 +30,7 @@ function shipTypeActionButtons( data, type, row ) {
 }
 
 function deleteButton(row){
-    if(row.ships + row.subTypes.length === 0) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipTypeDeleteModal" role="button" onclick="shipTypeDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
+    if(row.oars + row.subTypes.length === 0) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipTypeDeleteModal" role="button" onclick="shipTypeDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     return ' <button disabled class="btn btn-default btn-xs" data-toggle="tooltip" title="Hozzátartozó hajó/evező miatt nem törölhető!">Törlés</button>';
 }
 
