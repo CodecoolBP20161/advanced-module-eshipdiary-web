@@ -251,7 +251,6 @@ function getSubTypesByType(id) {
             var subTypes = $('#shipsBySubType')
             subTypes.build(data);
             $.isEmptyObject(data) ? $('#shipByName').build({}) : getShipsBySubType(subTypes.val());
-
         }
     });
 }
@@ -264,6 +263,7 @@ function getShipsBySubType(id) {
         dataType: 'json',
         success: function(data) {
             $('#shipByName').build(data);
+            displayCox(id);
         }
     });
 }
@@ -276,6 +276,7 @@ $.fn.build = function(data){
     this.multiselect('setOptions');
     this.multiselect('rebuild');
     $.isEmptyObject(data) ? this.multiselect('disable') : this.multiselect('enable');
+    $('#coxSelect').hide();
 };
 
 function selectSubTypesByType() {
@@ -304,30 +305,19 @@ function selectShipsByName() {
         filterPlaceholder: 'Keresés...',
         buttonWidth: '100%',
         nonSelectedText: 'Hajó',
-        onChange: function (option, checked, select) {
-            displayCox(option.val());
-        }
     })
 }
 
 function displayCox(id) {
-    if(id === null){
-        $('#coxSelect').hide();
-    } else {
-        $.ajax({
-            type: "GET",
-            url: "/isShipCoxed",
-            data: {"shipId": id},
-            dataType: 'json',
-            success: function (data) {
-                if (data) {
-                    $('#coxSelect').show();
-                } else {
-                    $('#coxSelect').hide();
-                }
-            }
-        });
-    }
+    $.ajax({
+        type: "GET",
+        url: "/isshipcoxed",
+        data: {"subTypeId": id},
+        dataType: 'json',
+        success: function (data) {
+            if (data) $('#coxSelect').show();
+        }
+    });
 }
 
 

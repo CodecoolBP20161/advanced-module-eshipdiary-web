@@ -70,4 +70,10 @@ public class SubTypeController {
         }
         return subTypesByType;
     }
+
+    @RequestMapping("/isshipcoxed")
+    public @ResponseBody Boolean isShipCoxed(@RequestParam("subTypeId") Long id) {
+        Optional<SubType> subType = subTypeRepositoryService.getSubTypeById(id);
+        return subType.isPresent() && subType.get().isCoxed();
+    }
 }
