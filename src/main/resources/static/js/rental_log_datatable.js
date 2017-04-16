@@ -85,7 +85,8 @@ function rentalModal(link) {
             $('#coxSelect').hide();
             multipleSelect();
             loadValidate();
-            selectShipsByType();
+            selectSubTypesByType();
+            selectShipsBySubType();
             selectShipsByName();
         }
     });
@@ -234,31 +235,60 @@ function minutesUntilMidnight() {
     return (midnight.getTime() - now.getTime())/ 1000 / 60;
 }
 
-function getShipsByType(id) {
+function getSubTypesByType(id) {
     $.ajax({
         type: "GET",
-        url: "/shipsByType",
+        url: "/subtypesbytype",
         data: {"typeId": id},
         dataType: 'json',
         success: function(data) {
-            var shipByName = $('#shipByName');
-            shipByName.empty();
-            $.each(data, function(index, value) {
-                shipByName.append($('<option></option>').text(value['name']).val(value['id']));
-                });
-            shipByName.multiselect('setOptions', {nonSelectedText: $('#shipByType option:selected').text()})
-            shipByName.val('').multiselect('rebuild');
+            var subTypes = $('#shipsBySubType')
+            subTypes.build(data);
+            $.isEmptyObject(data) ? $('#shipByName').build({}) : getShipsBySubType(subTypes.val());
         }
     });
 }
 
-function selectShipsByType() {
-    $('#shipByType').val('').multiselect({
+function getShipsBySubType(id) {
+    $.ajax({
+        type: "GET",
+        url: "/shipsbysubtype",
+        data: {"subTypeId": id},
+        dataType: 'json',
+        success: function(data) {
+            $('#shipByName').build(data);
+            displayCox(id);
+        }
+    });
+}
+
+$.fn.build = function(data){
+    this.empty();
+    for(var row in data) {
+        this.append($('<option></option>').text(data[row]).val(row));
+    }
+    this.multiselect('setOptions');
+    this.multiselect('rebuild');
+    $.isEmptyObject(data) ? this.multiselect('disable') : this.multiselect('enable');
+    $('#coxSelect').hide();
+};
+
+function selectSubTypesByType() {
+    $('#subTypesByType').val(null).multiselect({
         buttonWidth: '100%',
-        nonSelectedText: 'Minden típus',
+        nonSelectedText: 'Típus',
         onChange: function (option, checked, select) {
-            getShipsByType(option.val());
-            getOarsByType(option.val());
+            getSubTypesByType(option.val());
+        }
+    })
+}
+
+function selectShipsBySubType() {
+    $('#shipsBySubType').val(null).multiselect({
+        buttonWidth: '100%',
+        nonSelectedText: 'Altípus',
+        onChange: function (option, checked, select) {
+            getShipsBySubType(option.val());
         }
     })
 }
@@ -282,29 +312,22 @@ function getOarsByType(id) {
 }
 
 function selectShipsByName() {
-    $('#shipByName').val('').multiselect({
+    $('#shipByName').val(null).multiselect({
         enableCaseInsensitiveFiltering: true,
         filterPlaceholder: 'Keresés...',
         buttonWidth: '100%',
-        nonSelectedText: 'Minden hajó',
-        onChange: function (option, checked, select) {
-            displayCox(option.val());
-        }
+        nonSelectedText: 'Hajó',
     })
 }
 
 function displayCox(id) {
     $.ajax({
         type: "GET",
-        url: "/isShipCoxed",
-        data: {"shipId": id},
+        url: "/isshipcoxed",
+        data: {"subTypeId": id},
         dataType: 'json',
-        success: function(data) {
-            if(data) {
-                $('#coxSelect').show();
-            } else {
-                $('#coxSelect').hide();
-            }
+        success: function (data) {
+            if (data) $('#coxSelect').show();
         }
     });
 }

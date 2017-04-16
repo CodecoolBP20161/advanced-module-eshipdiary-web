@@ -1,13 +1,7 @@
 package com.codecool.eshipdiary.controller;
 
-import com.codecool.eshipdiary.model.Ship;
-import com.codecool.eshipdiary.model.ShipSize;
-import com.codecool.eshipdiary.model.ShipType;
-import com.codecool.eshipdiary.model.User;
-import com.codecool.eshipdiary.service.ShipRepositoryService;
-import com.codecool.eshipdiary.service.ShipSizeRepositoryService;
-import com.codecool.eshipdiary.service.ShipTypeRepositoryService;
-import com.codecool.eshipdiary.service.UserRepositoryService;
+import com.codecool.eshipdiary.model.*;
+import com.codecool.eshipdiary.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +29,7 @@ public class ShipController {
     ShipSizeRepositoryService shipSizeRepositoryService;
 
     @Autowired
-    ShipTypeRepositoryService shipTypeRepositoryService;
+    SubTypeRepositoryService subTypeRepositoryService;
 
     @ModelAttribute("users")
     public List<User> listUsers() {
@@ -47,9 +41,9 @@ public class ShipController {
         return (List<ShipSize>) shipSizeRepositoryService.getAllShipSize();
     }
 
-    @ModelAttribute("shipTypes")
-    public List<ShipType> listTypes() {
-        return (List<ShipType>) shipTypeRepositoryService.getAllShipType();
+    @ModelAttribute("subTypes")
+    public List<SubType> listSubTypes() {
+        return (List<SubType>) subTypeRepositoryService.getAllSubType();
     }
 
     @RequestMapping(value = {"/admin/ships", "/admin/ships/**"})
@@ -75,6 +69,15 @@ public class ShipController {
         return "ships/ship_form";
     }
 
+    @RequestMapping(value = "/admin/ships/subtype/{subTypeId}", method = RequestMethod.OPTIONS)
+    public String subTypeShip(@PathVariable("subTypeId") Long id, Model model){
+        Ship ship = new Ship();
+        ship.setSubType(subTypeRepositoryService.getSubTypeById(id).get());
+        model.addAttribute("ship", ship);
+        model.addAttribute("validate", "return validateShip(0)");
+        return "ships/ship_form";
+    }
+
     @RequestMapping(value = "/admin/ships/{shipId}", method = RequestMethod.POST)
     public String updateShip(@PathVariable("shipId") Long id, @ModelAttribute("ship") @Valid Ship ship, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateShip(" + id + ")");
@@ -86,21 +89,13 @@ public class ShipController {
         return "ships/ship_form";
     }
 
-    @RequestMapping("/shipsByType")
-    public @ResponseBody List<Ship> getShipsByShipType(@RequestParam("typeId") Long id) {
-        Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
-        List<Ship> shipsByType = new ArrayList<>();
-        if (id == 0) {
-            shipRepositoryService.getAllShips().forEach(shipsByType::add);
-        } else if (type.isPresent()) {
-            shipRepositoryService.getAllShipsByType(type.get()).forEach(shipsByType::add);
+    @RequestMapping("/shipsbysubtype")
+    public @ResponseBody HashMap<Long, String> getShipsBySubType(@RequestParam("subTypeId") Long id) {
+        Optional<SubType> subType = subTypeRepositoryService.getSubTypeById(id);
+        HashMap<Long, String> shipsBySubType = new HashMap<>();
+        if (subType.isPresent()) {
+            shipRepositoryService.getAllShipsBySubType(subType.get()).forEach(s -> shipsBySubType.put(s.getId(), s.getName()));
         }
-        return shipsByType;
-    }
-
-    @RequestMapping("/isShipCoxed")
-    public @ResponseBody Boolean isShipCoxed(@RequestParam("shipId") Long id) {
-        Optional<Ship> ship = shipRepositoryService.getShipById(id);
-        return ship.isPresent() && ship.get().isCoxed();
+        return shipsBySubType;
     }
 }

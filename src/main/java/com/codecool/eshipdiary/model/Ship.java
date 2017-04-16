@@ -5,8 +5,6 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -22,26 +20,15 @@ public class Ship {
     @NotEmpty(message = "A mező nem lehet üres")
     private String name;
 
-    @Column(nullable = false)
-    private String code;
-
     @ManyToOne
     private ShipSize size;
-
-    @Column
-    @NotNull(message = "A mező nem lehet üres")
-    @Min(message = "Nem lehet kisebb, mint egy", value = 1)
-    private int maxSeat;
-
-    @Column
-    private boolean coxed;
 
     @Column
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToOne
-    private ShipType type;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private SubType subType;
 
     @ManyToOne
     private User owner;
@@ -76,7 +63,6 @@ public class Ship {
     }
 
     public Ship() {
-        this.setMaxSeat(1);
         this.setActive(true);
     }
 

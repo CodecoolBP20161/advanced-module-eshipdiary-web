@@ -8,12 +8,13 @@ import org.springframework.data.rest.core.config.Projection;
 public interface ShipOverviewProjection {
     String getId();
     String getName();
-    @Value("#{target.type != null ? target.type.name : 'Nincs típus'}")
-    String getShipType();
+    @Value("#{target.subType != null ? target.subType.code : 'Nincs típus'}")
+    String getSubType();
+    @Value("#{target.subType != null ? target.subType.maxSeat : 'Nincs adat'}")
+    String getMaxSeat();
     boolean getActive();
     @Value("#{target.owner != null ? target.owner.lastName+' '+target.owner.firstName : target.club.name}")
     String getOwner();
     @Value("#{target.category.displayName}")
     String getCategory();
-    String getMaxSeat();
 }

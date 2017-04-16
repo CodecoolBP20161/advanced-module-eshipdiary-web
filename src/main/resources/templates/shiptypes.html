@@ -12,9 +12,16 @@
     <div th:replace="shiptypes/shiptype_table :: shiptype-table"></div>
     <div th:replace="shiptypes/shiptype_update:: shiptype-update"></div>
     <div th:replace="shiptypes/shiptype_delete :: shiptype-delete"></div>
+    <div th:replace="subtypes/subtype_update:: subtype-update"></div>
+    <div th:replace="subtypes/subtype_delete :: subtype-delete"></div>
+    <div th:replace="ships/ship_update :: ship-update"></div>
+    <div th:replace="oars/oar_update :: oar-update"></div>
 
 </div>
 <script type="text/javascript" th:src="@{/js/shiptype_datatable.js}"></script>
+<script type="text/javascript" th:src="@{/js/subtype_datatable.js}"></script>
+<script type="text/javascript" th:src="@{/js/ship_datatable.js}"></script>
+<script type="text/javascript" th:src="@{/js/oar_datatable.js}"></script>
 <script type="text/javascript" th:src="@{/js/scripts.js}"></script>
 </body>
 </html>

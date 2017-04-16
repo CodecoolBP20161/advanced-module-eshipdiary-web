@@ -1,7 +1,9 @@
 package com.codecool.eshipdiary.service;
 
 import com.codecool.eshipdiary.model.*;
-import com.codecool.eshipdiary.repository.*;
+import com.codecool.eshipdiary.repository.ClubRepository;
+import com.codecool.eshipdiary.repository.RoleRepository;
+import com.codecool.eshipdiary.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleAfterCreate;
@@ -10,7 +12,6 @@ import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 

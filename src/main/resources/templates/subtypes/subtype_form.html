@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<form th:object="${subType}" th:onsubmit="${validate}" class="form-horizontal" id="subTypeForm">
+    <div class="form-group">
+        <label class="control-label col-sm-4" th:for="type">Hajó típusa</label>
+        <div class="col-sm-8">
+            <select th:field="*{type}" class="form-control">
+                <option th:each="type : ${shipTypes}"
+                        th:value="${type.getId()}"
+                        th:text="${type.getName()}" />
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('code')} ? 'has-error has-feedback'">
+        <label class="control-label col-sm-4" th:for="code">Kód</label>
+        <div class="col-sm-8">
+            <input th:field="*{code}" type="text" class="form-control" placeholder="Kód" autofocus="" />
+            <div th:if="${#fields.hasErrors('code')}">
+                <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+            </div>
+            <div th:errors="*{code}"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-4" th:for="coxed">Kormányos</label>
+        <div class="col-sm-8">
+            <div class="checkbox">
+                <input th:field="*{coxed}" type="radio" class="form-check-input" id="coxed" th:value="true" />
+                Kormányos
+            </div>
+        </div>
+
+        <div class="col-sm-4"></div>
+        <div class="col-sm-8">
+            <div class="checkbox">
+                <input th:field="*{coxed}" type="radio" class="form-check-input" id="coxless" th:value="false" />
+                Kormányos nélküli
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" th:classappend="${#fields.hasErrors('maxSeat')} ? 'has-error has-feedback'">
+        <label class="control-label col-sm-4" th:for="maxSeat">Beülők száma</label>
+        <div class="col-sm-8">
+            <input th:field="*{maxSeat}" type="number" min="1" max="25" class="form-control" required="" />
+            <div th:errors="*{maxSeat}"></div>
+        </div>
+    </div>
+</form>
+<button type="button" hidden="hidden" th:onclick="${submit}" id="subTypePost"></button>
+
+</html>

@@ -2,7 +2,7 @@ package com.codecool.eshipdiary.service;
 
 
 import com.codecool.eshipdiary.model.Ship;
-import com.codecool.eshipdiary.model.ShipType;
+import com.codecool.eshipdiary.model.SubType;
 import com.codecool.eshipdiary.repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +25,8 @@ public class ShipRepositoryService {
         return shipRepository.findAll();
     }
 
-    public Iterable<Ship> getAllShipsByType(ShipType type) {
-        return shipRepository.findAllByType(type);
+    public Iterable<Ship> getAllShipsBySubType(SubType type) {
+        return shipRepository.findAllBySubType(type);
     }
 
     public void save(Ship ship) { shipRepository.save(ship); }

@@ -66,6 +66,15 @@ public class OarController {
         return "oars/oar_form";
     }
 
+    @RequestMapping(value = "/admin/oars/shiptype/{shipTypeId}", method = RequestMethod.OPTIONS)
+    public String shipTypeOar(@PathVariable("shipTypeId") Long id, Model model){
+        Oar oar = new Oar();
+        oar.setType(shipTypeRepositoryService.getShipTypeById(id).get());
+        model.addAttribute("oar", oar);
+        model.addAttribute("validate", "return validateOar(0)");
+        return "oars/oar_form";
+    }
+
     @RequestMapping(value = "/admin/oars/{oarId}", method = RequestMethod.POST)
     public String saveOar(@PathVariable("oarId") Long id, @ModelAttribute("oar") @Valid Oar oar, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateOar(" + id + ")");

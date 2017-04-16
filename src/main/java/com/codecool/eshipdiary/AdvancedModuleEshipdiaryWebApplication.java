@@ -104,31 +104,43 @@ public class AdvancedModuleEshipdiaryWebApplication {
                 Ship ship = new Ship();
                 ship.setName("Atlanta");
                 ship.setCategory(Ship.Category.TRAINING);
-                ship.setCode("4x+");
-                ship.setCoxed(true);
-                ship.setMaxSeat(4);
-                ship.setType(kayak);
                 ship.setClub(bee);
+
+                SubType kayak4seat = new SubType();
+                kayak4seat.setCode("4x+");
+                kayak4seat.setCoxed(true);
+                kayak4seat.setMaxSeat(4);
+                kayak4seat.setType(kayak);
+
+                ship.setSubType(kayak4seat);
                 shipRepository.save(ship);
 
                 Ship touringCanoe = new Ship();
                 touringCanoe.setName("Salmon");
                 touringCanoe.setCategory(Ship.Category.COMPETITION);
-                touringCanoe.setCode("4");
-                touringCanoe.setCoxed(false);
-                touringCanoe.setMaxSeat(4);
-                touringCanoe.setType(canoe);
                 touringCanoe.setClub(bee);
+
+                SubType canoe4seat = new SubType();
+                canoe4seat.setCode("4");
+                canoe4seat.setCoxed(false);
+                canoe4seat.setMaxSeat(4);
+                canoe4seat.setType(canoe);
+
+                touringCanoe.setSubType(canoe4seat);
                 shipRepository.save(touringCanoe);
 
                 Ship sprintCanoe = new Ship();
                 sprintCanoe.setName("Sprint Canoe");
                 sprintCanoe.setCategory(Ship.Category.TRAINING);
-                sprintCanoe.setCode("");
-                sprintCanoe.setCoxed(true);
-                sprintCanoe.setMaxSeat(1);
-                sprintCanoe.setType(canoe);
                 sprintCanoe.setClub(bee);
+
+                SubType canoe1seat = new SubType();
+                canoe1seat.setCode("1x");
+                canoe1seat.setCoxed(true);
+                canoe1seat.setMaxSeat(1);
+                canoe1seat.setType(canoe);
+
+                sprintCanoe.setSubType(canoe1seat);
                 shipRepository.save(sprintCanoe);
 
                 Oar oar = new Oar();
