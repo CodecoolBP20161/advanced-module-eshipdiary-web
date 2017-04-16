@@ -12,12 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Optional;
 
 
@@ -79,5 +77,15 @@ public class UserController {
             model.addAttribute("submit", "return submitForm(" + id + ")");
         }
         return "users/user_form";
+    }
+
+    @RequestMapping("/removecox")
+    public @ResponseBody HashMap<Long, String> removeCox(@RequestParam("userId") Long id) {
+        HashMap<Long, String> users = new HashMap<>();
+        userRepositoryService
+                .getAllUsers()
+                .forEach(u -> users.put(u.getId(), u.getFirstName() + ' ' + u.getLastName()));
+        users.remove(id);
+        return users;
     }
 }

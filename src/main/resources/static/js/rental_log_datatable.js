@@ -169,11 +169,12 @@ function addAdminComment(id) {
 function loadValidate() {
     $('#crew').on('change', function () {
         this.setCustomValidity(validateCaptainPresence());
-        countSeats($('#subTypesByType').val());
+        countSeats($('#shipsBySubType').val());
         document.getElementById('oars').setCustomValidity(setMaxNumOfOars());
     });
     $('#cox').on('change', function () {
         document.getElementById('crew').setCustomValidity(validateCaptainPresence());
+        removeCox(this.value);
     });
     $('#rentalPeriod').on('input', function () {
         this.setCustomValidity(validateRentalPeriod(this.value));
@@ -184,22 +185,20 @@ function loadValidate() {
     $('#oars').on('change', function () {
         this.setCustomValidity(setMaxNumOfOars());
     });
+    $('#itinerary').on('input', function () {
+        this.setCustomValidity('');
+    });
+    $('#itinerary').on('invalid', function () {
+        this.setCustomValidity('Útirány kitöltése kötelező');
+    });
 }
 
 function setMaxNumOfOars() {
-    if ($('#crew').val().length !== $('#oars').val().length) {
-        return 'Nem egyezik a legénység és a lapátok száma.'
-    } else {
-        return ''
-    }
+    return $('#crew').val().length !== $('#oars').val().length ? 'Nem egyezik a legénység és a lapátok száma.' : '';
 }
 
 function validateDistance(distance) {
-   if(distance < 1) {
-        return 'A megadott távolság nem lehet kevesebb, mint 1 km';
-    } else {
-       return '';
-   }
+    return distance < 1 ? 'A megadott távolság nem lehet kevesebb, mint 1 km' : '';
 }
 
 function validateCaptainPresence() {
@@ -207,9 +206,7 @@ function validateCaptainPresence() {
     crew.push($('#cox').val());
     if($('#role').val()!=='ADMIN' && !crew.includes($('#captain').val())) {
         return 'Bejelentkezett felhasználó nincs a legénységben'
-    } else {
-        return ''
-    }
+    } else return ''
 }
 
 function validateRentalPeriod(rentalPeriod) {
@@ -219,16 +216,25 @@ function validateRentalPeriod(rentalPeriod) {
         return 'A bérlési idő minimum 15 perc'
     } else if (rentalPeriod % 15 != 0) {
         return 'Negyedórás időközt használj'
-    } else {
-        return ''
-    }
+    } else return ''
 }
 
 function minutesUntilMidnight() {
-    var now = new Date();
     var midnight = new Date();
     midnight.setHours(24, 0, 0, 0);
-    return (midnight.getTime() - now.getTime())/ 1000 / 60;
+    return (midnight.getTime() - new Date().getTime())/ 1000 / 60;
+}
+
+function removeCox(id) {
+    $.ajax({
+        type: 'GET',
+        url: '/removecox',
+        data: {'userId': id},
+        dataType: 'json',
+        success: function(data) {
+            $('#crew').build(data);
+        }
+    });
 }
 
 function getSubTypesByType(id) {
@@ -240,6 +246,7 @@ function getSubTypesByType(id) {
         success: function(data) {
             var subTypes = $('#shipsBySubType')
             subTypes.build(data);
+            $('#coxSelect').hide();
             $.isEmptyObject(data) ? $('#shipByName').build({}) : getShipsBySubType(subTypes.val());
         }
     });
@@ -279,7 +286,6 @@ $.fn.build = function(data){
     this.multiselect('rebuild');
     $.isEmptyObject(data) ? this.multiselect('disable') : this.multiselect('enable');
     $('#rentalSubmit').prop('disabled', $.isEmptyObject(data));
-    $('#coxSelect').hide();
 };
 
 function selectSubTypesByType() {
@@ -319,7 +325,7 @@ function displayCox(id) {
         data: {'subTypeId': id},
         dataType: 'json',
         success: function (data) {
-            if (data) $('#coxSelect').show();
+            data ? $('#coxSelect').show() : $('#coxSelect').hide();
         }
     });
 }
@@ -331,7 +337,7 @@ function countSeats(id) {
         data: {'subTypeId': id},
         dataType: 'json',
         success: function (data) {
-            document.getElementById('crew').setCustomValidity(data < crew.value.length ? 'Legénység létszáma meghaladja a megengedettet' : '');
+            document.getElementById('crew').setCustomValidity(data < $('#crew').val().length ? 'Legénység létszáma meghaladja a megengedettet' : '');
         }
     });
 }
