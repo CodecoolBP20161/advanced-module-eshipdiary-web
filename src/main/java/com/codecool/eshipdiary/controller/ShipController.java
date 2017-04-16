@@ -2,6 +2,7 @@ package com.codecool.eshipdiary.controller;
 
 import com.codecool.eshipdiary.model.*;
 import com.codecool.eshipdiary.service.*;
+import org.codehaus.groovy.runtime.powerassert.SourceText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,27 +94,12 @@ public class ShipController {
         return "ships/ship_form";
     }
 
-//    @RequestMapping("/shipsByType")
-//    public @ResponseBody List<Ship> getShipsByShipType(@RequestParam("typeId") Long id) {
-//        Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
-//        List<Ship> shipsByType = new ArrayList<>();
-//        if (id == 0) {
-//            shipRepositoryService.getAllShips().forEach(shipsByType::add);
-//        } else if (type.isPresent()) {
-//            shipRepositoryService.getAllShipsByType(type.get()).forEach(shipsByType::add);
-//        }
-//        return shipsByType;
-//    }
-
-    // temporary
-    @RequestMapping("/shipsByType")
-    public @ResponseBody List<Ship> getShipsBySubType(@RequestParam("typeId") Long id) {
-        Optional<SubType> type = subTypeRepositoryService.getSubTypeById(id);
-        List<Ship> shipsBySubType = new ArrayList<>();
-        if (id == 0) {
-            shipRepositoryService.getAllShips().forEach(shipsBySubType::add);
-        } else if (type.isPresent()) {
-            shipRepositoryService.getAllShipsBySubType(type.get()).forEach(shipsBySubType::add);
+    @RequestMapping("/shipsbysubtype")
+    public @ResponseBody HashMap<Long, String> getShipsBySubType(@RequestParam("subTypeId") Long id) {
+        Optional<SubType> subType = subTypeRepositoryService.getSubTypeById(id);
+        HashMap<Long, String> shipsBySubType = new HashMap<>();
+        if (subType.isPresent()) {
+            shipRepositoryService.getAllShipsBySubType(subType.get()).forEach(s -> shipsBySubType.put(s.getId(), s.getName()));
         }
         return shipsBySubType;
     }

@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,5 +59,15 @@ public class SubTypeController {
             model.addAttribute("submit", "return submitSubType(" + id + ")");
         }
         return "subtypes/subtype_form";
+    }
+
+    @RequestMapping("/subtypesbytype")
+    public @ResponseBody HashMap<Long, String> getSubTypesByType(@RequestParam("typeId") Long id) {
+        Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
+        HashMap<Long, String> subTypesByType = new HashMap<>();
+        if (type.isPresent()) {
+            subTypeRepositoryService.getAllSubTypeByShipType(type.get()).forEach(s -> subTypesByType.put(s.getId(), s.getCode()));
+        }
+        return subTypesByType;
     }
 }
