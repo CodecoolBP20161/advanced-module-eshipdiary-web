@@ -1,6 +1,5 @@
 package com.codecool.eshipdiary.controller;
 
-import com.codecool.eshipdiary.model.PasswordResetToken;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.repository.UserRepository;
 import com.codecool.eshipdiary.service.EmailService;

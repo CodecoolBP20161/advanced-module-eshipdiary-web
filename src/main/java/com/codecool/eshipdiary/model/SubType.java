@@ -2,7 +2,6 @@ package com.codecool.eshipdiary.model;
 
 
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;

@@ -2,7 +2,6 @@ package com.codecool.eshipdiary.controller;
 
 import com.codecool.eshipdiary.model.*;
 import com.codecool.eshipdiary.service.*;
-import org.codehaus.groovy.runtime.powerassert.SourceText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;

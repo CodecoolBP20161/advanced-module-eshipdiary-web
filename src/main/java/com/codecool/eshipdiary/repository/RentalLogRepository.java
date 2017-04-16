@@ -7,8 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 @RepositoryRestResource(collectionResourceRel = "rental", path = "rental")
 public interface RentalLogRepository extends CrudRepository<RentalLog, Long> {

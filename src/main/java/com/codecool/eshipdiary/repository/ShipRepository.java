@@ -2,7 +2,6 @@ package com.codecool.eshipdiary.repository;
 
 
 import com.codecool.eshipdiary.model.Ship;
-import com.codecool.eshipdiary.model.ShipType;
 import com.codecool.eshipdiary.model.SubType;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
