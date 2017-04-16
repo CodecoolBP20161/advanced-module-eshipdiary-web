@@ -10,6 +10,8 @@ public interface ShipOverviewProjection {
     String getName();
     @Value("#{target.subType != null ? target.subType.code : 'Nincs típus'}")
     String getSubType();
+    @Value("#{target.subType != null ? target.subType.maxSeat : 'Nincs adat'}")
+    String getMaxSeat();
     boolean getActive();
     @Value("#{target.owner != null ? target.owner.lastName+' '+target.owner.firstName : target.club.name}")
     String getOwner();

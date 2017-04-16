@@ -29,9 +29,6 @@ public class ShipController {
     ShipSizeRepositoryService shipSizeRepositoryService;
 
     @Autowired
-    ShipTypeRepositoryService shipTypeRepositoryService;
-
-    @Autowired
     SubTypeRepositoryService subTypeRepositoryService;
 
     @ModelAttribute("users")
@@ -44,9 +41,9 @@ public class ShipController {
         return (List<ShipSize>) shipSizeRepositoryService.getAllShipSize();
     }
 
-    @ModelAttribute("shipTypes")
-    public List<ShipType> listTypes() {
-        return (List<ShipType>) shipTypeRepositoryService.getAllShipType();
+    @ModelAttribute("subTypes")
+    public List<SubType> listSubTypes() {
+        return (List<SubType>) subTypeRepositoryService.getAllSubType();
     }
 
     @RequestMapping(value = {"/admin/ships", "/admin/ships/**"})

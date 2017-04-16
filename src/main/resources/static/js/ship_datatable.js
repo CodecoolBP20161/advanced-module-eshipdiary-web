@@ -10,7 +10,7 @@ $(document).ready( function () {
         columns: [
             {data: 'name'},
             {data: 'subType'},
-            // {data: 'maxSeat'},
+            {data: 'maxSeat'},
             {data: 'category'},
             {data: 'owner'},
             {

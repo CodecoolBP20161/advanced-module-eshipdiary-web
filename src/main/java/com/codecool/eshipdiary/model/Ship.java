@@ -20,19 +20,8 @@ public class Ship {
     @NotEmpty(message = "A mező nem lehet üres")
     private String name;
 
-//    @Column(nullable = false)
-//    private String code;
-
     @ManyToOne
     private ShipSize size;
-
-//    @Column
-//    @NotNull(message = "A mező nem lehet üres")
-//    @Min(message = "Nem lehet kisebb, mint egy", value = 1)
-//    private int maxSeat;
-//
-//    @Column
-//    private boolean coxed;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -40,8 +29,6 @@ public class Ship {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private SubType subType;
-//    @ManyToOne
-//    private ShipType type;
 
     @ManyToOne
     private User owner;
@@ -76,7 +63,6 @@ public class Ship {
     }
 
     public Ship() {
-//        this.setMaxSeat(1);
         this.setActive(true);
     }
 
