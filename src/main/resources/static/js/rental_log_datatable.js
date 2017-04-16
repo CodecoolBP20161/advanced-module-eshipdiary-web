@@ -1,7 +1,7 @@
 $(document).ready( function () {
     $('#rental-table').DataTable ({
         language: {
-            "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
+            url: "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
         },
         ajax: {
             url: '/api/rental?projection=rentalOverview',
@@ -41,7 +41,7 @@ $(document).ready( function () {
 
 function rentalActionButtons( data, type, row ) {
     var details = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalDetailsModal(\'/rentals/details/'+row.id+'\');">Részletek</a>';
-    var final = row.rentalEnd == "" ? ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalFinalModal(\'/rentals/final/'+row.id+'\');">Véglegesítés</a>' : '';
+    var final = row.rentalEnd == '' ? ' <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalFinalModal(\'/rentals/final/'+row.id+'\');">Véglegesítés</a>' : '';
     var isAdmin = document.getElementById("role").value === 'ADMIN';
     var comment = isAdmin ? ' <a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalCommentModal(\'/rentals/comment/'+row.id+'\');">Megjegyzés</a>' : '';
     var injury = row.injury ? ' <button class="btn btn-danger btn-xs">!</button>' : '';
@@ -78,10 +78,10 @@ function multipleSelect () {
 function rentalModal(link) {
     $.ajax({
         url: link,
-        type: "OPTIONS",
+        type: 'OPTIONS',
         success: function (result) {
             document.getElementById('rentalUpdate').innerHTML = result;
-            document.getElementById('rentalSubmit').style.display = "inline";
+            document.getElementById('rentalSubmit').style.display = 'inline';
             $('#coxSelect').hide();
             multipleSelect();
             loadValidate();
@@ -95,7 +95,7 @@ function rentalModal(link) {
 function rentalFinalModal(link) {
     $.ajax({
         url: link,
-        type: "OPTIONS",
+        type: 'OPTIONS',
         success: function (result) {
             document.getElementById('rentalUpdate').innerHTML = result;
             $('#injuredOars').val('').multiselect({
@@ -133,7 +133,7 @@ function confirmInjuries() {
 function rentalCommentModal(link) {
     $.ajax({
         url: link,
-        type: "OPTIONS",
+        type: 'OPTIONS',
         success: function (result) {
             document.getElementById('rentalUpdate').innerHTML = result;
             multipleSelect();
@@ -169,6 +169,8 @@ function addAdminComment(id) {
 function loadValidate() {
     $('#crew').on('change', function () {
         this.setCustomValidity(validateCaptainPresence());
+        countSeats($('#subTypesByType').val());
+        document.getElementById('oars').setCustomValidity(setMaxNumOfOars());
     });
     $('#cox').on('change', function () {
         document.getElementById('crew').setCustomValidity(validateCaptainPresence());
@@ -179,30 +181,24 @@ function loadValidate() {
     $('#distance').on('input', function () {
         this.setCustomValidity(validateDistance(this.value));
     });
-
-    setMaxNumOfOars();
-
+    $('#oars').on('change', function () {
+        this.setCustomValidity(setMaxNumOfOars());
+    });
 }
 
 function setMaxNumOfOars() {
-    $('#crew, #oars').change(function() {
-        var crewNum = $("select[id='crew'] option:selected").length;
-        var oarNum = $("select[id='oars'] option:selected").length;
-        if (crewNum != oarNum) {
-            $('#rentalSubmit').prop('disabled', true);
-            $('#rentalSubmitTooltip').prop('title', 'Nem egyezik a legénység és a lapátok száma.')
-        } else {
-            $('#rentalSubmit').removeAttr('disabled');
-            $('#rentalSubmitTooltip').removeAttr('title')
-        }
-    });
+    if ($('#crew').val().length !== $('#oars').val().length) {
+        return 'Nem egyezik a legénység és a lapátok száma.'
+    } else {
+        return ''
+    }
 }
 
 function validateDistance(distance) {
    if(distance < 1) {
-        return "A megadott távolság nem lehet kevesebb, mint 1 km";
+        return 'A megadott távolság nem lehet kevesebb, mint 1 km';
     } else {
-       return "";
+       return '';
    }
 }
 
@@ -210,21 +206,21 @@ function validateCaptainPresence() {
     var crew = $('#crew').val();
     crew.push($('#cox').val());
     if($('#role').val()!=='ADMIN' && !crew.includes($('#captain').val())) {
-        return "Bejelentkezett felhasználó nincs a legénységben"
+        return 'Bejelentkezett felhasználó nincs a legénységben'
     } else {
-        return ""
+        return ''
     }
 }
 
 function validateRentalPeriod(rentalPeriod) {
     if(rentalPeriod > minutesUntilMidnight()) {
-        return "A bérlési idő maximum a nap végéig tart"
+        return 'A bérlési idő maximum a nap végéig tart'
     } else if (rentalPeriod < 15) {
-        return "A bérlési idő minimum 15 perc"
+        return 'A bérlési idő minimum 15 perc'
     } else if (rentalPeriod % 15 != 0) {
-        return "Negyedórás időközt használj"
+        return 'Negyedórás időközt használj'
     } else {
-        return ""
+        return ''
     }
 }
 
@@ -237,9 +233,9 @@ function minutesUntilMidnight() {
 
 function getSubTypesByType(id) {
     $.ajax({
-        type: "GET",
-        url: "/subtypesbytype",
-        data: {"typeId": id},
+        type: 'GET',
+        url: '/subtypesbytype',
+        data: {'typeId': id},
         dataType: 'json',
         success: function(data) {
             var subTypes = $('#shipsBySubType')
@@ -251,13 +247,25 @@ function getSubTypesByType(id) {
 
 function getShipsBySubType(id) {
     $.ajax({
-        type: "GET",
-        url: "/shipsbysubtype",
-        data: {"subTypeId": id},
+        type: 'GET',
+        url: '/shipsbysubtype',
+        data: {'subTypeId': id},
         dataType: 'json',
         success: function(data) {
             $('#shipByName').build(data);
             displayCox(id);
+        }
+    });
+}
+
+function getOarsByType(id) {
+    $.ajax({
+        type: 'GET',
+        url: '/oarsbytype',
+        data: {'typeId': id},
+        dataType: 'json',
+        success: function(data) {
+            $('#oars').build(data);
         }
     });
 }
@@ -270,6 +278,7 @@ $.fn.build = function(data){
     this.multiselect('setOptions');
     this.multiselect('rebuild');
     $.isEmptyObject(data) ? this.multiselect('disable') : this.multiselect('enable');
+    $('#rentalSubmit').prop('disabled', $.isEmptyObject(data));
     $('#coxSelect').hide();
 };
 
@@ -279,6 +288,7 @@ function selectSubTypesByType() {
         nonSelectedText: 'Típus',
         onChange: function (option, checked, select) {
             getSubTypesByType(option.val());
+            getOarsByType(option.val());
         }
     })
 }
@@ -293,24 +303,6 @@ function selectShipsBySubType() {
     })
 }
 
-function getOarsByType(id) {
-    $.ajax({
-        type: "GET",
-        url: "/oarsByType",
-        data: {"typeId": id},
-        dataType: 'json',
-        success: function(data) {
-            var oars = $('#oars');
-            oars.empty();
-            $.each(data, function(index, value) {
-                oars.append($('<option></option>').text(value['name']).val(value['id']));
-            });
-            oars.multiselect('setOptions', {nonSelectedText: $('#oarByType option:selected').text()})
-            oars.val('').multiselect('rebuild');
-        }
-    });
-}
-
 function selectShipsByName() {
     $('#shipByName').val(null).multiselect({
         enableCaseInsensitiveFiltering: true,
@@ -322,12 +314,24 @@ function selectShipsByName() {
 
 function displayCox(id) {
     $.ajax({
-        type: "GET",
-        url: "/isshipcoxed",
-        data: {"subTypeId": id},
+        type: 'GET',
+        url: '/isshipcoxed',
+        data: {'subTypeId': id},
         dataType: 'json',
         success: function (data) {
             if (data) $('#coxSelect').show();
+        }
+    });
+}
+
+function countSeats(id) {
+    $.ajax({
+        type: 'GET',
+        url: '/getmaxseat',
+        data: {'subTypeId': id},
+        dataType: 'json',
+        success: function (data) {
+            document.getElementById('crew').setCustomValidity(data < crew.value.length ? 'Legénység létszáma meghaladja a megengedettet' : '');
         }
     });
 }
@@ -348,7 +352,7 @@ $.fn.dataTable.render.ellipsis = function ( cutoff, wordbreak, escapeHtml ) {
         }
 
         if ( typeof d !== 'number' && typeof d !== 'string' ) {
-            console.log("wrong type inserted to ellpsis function: " + typeof d);
+            console.log('wrong type inserted to ellpsis function: ' + typeof d);
             return d;
         }
 

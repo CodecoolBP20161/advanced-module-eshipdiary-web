@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,14 +87,12 @@ public class OarController {
         return "oars/oar_form";
     }
 
-    @RequestMapping("/oarsByType")
-    public @ResponseBody List<Oar> getShipsByShipType(@RequestParam("typeId") Long id) {
+    @RequestMapping("/oarsbytype")
+    public @ResponseBody HashMap<Long, String> getOarsByType(@RequestParam("typeId") Long id) {
         Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
-        List<Oar> oarsByType = new ArrayList<>();
-        if (id == 0) {
-            oarRepositoryService.getAllOars().forEach(oarsByType::add);
-        } else if (type.isPresent()) {
-            oarRepositoryService.getAllOarsByType(type.get()).forEach(oarsByType::add);
+        HashMap<Long, String> oarsByType = new HashMap<>();
+        if (type.isPresent()) {
+            oarRepositoryService.getAllOarsByType(type.get()).forEach(s -> oarsByType.put(s.getId(), s.getName()));
         }
         return oarsByType;
     }

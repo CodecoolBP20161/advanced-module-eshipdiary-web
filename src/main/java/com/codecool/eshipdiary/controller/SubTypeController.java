@@ -73,7 +73,11 @@ public class SubTypeController {
 
     @RequestMapping("/isshipcoxed")
     public @ResponseBody Boolean isShipCoxed(@RequestParam("subTypeId") Long id) {
-        Optional<SubType> subType = subTypeRepositoryService.getSubTypeById(id);
-        return subType.isPresent() && subType.get().isCoxed();
+        return subTypeRepositoryService.getSubTypeById(id).map(SubType::isCoxed).orElse(false);
+    }
+
+    @RequestMapping("/getmaxseat")
+    public @ResponseBody int getMaxSeat(@RequestParam("subTypeId") Long id) {
+        return subTypeRepositoryService.getSubTypeById(id).map(SubType::getMaxSeat).orElse(0);
     }
 }
