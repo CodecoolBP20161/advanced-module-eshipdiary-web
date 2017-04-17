@@ -237,7 +237,6 @@ function minutesUntilMidnight() {
 function removeCox(id) {
     var crew = $('#crew');
     var values = crew.val();
-    console.log(values);
     if(id !== "0") values.splice($.inArray(id, values),1);
     $.ajax({
         type: 'GET',
