@@ -141,6 +141,13 @@ public class RentalController {
         return getCurrentUser().getRole().getName().equals("ADMIN") || !getCurrentUser().isOnWater();
     }
 
+    @RequestMapping(value = "/rentals/reuse/{rentalId}", method = RequestMethod.OPTIONS)
+    public String reuseRental(@PathVariable("rentalId") Long id, Model model) {
+        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
+        model.addAttribute("link", "/rentals/save");
+        return "rental_log/rental_form";
+    }
+
     private RentalLog getRentalLogById(Long id) {
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         return rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
