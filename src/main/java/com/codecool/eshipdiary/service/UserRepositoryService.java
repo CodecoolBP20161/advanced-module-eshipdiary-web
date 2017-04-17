@@ -1,10 +1,12 @@
 package com.codecool.eshipdiary.service;
 
+import com.codecool.eshipdiary.model.Club;
 import com.codecool.eshipdiary.model.PasswordResetToken;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.repository.PasswordTokenRepository;
 import com.codecool.eshipdiary.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +39,14 @@ public class UserRepositoryService {
 
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public Iterable<User> getUsersEligibleForRental() {
+        // - is active
+        // - has no ongoing rental
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        Club club = userRepository.findByUserName(userName).getClub();
+        return userRepository.findByActiveTrueAndOnWaterFalseAndClub(club);
     }
 
     public void create(User user) { userRepository.save(user); }
