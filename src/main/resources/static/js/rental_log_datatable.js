@@ -235,13 +235,18 @@ function minutesUntilMidnight() {
 }
 
 function removeCox(id) {
+    var crew = $('#crew');
+    var values = crew.val();
+    console.log(values);
+    if(id !== "0") values.splice($.inArray(id, values),1);
     $.ajax({
         type: 'GET',
         url: '/removecox',
         data: {'userId': id},
         dataType: 'json',
         success: function(data) {
-            $('#crew').build(data);
+            crew.build(data);
+            crew.val(values).multiselect('refresh');
         }
     });
 }
@@ -327,8 +332,8 @@ function selectShipsByName() {
 }
 
 function hideCox() {
-    $('#cox').val(0).multiselect('refresh');
-    removeCox(0);
+    $('#cox').val("0").multiselect('refresh');
+    removeCox("0");
     $('#coxSelect').hide();
 }
 
