@@ -292,7 +292,7 @@ $.fn.build = function(data){
     this.multiselect('rebuild');
     $.isEmptyObject(data) ? this.multiselect('disable') : this.multiselect('enable');
     $('#rentalSubmit').prop('disabled', $.isEmptyObject(data));
-    displayCox();
+    if (this.attr('id') !== 'crew') displayCox();
 };
 
 function selectSubTypesByType() {

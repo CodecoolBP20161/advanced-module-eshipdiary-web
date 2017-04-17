@@ -83,7 +83,7 @@ public class UserController {
     public @ResponseBody HashMap<Long, String> removeCox(@RequestParam("userId") Long id) {
         HashMap<Long, String> users = new HashMap<>();
         userRepositoryService
-                .getAllUsers()
+                .getUsersEligibleForRental()
                 .forEach(u -> users.put(u.getId(), u.getLastName() + ' ' + u.getFirstName()));
         users.remove(id);
         return users;
