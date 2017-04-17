@@ -59,7 +59,7 @@ public class RentalController {
 
     @ModelAttribute("ships")
     public List<Ship> listShips() {
-        return (List<Ship>) shipRepositoryService.getAllShips();
+        return (List<Ship>) shipRepositoryService.getAvailableShips();
     }
 
     @ModelAttribute("shipTypes")

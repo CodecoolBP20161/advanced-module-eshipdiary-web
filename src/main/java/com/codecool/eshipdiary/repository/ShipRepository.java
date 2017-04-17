@@ -1,6 +1,7 @@
 package com.codecool.eshipdiary.repository;
 
 
+import com.codecool.eshipdiary.model.Club;
 import com.codecool.eshipdiary.model.Ship;
 import com.codecool.eshipdiary.model.SubType;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,6 @@ public interface ShipRepository extends CrudRepository<Ship, Long> {
     @Query("select ship from Ship ship where ship.club = ?#{principal.club}")
     Iterable<Ship> findAll();
     Iterable<Ship> findAllBySubType(SubType type);
+    Iterable<Ship> findByActiveTrueAndOnWaterFalseAndClub(Club club);
+    Iterable<Ship> findByActiveTrueAndOnWaterFalseAndSubTypeAndClub(SubType type, Club club);
 }
