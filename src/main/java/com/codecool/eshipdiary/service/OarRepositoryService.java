@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,6 +46,23 @@ public class OarRepositoryService {
 
     public void deleteOarById(Long id) {
         if(oarRepository.findOneById(id).isPresent()) oarRepository.delete(id);
+    }
+
+    public List<Oar> availableOarsFrom(List<Oar> oars) {
+        List<Oar> availables = new ArrayList<>();
+        for (Oar oar : oars) {
+            if (oarIsAvailable(oar)) {
+                availables.add(oar);
+            }
+        }
+        return availables;
+    }
+
+    public boolean oarIsAvailable(Oar oar) {
+        if (oar.isActive() && !oar.isOnWater()) {
+            return true;
+        }
+        return false;
     }
 
 }
