@@ -92,7 +92,7 @@ public class OarController {
         Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
         HashMap<Long, String> oarsByType = new HashMap<>();
         if (type.isPresent()) {
-            oarRepositoryService.getAllOarsByType(type.get()).forEach(s -> oarsByType.put(s.getId(), s.getName()));
+            oarRepositoryService.getAvailableOarsByType(type.get()).forEach(s -> oarsByType.put(s.getId(), s.getName()));
         }
         return oarsByType;
     }

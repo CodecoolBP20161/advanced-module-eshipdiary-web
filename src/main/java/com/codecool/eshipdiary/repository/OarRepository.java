@@ -22,4 +22,6 @@ public interface OarRepository extends CrudRepository<Oar, Long> {
     Iterable<Oar> findAll();
     Iterable<Oar> findAllByType(ShipType type);
     Iterable<Oar> findByActiveTrueAndOnWaterFalseAndClub(Club club);
+    Iterable<Oar> findByActiveTrueAndOnWaterFalseAndTypeAndClub(ShipType type, Club club);
+
 }

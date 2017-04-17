@@ -32,6 +32,11 @@ public class OarRepositoryService {
         return oarRepository.findByActiveTrueAndOnWaterFalseAndClub(tenantAwarePrincipal.getClub());
     }
 
+    public Iterable<Oar> getAvailableOarsByType(ShipType type) {
+        TenantAwarePrincipal tenantAwarePrincipal = (TenantAwarePrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return oarRepository.findByActiveTrueAndOnWaterFalseAndTypeAndClub(type, tenantAwarePrincipal.getClub());
+    }
+
     public Iterable<Oar> getAllOarsByType(ShipType type) {
         return oarRepository.findAllByType(type);
     }
