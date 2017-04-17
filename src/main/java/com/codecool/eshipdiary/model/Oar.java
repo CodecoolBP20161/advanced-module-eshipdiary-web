@@ -29,6 +29,9 @@ public class Oar {
     @Column(nullable = false)
     private boolean active;
 
+    @Column
+    private boolean onWater = false;
+
     @JsonIgnore
     @ManyToOne
     private Club club;
