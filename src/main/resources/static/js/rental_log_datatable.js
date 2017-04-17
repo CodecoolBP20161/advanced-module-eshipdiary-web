@@ -4,7 +4,7 @@ $(document).ready( function () {
             url: "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
         },
         ajax: {
-            url: '/api/rental?projection=rentalOverview',
+            url: $('#role').val() ==='ADMIN' ? '/api/rental?projection=rentalOverview' : '/api/rental/search/findForPrincipal?projection=rentalOverview',
             dataSrc: '_embedded.rental'
         },
         columns: [
@@ -38,6 +38,14 @@ $(document).ready( function () {
         ]
     });
 });
+
+function getDataSource() {
+    if($('#role').val() ==='ADMIN') {
+        return '/api/rental?projection=rentalOverview';
+    } else {
+        return '/api/rental/search/findForPrincipal?projection=rentalOverview';
+    }
+}
 
 function rentalActionButtons( data, type, row ) {
     var details = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalDetailsModal(\'/rentals/details/'+row.id+'\');">Részletek</a>';
