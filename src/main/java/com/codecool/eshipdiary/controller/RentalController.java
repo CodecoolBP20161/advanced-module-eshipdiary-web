@@ -54,12 +54,12 @@ public class RentalController {
 
     @ModelAttribute("users")
     public List<User> listUsers() {
-        return (List<User>) userRepositoryService.getAllUsers();
+        return (List<User>) userRepositoryService.getUsersEligibleForRental();
     }
 
     @ModelAttribute("ships")
     public List<Ship> listShips() {
-        return (List<Ship>) shipRepositoryService.getAllShips();
+        return (List<Ship>) shipRepositoryService.getAvailableShips();
     }
 
     @ModelAttribute("shipTypes")
@@ -69,7 +69,7 @@ public class RentalController {
 
     @ModelAttribute("oars")
     public List<Oar> listOars() {
-        return (List<Oar>) oarRepositoryService.getAllOars();
+        return (List<Oar>) oarRepositoryService.getAvailableOars();
     }
 
     @RequestMapping(value = {"/rentals", "/rentals/**"})

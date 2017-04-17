@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary.repository;
 
+import com.codecool.eshipdiary.model.Club;
 import com.codecool.eshipdiary.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -29,4 +30,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Override
     @PreAuthorize("hasAuthority('ADMIN')")
     void delete(Long id);
+
+    Iterable<User> findByActiveTrueAndOnWaterFalseAndClub(Club club);
 }

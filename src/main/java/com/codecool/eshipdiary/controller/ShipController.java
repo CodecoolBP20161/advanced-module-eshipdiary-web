@@ -89,12 +89,12 @@ public class ShipController {
         return "ships/ship_form";
     }
 
-    @RequestMapping("/shipsbysubtype")
-    public @ResponseBody HashMap<Long, String> getShipsBySubType(@RequestParam("subTypeId") Long id) {
+    @RequestMapping("/availableshipsbysubtype")
+    public @ResponseBody HashMap<Long, String> getAvailableShipsBySubType(@RequestParam("subTypeId") Long id) {
         Optional<SubType> subType = subTypeRepositoryService.getSubTypeById(id);
         HashMap<Long, String> shipsBySubType = new HashMap<>();
         if (subType.isPresent()) {
-            shipRepositoryService.getAllShipsBySubType(subType.get()).forEach(s -> shipsBySubType.put(s.getId(), s.getName()));
+            shipRepositoryService.getAvailableShipsBySubType(subType.get()).forEach(s -> shipsBySubType.put(s.getId(), s.getName()));
         }
         return shipsBySubType;
     }

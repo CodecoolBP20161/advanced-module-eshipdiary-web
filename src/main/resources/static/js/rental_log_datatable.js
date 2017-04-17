@@ -262,7 +262,7 @@ function getSubTypesByType(id) {
 function getShipsBySubType(id) {
     $.ajax({
         type: 'GET',
-        url: '/shipsbysubtype',
+        url: '/availableshipsbysubtype',
         data: {'subTypeId': id},
         dataType: 'json',
         success: function(data) {
