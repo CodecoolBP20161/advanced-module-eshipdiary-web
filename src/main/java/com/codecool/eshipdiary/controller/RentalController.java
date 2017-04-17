@@ -25,6 +25,9 @@ public class RentalController {
     private RentalLogRepositoryService rentalLogRepositoryService;
 
     @Autowired
+    private RentalService rentalService;
+
+    @Autowired
     private UserRepositoryService userRepositoryService;
 
     @Autowired
@@ -135,6 +138,7 @@ public class RentalController {
     @RequestMapping(value = "/rentals/save")
     public String saveRental(@ModelAttribute RentalLog rentalLog) {
         LOG.debug("Trying to save RentalLog as: {}", rentalLog.toString());
+        rentalService.setOnWaterForInvolvedItemsIn(rentalLog, true);
         rentalLogRepositoryService.save(rentalLog);
         return "redirect:/rentals";
     }

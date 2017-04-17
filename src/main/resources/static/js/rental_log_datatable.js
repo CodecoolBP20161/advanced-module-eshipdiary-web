@@ -274,7 +274,7 @@ function getShipsBySubType(id) {
 function getOarsByType(id) {
     $.ajax({
         type: 'GET',
-        url: '/oarsbytype',
+        url: '/availableoarsbytype',
         data: {'typeId': id},
         dataType: 'json',
         success: function(data) {

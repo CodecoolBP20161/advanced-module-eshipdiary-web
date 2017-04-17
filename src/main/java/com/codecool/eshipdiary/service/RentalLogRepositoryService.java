@@ -25,6 +25,9 @@ public class RentalLogRepositoryService {
     @Autowired
     private RentalLogRepository rentalLogRepository;
 
+    @Autowired
+    private RentalService rentalService;
+
     public Optional<RentalLog> getRentalLogById(long id) {
         return Optional.ofNullable(rentalLogRepository.findOne(id));
     }
@@ -59,5 +62,8 @@ public class RentalLogRepositoryService {
             original.setInjuredOars(finalDetails.getInjuredOars());
         }
         save(original);
+
+        rentalService.setOnWaterForInvolvedItemsIn(original, false);
+
     }
 }

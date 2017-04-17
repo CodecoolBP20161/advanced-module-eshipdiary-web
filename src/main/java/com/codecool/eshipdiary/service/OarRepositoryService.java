@@ -40,7 +40,6 @@ public class OarRepositoryService {
     public Iterable<Oar> getAllOarsByType(ShipType type) {
         return oarRepository.findAllByType(type);
     }
-
     public void save(Oar oar) { oarRepository.save(oar); }
 
     public void deleteOarById(Long id) {

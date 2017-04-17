@@ -87,8 +87,8 @@ public class OarController {
         return "oars/oar_form";
     }
 
-    @RequestMapping("/oarsbytype")
-    public @ResponseBody HashMap<Long, String> getOarsByType(@RequestParam("typeId") Long id) {
+    @RequestMapping("/availableoarsbytype")
+    public @ResponseBody HashMap<Long, String> getAvailableOarsByType(@RequestParam("typeId") Long id) {
         Optional<ShipType> type = shipTypeRepositoryService.getShipTypeById(id);
         HashMap<Long, String> oarsByType = new HashMap<>();
         if (type.isPresent()) {
