@@ -37,6 +37,7 @@ $(document).ready( function () {
             }
         ]
     });
+    enableNewRental();
 });
 
 function getDataSource() {
@@ -340,6 +341,16 @@ function displayCox() {
         dataType: 'json',
         success: function (data) {
             data ? $('#coxSelect').show() : hideCox();
+        }
+    });
+}
+
+function enableNewRental() {
+    $.ajax({
+        type: 'GET',
+        url: '/rentalEnabled',
+        success: function (data) {
+            $('#newRental').prop('disabled', !data);
         }
     });
 }

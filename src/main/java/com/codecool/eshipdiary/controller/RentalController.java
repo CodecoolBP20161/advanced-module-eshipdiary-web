@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,11 +39,8 @@ public class RentalController {
     @ModelAttribute("rental")
     public RentalLog rentalLog() {
         RentalLog rentalLog = new RentalLog();
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        Optional<User> userOptional = userRepositoryService.getUserByUserName(userName);
-        User user = userOptional.isPresent() ? userOptional.get() : new User();
-        rentalLog.setCaptain(user);
-        rentalLog.setClub(user.getClub());
+        rentalLog.setCaptain(getCurrentUser());
+        rentalLog.setClub(getCurrentUser().getClub());
         return rentalLog;
     }
 
@@ -77,8 +71,7 @@ public class RentalController {
 
     @RequestMapping(value = {"/rentals", "/rentals/**"})
     public String getRentalHistory(Model model) {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("role", userRepositoryService.getUserByUserName(userName).get().getRole().getName());
+        model.addAttribute("role", getCurrentUser().getRole().getName());
         return "rentals";
     }
 
@@ -143,8 +136,18 @@ public class RentalController {
         return "redirect:/rentals";
     }
 
+    @RequestMapping(value = "/rentalEnabled")
+    public @ResponseBody Boolean rentalEnabled(){
+        return getCurrentUser().getRole().getName().equals("ADMIN") || !getCurrentUser().isOnWater();
+    }
+
     private RentalLog getRentalLogById(Long id) {
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         return rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
+    }
+
+    private User getCurrentUser() {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepositoryService.getUserByUserName(userName).map(u -> u).orElse(new User());
     }
 }
