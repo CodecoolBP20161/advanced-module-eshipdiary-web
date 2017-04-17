@@ -1,9 +1,12 @@
 package com.codecool.eshipdiary.service;
 
+import com.codecool.eshipdiary.model.Club;
 import com.codecool.eshipdiary.model.Oar;
 import com.codecool.eshipdiary.model.ShipType;
+import com.codecool.eshipdiary.model.TenantAwarePrincipal;
 import com.codecool.eshipdiary.repository.OarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,11 @@ public class OarRepositoryService {
 
     public Iterable<Oar> getAllOars() {
         return oarRepository.findAll();
+    }
+
+    public Iterable<Oar> getAvailableOars() {
+        TenantAwarePrincipal tenantAwarePrincipal = (TenantAwarePrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return oarRepository.findByActiveTrueAndOnWaterFalseAndClub(tenantAwarePrincipal.getClub());
     }
 
     public Iterable<Oar> getAllOarsByType(ShipType type) {

@@ -69,7 +69,7 @@ public class RentalController {
 
     @ModelAttribute("oars")
     public List<Oar> listOars() {
-        return (List<Oar>) oarRepositoryService.getAllOars();
+        return (List<Oar>) oarRepositoryService.getAvailableOars();
     }
 
     @RequestMapping(value = {"/rentals", "/rentals/**"})
