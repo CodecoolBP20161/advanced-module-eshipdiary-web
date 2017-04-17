@@ -244,9 +244,8 @@ function getSubTypesByType(id) {
         data: {'typeId': id},
         dataType: 'json',
         success: function(data) {
-            var subTypes = $('#shipsBySubType')
+            var subTypes = $('#shipsBySubType');
             subTypes.build(data);
-            $('#coxSelect').hide();
             $.isEmptyObject(data) ? $('#shipByName').build({}) : getShipsBySubType(subTypes.val());
         }
     });
@@ -260,7 +259,6 @@ function getShipsBySubType(id) {
         dataType: 'json',
         success: function(data) {
             $('#shipByName').build(data);
-            displayCox(id);
         }
     });
 }
@@ -286,6 +284,7 @@ $.fn.build = function(data){
     this.multiselect('rebuild');
     $.isEmptyObject(data) ? this.multiselect('disable') : this.multiselect('enable');
     $('#rentalSubmit').prop('disabled', $.isEmptyObject(data));
+    displayCox();
 };
 
 function selectSubTypesByType() {
@@ -318,14 +317,21 @@ function selectShipsByName() {
     })
 }
 
-function displayCox(id) {
+function hideCox() {
+    $('#cox').val(0).multiselect('refresh');
+    removeCox(0);
+    $('#coxSelect').hide();
+}
+
+
+function displayCox() {
     $.ajax({
         type: 'GET',
         url: '/isshipcoxed',
-        data: {'subTypeId': id},
+        data: {'subTypeId': $('#shipsBySubType').val()},
         dataType: 'json',
         success: function (data) {
-            data ? $('#coxSelect').show() : $('#coxSelect').hide();
+            data ? $('#coxSelect').show() : hideCox();
         }
     });
 }

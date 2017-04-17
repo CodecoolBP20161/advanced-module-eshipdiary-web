@@ -84,7 +84,7 @@ public class UserController {
         HashMap<Long, String> users = new HashMap<>();
         userRepositoryService
                 .getAllUsers()
-                .forEach(u -> users.put(u.getId(), u.getFirstName() + ' ' + u.getLastName()));
+                .forEach(u -> users.put(u.getId(), u.getLastName() + ' ' + u.getFirstName()));
         users.remove(id);
         return users;
     }
