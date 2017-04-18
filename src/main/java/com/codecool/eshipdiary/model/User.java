@@ -22,7 +22,7 @@ import java.util.UUID;
 
 
 @Data
-@ToString(exclude = {"ships", "oars", "passwordHash", "rentalLogs"})
+@ToString(exclude = {"ships", "oars", "passwordHash", "rentalLogs", "enabledShips"})
 @Entity
 @Table(name = "users")
 public class User {
@@ -99,6 +99,9 @@ public class User {
     @ManyToMany(mappedBy = "crew")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<RentalLog> rentalLogs;
+
+    @ManyToMany
+    private List<Ship> enabledShips;
 
     @PrePersist
     private void validate(){
