@@ -2,13 +2,16 @@ package com.codecool.eshipdiary.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
 @Data
+@ToString(exclude = {"enabledUsers"})
 public class Ship {
 
     @Id
@@ -44,6 +47,9 @@ public class Ship {
 
     @Column
     private boolean onWater = false;
+
+    @ManyToMany(mappedBy = "enabledShips")
+    private List<User> enabledUsers;
 
     @JsonIgnore
     @ManyToOne
