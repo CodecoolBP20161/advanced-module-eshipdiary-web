@@ -76,8 +76,7 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals", method = RequestMethod.OPTIONS)
-    public String rentalForm(Model model){
-        model.addAttribute("link", "/rentals/save");
+    public String rentalForm(){
         return "rental_log/rental_form";
     }
 
