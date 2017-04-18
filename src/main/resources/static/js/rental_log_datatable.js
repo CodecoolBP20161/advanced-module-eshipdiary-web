@@ -297,7 +297,7 @@ $.fn.build = function(data){
     this.multiselect('setOptions');
     this.multiselect('rebuild');
     $.isEmptyObject(data) ? this.multiselect('disable') : this.multiselect('enable');
-    $('#rentalSubmit').prop('disabled', $.isEmptyObject(data));
+    $('#rentalSubmit').prop('disabled', $("#rentalForm :disabled").length !== 0);
     if (this.attr('id') !== 'crew') displayCox();
 };
 

@@ -51,7 +51,7 @@ public class UserRepositoryService {
         return userRepository.findByActiveTrueAndOnWaterFalseAndClub(club);
     }
 
-    public void create(User user) { userRepository.save(user); }
+    public void save(User user) { userRepository.save(user); }
 
     public void createPasswordResetTokenForUser(User user, String token) {
         PasswordResetToken myToken = new PasswordResetToken(token, user);
