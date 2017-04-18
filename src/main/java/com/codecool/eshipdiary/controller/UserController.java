@@ -1,8 +1,10 @@
 package com.codecool.eshipdiary.controller;
 
 
+import com.codecool.eshipdiary.model.Ship;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.service.EmailService;
+import com.codecool.eshipdiary.service.ShipRepositoryService;
 import com.codecool.eshipdiary.service.UserRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -27,7 +31,15 @@ public class UserController {
     private UserRepositoryService userRepositoryService;
 
     @Autowired
+    private ShipRepositoryService shipRepositoryService;
+
+    @Autowired
     private EmailService emailService;
+
+    @ModelAttribute("allShips")
+    public List<Ship> getAllShips() {
+        return (List<Ship>) shipRepositoryService.getAllShips();
+    }
 
     @RequestMapping(value = "/admin/users")
     public String getUserTable(Model model) {
@@ -79,6 +91,14 @@ public class UserController {
         return "users/user_form";
     }
 
+    @RequestMapping(value = "/admin/users/enabled_ships/{userId}", method = RequestMethod.POST)
+    public String enableShips(@PathVariable("userId") Long userId, @ModelAttribute List<Ship> enabledShips) {
+        User user = getUserById(userId);
+        user.setEnabledShips(enabledShips);
+        userRepositoryService.save(user);
+        return "redirect:/admin/users";
+    }
+
     @RequestMapping("/removecox")
     public @ResponseBody HashMap<Long, String> removeCox(@RequestParam("userId") Long id) {
         HashMap<Long, String> users = new HashMap<>();
@@ -87,5 +107,9 @@ public class UserController {
                 .forEach(u -> users.put(u.getId(), u.getLastName() + ' ' + u.getFirstName()));
         users.remove(id);
         return users;
+    }
+
+    private User getUserById(Long id) {
+        return userRepositoryService.getUserById(id).map(u -> u).orElse(new User());
     }
 }
