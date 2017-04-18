@@ -30,7 +30,8 @@ function userActionButtons( data, type, row ) {
         current = deleteButton(row);
         current += row.member ? statusButton(row) : '';
     }
-    return detailsButton + current + shipButton + oarButton;
+    var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#whitelistedShipsModal" role="button" onclick="">Engedélyezett hajók</a>';
+    return detailsButton + current + shipButton + oarButton + availableShipsButton;
 }
 
 function statusButton(row){
@@ -41,7 +42,7 @@ function statusButton(row){
 }
 
 function deleteButton(row){
-    if(row.member === true) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Kilépés</a>';
+    if(row.member === true) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Kiléptetés</a>';
     return ' <a class="btn btn-success btn-xs" role="button" data-toggle="modal" data-target="#updateModal" ' +
         'onclick="reActivate(\''+row._links.self.href+'\', \'/admin/users/'+row.id+'\', \''+row.name+'\');">Beiratkozás</a>';
 }
