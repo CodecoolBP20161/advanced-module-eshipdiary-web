@@ -91,7 +91,7 @@ public class UserController {
         return "users/user_form";
     }
 
-    @RequestMapping(value = "/admin/users/enabled_ships/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/users/enable_ships/{userId}", method = RequestMethod.POST)
     public String enableShips(@PathVariable("userId") Long userId, @ModelAttribute List<Ship> enabledShips) {
         User user = getUserById(userId);
         user.setEnabledShips(enabledShips);
