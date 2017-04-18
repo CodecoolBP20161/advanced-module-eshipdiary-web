@@ -96,7 +96,7 @@ public class RentalController {
         model.addAttribute("ship", originalRental.getChosenShip());
         model.addAttribute("oars", originalRental.getOars());
         model.addAttribute("comment", originalRental.getComment());
-        model.addAttribute("link", "/rentals/final/transaction/" + id);
+        model.addAttribute("link", "/rentals/final/" + id);
         return "rental_log/rental_finalize";
     }
 
@@ -118,7 +118,7 @@ public class RentalController {
         return result;
     }
 
-    @RequestMapping(value = "/rentals/final/transaction/{rentalId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/rentals/final/{rentalId}", method = RequestMethod.POST)
     public String finalRentalTransaction(@PathVariable("rentalId") Long id,
                                          @ModelAttribute RentalLog rentalFinalDetails) {
         LOG.debug("Trying to update RentalLog with (only non-null properties): {}", rentalFinalDetails.toString());
@@ -128,7 +128,7 @@ public class RentalController {
         return "redirect:/rentals";
     }
 
-    @RequestMapping(value = "/rentals/save")
+    @RequestMapping(value = "/rentals/save", method = RequestMethod.POST)
     public String saveRental(@ModelAttribute RentalLog rentalLog) {
         LOG.debug("Trying to save RentalLog as: {}", rentalLog.toString());
         rentalService.setOnWaterForInvolvedItemsIn(rentalLog, true);
