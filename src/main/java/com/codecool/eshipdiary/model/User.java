@@ -75,7 +75,7 @@ public class User {
     private boolean active;
 
     @Column
-    private boolean onWater = false;
+    private boolean onWater;
 
     @Column(nullable = false)
     private boolean member;

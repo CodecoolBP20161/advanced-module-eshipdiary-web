@@ -30,7 +30,7 @@ public class Oar {
     private boolean active;
 
     @Column
-    private boolean onWater = false;
+    private boolean onWater;
 
     @JsonIgnore
     @ManyToOne
