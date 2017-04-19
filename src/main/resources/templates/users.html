@@ -8,6 +8,18 @@
     <h2>Tagok
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal"
                 onclick="updateModal('/admin/users/0', 'Új tag');">Új tag felvétele</button>
+        <div class="dropdown" id="filterUsersBy">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="filterUsersDD"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Felhasználók szűrése
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="filterUsersDD">
+                <li><a href="#">Összes</a></li>
+                <li><a href="#">Aktív</a></li>
+                <li><a href="#">Inaktív</a></li>
+                <li><a href="#">Kilépett</a></li>
+            </ul>
+        </div>
     </h2>
 
     <div th:replace="users/user_table :: user-table"></div>
