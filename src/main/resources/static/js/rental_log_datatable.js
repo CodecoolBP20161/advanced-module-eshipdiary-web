@@ -92,7 +92,6 @@ function rentalModal(link) {
         success: function (result) {
             document.getElementById('rentalUpdate').innerHTML = result;
             document.getElementById('rentalSubmit').style.display = 'inline';
-            $('#coxSelect').hide();
             multipleSelect();
             loadValidate();
             selectSubTypesByType();
@@ -289,7 +288,7 @@ function getOarsByType(id) {
     });
 }
 
-$.fn.build = function(data){
+$.fn.build = function(data) {
     this.empty();
     for(var row in data) {
         this.append($('<option></option>').text(data[row]).val(row));
@@ -301,8 +300,16 @@ $.fn.build = function(data){
     if (this.attr('id') !== 'crew') displayCox();
 };
 
+$.fn.preFill = function() {
+    var selected = this.val() === "0" ? null : this.val();
+    $('option[value="0"]').remove();
+    if(selected === null && this.attr('id') !== 'subTypesByType') this.prop('disabled', true);
+    return selected;
+};
+
 function selectSubTypesByType() {
-    $('#subTypesByType').val(null).multiselect({
+    var types = $('#subTypesByType');
+    types.val(types.preFill()).multiselect({
         buttonWidth: '100%',
         nonSelectedText: 'Típus',
         onChange: function (option, checked, select) {
@@ -313,7 +320,9 @@ function selectSubTypesByType() {
 }
 
 function selectShipsBySubType() {
-    $('#shipsBySubType').val(null).multiselect({
+    var subTypes = $('#shipsBySubType');
+    displayCox(subTypes.val());
+    subTypes.val(subTypes.preFill()).multiselect({
         buttonWidth: '100%',
         nonSelectedText: 'Altípus',
         onChange: function (option, checked, select) {
@@ -323,7 +332,8 @@ function selectShipsBySubType() {
 }
 
 function selectShipsByName() {
-    $('#shipByName').val(null).multiselect({
+    var ships = $('#shipByName');
+    ships.val(ships.preFill()).multiselect({
         enableCaseInsensitiveFiltering: true,
         filterPlaceholder: 'Keresés...',
         buttonWidth: '100%',
