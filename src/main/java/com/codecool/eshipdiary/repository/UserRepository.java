@@ -9,6 +9,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 @Repository
@@ -32,4 +33,11 @@ public interface UserRepository extends CrudRepository<User, Long> {
     void delete(Long id);
 
     Iterable<User> findByActiveTrueAndOnWaterFalseAndClub(Club club);
+
+    @Query("select user from User user where user.club = ?#{principal.club} and user.active = true")
+    Iterable<User> findAllActives();
+    @Query("select user from User user where user.club = ?#{principal.club} and user.active = false")
+    Iterable<User> findAllInactives();
+    @Query("select user from User user where user.club = ?#{principal.club} and user.member = false")
+    Iterable<User> findAllNonMembers();
 }
