@@ -100,6 +100,10 @@ function updateModal(link, name){
 }
 
 function enableShipModal(userId) {
+    $('#enabled-ships').val('').multiselect({
+        nonSelectedText: ' ',
+        buttonWidth: '200%'
+    });
     $('#enableShip').attr('action', '/admin/users/enable_ships/' + userId);
 }
 

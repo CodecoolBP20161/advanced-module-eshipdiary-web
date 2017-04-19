@@ -17,10 +17,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Controller
@@ -92,9 +89,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/admin/users/enable_ships/{userId}", method = RequestMethod.POST)
-    public String enableShips(@PathVariable("userId") Long userId, @ModelAttribute List<Ship> enabledShips) {
-        User user = getUserById(userId);
-        user.setEnabledShips(enabledShips);
+    public String enableShips(@PathVariable("userId") Long userId, @RequestParam("enabledShips[]") Long[] enabledShips) {
+        User user = userRepositoryService.getUserById(userId).map(u -> u).orElse(new User());
+        List<Ship> whiteListedShips = new ArrayList<>();
+        for (Long id: enabledShips) {
+            whiteListedShips.add(shipRepositoryService.getShipById(id).get());
+        }
+        user.setEnabledShips(whiteListedShips);
         userRepositoryService.save(user);
         return "redirect:/admin/users";
     }
@@ -109,7 +110,4 @@ public class UserController {
         return users;
     }
 
-    private User getUserById(Long id) {
-        return userRepositoryService.getUserById(id).map(u -> u).orElse(new User());
-    }
 }

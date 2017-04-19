@@ -15,7 +15,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3" th:for="enabled-ships">Hajók</label>
                             <div class="col-sm-3">
-                                <select id="enabled-ships" name="enabledShip" class="form-control">
+                                <select id="enabled-ships" name="enabledShips[]" class="form-control" multiple="multiple">
                                     <option th:each="ship : ${allShips}"
                                             th:value="${ship.getId()}"
                                             th:text="${ship.getName()}" />
