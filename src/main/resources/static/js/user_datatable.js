@@ -30,7 +30,7 @@ function userActionButtons( data, type, row ) {
         current = deleteButton(row);
         current += row.member ? statusButton(row) : '';
     }
-    var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#whitelistedShipsModal" role="button" onclick="">Engedélyezett hajók</a>';
+    var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#enabledShipsModal" role="button" onclick="enableShipsModal(\'/admin/users/enable_ships/'+row.id+'\', \'Hajók engedélyezése\');">Engedélyezett hajók</a>';
     return detailsButton + current + shipButton + oarButton + availableShipsButton;
 }
 
@@ -97,6 +97,17 @@ function updateModal(link, name){
             }
         });
     }
+}
+
+function enableShipsModal(link, name) {
+    console.log(link, name);
+    // $.ajax({
+    //     type: 'GET',
+    //     url: link,
+    //     success: function (result) {
+    //         console.log(result);
+    //     }
+    // })
 }
 
 function validateForm(id){

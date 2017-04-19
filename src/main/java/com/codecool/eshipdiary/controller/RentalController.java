@@ -76,7 +76,7 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals", method = RequestMethod.OPTIONS)
-    public String rentalForm(){
+    public String rentalForm() {
         return "rental_log/rental_form";
     }
 
