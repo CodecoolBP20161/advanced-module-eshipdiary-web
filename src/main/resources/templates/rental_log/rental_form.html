@@ -15,22 +15,27 @@
                 <label class="control-label col-sm-3" th:for="chosenShip">Hajó</label>
                 <div class="col-sm-3">
                     <select id="subTypesByType" class="form-control">
+                        <option value="0"></option>
                         <option th:each="type : ${shipTypes}"
                                 th:value="${type.getId()}"
-                                th:text="${type.getName()}" />
+                                th:text="${type.getName()}"
+                                th:attrappend="selected='selected'?${shipType==type.getId()}" />
                     </select>
                 </div>
 
                 <div class="col-sm-3">
-                    <select id="shipsBySubType" class="form-control" disabled="disabled">
+                    <select id="shipsBySubType" class="form-control">
+                        <option value="0"></option>
                         <option th:each="subType : ${subTypes}"
                                 th:value="${subType.getId()}"
-                                th:text="${subType.getCode()}" />
+                                th:text="${subType.getCode()}"
+                                th:attrappend="selected='selected'?${sType==subType.getId()}" />
                     </select>
                 </div>
 
                 <div class="col-sm-3">
-                    <select th:field="*{chosenShip}" id="shipByName" class="form-control" disabled="disabled">
+                    <select th:field="*{chosenShip}" id="shipByName" class="form-control">
+                        <option value="0"></option>
                         <option th:each="ship : ${ships}"
                                 th:value="${ship.getId()}"
                                 th:text="${ship.getName()}" />
@@ -67,7 +72,7 @@
                 <label class="control-label col-sm-3" th:for="oars">Evezők</label>
                 <div class="col-sm-9">
                     <select th:field="*{oars}" class="multi-select form-control" multiple="multiple" required="required">
-                        <option th:each="oar : ${oars}"
+                        <option th:each="oar : ${oarType}"
                                 th:value="${oar.getId()}"
                                 th:text="${oar.getName()}" />
                     </select>

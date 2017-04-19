@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -60,5 +62,22 @@ public class UserRepositoryService {
     public User getCurrentUser() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         return getUserByUserName(userName).map(u -> u).orElse(new User());
+    }
+
+    public boolean userIsAvailable(User user) {
+        if (user.isActive() && !user.isOnWater()) {
+            return true;
+        }
+        return false;
+    }
+
+    public List<User> availableUsersFrom(List<User> users) {
+        List<User> availables = new ArrayList<>();
+        for (User user : users) {
+            if (userIsAvailable(user)) {
+                availables.add(user);
+            }
+        }
+        return availables;
     }
 }

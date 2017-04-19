@@ -54,19 +54,9 @@ public class RentalController {
         return (List<User>) userRepositoryService.getUsersEligibleForRental();
     }
 
-    @ModelAttribute("ships")
-    public List<Ship> listShips() {
-        return (List<Ship>) shipRepositoryService.getAvailableShips();
-    }
-
     @ModelAttribute("shipTypes")
     public List<ShipType> listShipTypes() {
         return (List<ShipType>) shipTypeRepositoryService.getAllShipType();
-    }
-
-    @ModelAttribute("oars")
-    public List<Oar> listOars() {
-        return (List<Oar>) oarRepositoryService.getAvailableOars();
     }
 
     @RequestMapping(value = {"/rentals", "/rentals/**"})
@@ -139,6 +129,24 @@ public class RentalController {
     public @ResponseBody Boolean rentalEnabled(){
         User currentUser = userRepositoryService.getCurrentUser();
         return currentUser.getRole().getName().equals("ADMIN") || !currentUser.isOnWater();
+    }
+
+    @RequestMapping(value = "/rentals/reuse/{rentalId}", method = RequestMethod.OPTIONS)
+    public String reuseRental(@PathVariable("rentalId") Long id, Model model) {
+        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
+        Ship ship = rentalLog.get().getChosenShip();
+        SubType subType = ship.getSubType();
+        ShipType shipType = subType.getType();
+        model.addAttribute("shipType", shipType.getId());
+        model.addAttribute("sType", subType.getId());
+        model.addAttribute("subTypes", shipType.getSubTypes());
+        model.addAttribute("ships", shipRepositoryService.getAvailableShipsBySubType(subType));
+        model.addAttribute("oarType", oarRepositoryService.getAvailableOarsByType(shipType));
+        RentalLog newRental = rentalLog();
+        rentalService.copyCurrentlyAvailableItems(rentalLog.get(), newRental);
+        model.addAttribute("rental", newRental);
+        model.addAttribute("link", "/rentals/save");
+        return "rental_log/rental_form";
     }
 
     private RentalLog getRentalLogById(Long id) {

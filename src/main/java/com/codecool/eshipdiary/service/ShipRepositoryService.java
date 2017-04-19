@@ -43,6 +43,13 @@ public class ShipRepositoryService {
         if(shipRepository.findOneById(id).isPresent()) shipRepository.delete(id);
     }
 
+    public boolean shipIsAvailable(Ship ship) {
+        if (ship.isActive() && !ship.isOnWater()) {
+            return true;
+        }
+        return false;
+    }
+
 }
 
 
