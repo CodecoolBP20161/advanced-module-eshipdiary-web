@@ -39,8 +39,8 @@ public class RentalController {
     @ModelAttribute("rental")
     public RentalLog rentalLog() {
         RentalLog rentalLog = new RentalLog();
-        rentalLog.setCaptain(getCurrentUser());
-        rentalLog.setClub(getCurrentUser().getClub());
+        rentalLog.setCaptain(userRepositoryService.getCurrentUser());
+        rentalLog.setClub(userRepositoryService.getCurrentUser().getClub());
         return rentalLog;
     }
 
@@ -71,7 +71,7 @@ public class RentalController {
 
     @RequestMapping(value = {"/rentals", "/rentals/**"})
     public String getRentalHistory(Model model) {
-        model.addAttribute("role", getCurrentUser().getRole().getName());
+        model.addAttribute("role", userRepositoryService.getCurrentUser().getRole().getName());
         return "rentals";
     }
 
@@ -137,16 +137,12 @@ public class RentalController {
 
     @RequestMapping(value = "/rentalEnabled")
     public @ResponseBody Boolean rentalEnabled(){
-        return getCurrentUser().getRole().getName().equals("ADMIN") || !getCurrentUser().isOnWater();
+        User currentUser = userRepositoryService.getCurrentUser();
+        return currentUser.getRole().getName().equals("ADMIN") || !currentUser.isOnWater();
     }
 
     private RentalLog getRentalLogById(Long id) {
         Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
         return rentalLog.isPresent() ? rentalLog.get() : new RentalLog();
-    }
-
-    private User getCurrentUser() {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepositoryService.getUserByUserName(userName).map(u -> u).orElse(new User());
     }
 }
