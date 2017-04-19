@@ -20,7 +20,6 @@ $(document).ready( function () {
         ]
     });
 });
-
 function userActionButtons( data, type, row ) {
     var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/admin/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var shipButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/admin/ships/user/'+row.id+'\', \'Új hajó\');">Hajó</a>';
@@ -126,4 +125,25 @@ function submitForm(id){
         dataType: 'json',
         contentType : 'application/json'
     });
+}
+
+
+function dataTableUrl(filter) {
+    var extra = "";
+    switch (filter) {
+        case "active":
+            extra = '/search/findAllActives';
+            break;
+        case "inactive":
+            extra = '/search/findAllInactives';
+            break;
+        case "nonMember":
+            extra = '/search/findAllNonMembers';
+            break;
+    }
+    var filterUrl = '/api/user'+ extra +'?projection=userOverview';
+    console.log(extra);
+    console.log(filterUrl);
+    $('#user-table').DataTable().ajax.url(filterUrl).load();
+
 }
