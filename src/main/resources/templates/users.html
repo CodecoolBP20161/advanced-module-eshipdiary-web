@@ -10,14 +10,14 @@
                 onclick="updateModal('/admin/users/0', 'Új tag');">Új tag felvétele</button>
         <div class="dropdown" id="filterUsersBy">
             <button class="btn btn-primary dropdown-toggle" type="button" id="filterUsersDD"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Felhasználók szűrése
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Tagok szűrése
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" aria-labelledby="filterUsersDD">
-                <li><a href="#">Összes</a></li>
-                <li><a href="#">Aktív</a></li>
-                <li><a href="#">Inaktív</a></li>
-                <li><a href="#">Kilépett</a></li>
+                <li><a onclick="dataTableUrl('')">Összes</a></li>
+                <li><a onclick="dataTableUrl('active')">Aktív</a></li>
+                <li><a onclick="dataTableUrl('inactive')">Inaktív</a></li>
+                <li><a onclick="dataTableUrl('nonMember')">Kilépett</a></li>
             </ul>
         </div>
     </h2>
