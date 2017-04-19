@@ -17,14 +17,15 @@ public interface RentalLogRepository extends CrudRepository<RentalLog, Long> {
     Iterable<RentalLog> findAll();
 
 
-//    TODO: query to be fixed, it ignores all rows where cox is null
-//    @Query("select rentalLog " +
-//            "from RentalLog rentalLog " +
-//            "join rentalLog.crew crew " +
-//            "where rentalLog.club = ?#{principal.club} " +
-//            "and (crew.userName = ?#{principal.username} " +
-//            "or (rentalLog.cox is null or rentalLog.cox.userName = ?#{principal.username}) " +
-//            "or rentalLog.captain.userName = ?#{principal.username})")
-    @Query("select rentalLog from RentalLog rentalLog where rentalLog.club = ?#{principal.club}")
+    @Query(nativeQuery = true,
+            value = "select rl.* " +
+                    "from rental_log rl, club cl, users u, rental_log_crew cr " +
+                    "where " +
+                    "cr.rental_logs_id = rl.id AND " +
+                    "rl.club_id = cl.id AND " +
+                    "( u.id = rl.captain_id OR " +
+                    "u.id = rl.cox_id OR " +
+                    "cr.crew_id = u.id) AND " +
+                    "u.user_name = ?#{principal.username}")
     Iterable<RentalLog> findForPrincipal();
 }
