@@ -29,7 +29,8 @@ function userActionButtons( data, type, row ) {
         current = deleteButton(row);
         current += row.member ? statusButton(row) : '';
     }
-    var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#whitelistedShipsModal" role="button" onclick="">Engedélyezett hajók</a>';
+    var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipWhitelistingModal" role="button" ' +
+        'onclick="shipWhitelistingModal(\'/admin/users/'+row.id+'/enable_ships\', \''+row.name+'\')">Engedélyezett hajók</a>';
     return detailsButton + current + shipButton + oarButton + availableShipsButton;
 }
 
@@ -72,6 +73,17 @@ function deleteModal(link, name){
             contentType : 'application/json'
         });
     });
+}
+
+function shipWhitelistingModal(link, name){
+    document.getElementById('shipWhitelistingModalLabel').innerHTML = name + ' hajókhoz rendelése';
+        $.ajax({
+            url: link,
+            success: function(result){
+                document.getElementById('ship-whitelistig-modal-body').innerHTML = result;
+                multipleSelect();
+            },
+        });
 }
 
 function reActivate(link, reactivateLink, name){
