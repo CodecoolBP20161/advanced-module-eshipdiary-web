@@ -98,4 +98,19 @@ public class ShipController {
         }
         return shipsBySubType;
     }
+
+    @RequestMapping(value = "/admin/ships/{shipId}/enable_users")
+    public String getUserWhitelistingForm(@PathVariable("shipId") Long id, Model model){
+        Ship ship = shipRepositoryService.getShipById(id).get();
+        model.addAttribute("ship", ship);
+        return "ships/user_whitelisting_form";
+    }
+
+    @RequestMapping(value = "/admin/ships/{shipId}/enable_users", method = RequestMethod.POST)
+    public String enableUsers(@PathVariable("shipId") Long shipId, @ModelAttribute("ship") Ship ship) {
+        Ship target = shipRepositoryService.getShipById(shipId).get();
+        target.setEnabledUsers(ship.getEnabledUsers());
+        shipRepositoryService.save(target);
+        return "redirect:/admin/ships";
+    }
 }
