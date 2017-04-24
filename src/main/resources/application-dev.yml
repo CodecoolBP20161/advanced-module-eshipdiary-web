@@ -6,11 +6,13 @@ spring:
         url: jdbc:postgresql://localhost:5432/eshipdiary
         username: postgres
     jpa:
+        show-sql: true
         hibernate:
             ddl-auto: create-drop
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.PostgreSQL9Dialect
+                format_sql: ture
     data:
         rest:
             base-path: /api
@@ -21,4 +23,7 @@ server:
 
 logging:
     level:
-        org.springframework: INFO
+        org:
+          springframework: INFO
+          hibernate.SQL: DEBUG
+          hibernate.type: TRACE

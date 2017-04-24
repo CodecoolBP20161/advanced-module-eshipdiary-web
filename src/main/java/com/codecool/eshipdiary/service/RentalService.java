@@ -12,6 +12,14 @@ import java.util.List;
 
 @Service
 public class RentalService {
+    @Autowired
+    ShipRepositoryService shipRepositoryService;
+
+    @Autowired
+    OarRepositoryService oarRepositoryService;
+
+    @Autowired
+    UserRepositoryService userRepositoryService;
 
 
     public void setOnWaterForInvolvedItemsIn(RentalLog log, Boolean bool){
@@ -25,5 +33,25 @@ public class RentalService {
         for (User user : log.getCrew()) {
             user.setOnWater(bool);
         }
+    }
+
+    public void copyCurrentlyAvailableItems(RentalLog oldLog, RentalLog newLog) {
+        newLog.setRentalPeriod(oldLog.getRentalPeriod());
+        newLog.setItinerary(oldLog.getItinerary());
+        newLog.setDistance(oldLog.getDistance());
+        newLog.setCrew(userRepositoryService.availableUsersFrom(oldLog.getCrew()));
+        newLog.setOars(oarRepositoryService.availableOarsFrom(oldLog.getOars()));
+
+        if (shipRepositoryService.shipIsAvailable(oldLog.getChosenShip())) {
+            newLog.setChosenShip(oldLog.getChosenShip());
+        }
+
+        if (oldLog.getCox() != null) {
+            if (userRepositoryService.userIsAvailable(oldLog.getCox())) {
+                newLog.setCox(oldLog.getCox());
+            }
+        }
+
+
     }
 }

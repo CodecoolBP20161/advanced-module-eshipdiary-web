@@ -88,15 +88,29 @@ public class UserController {
         return "users/user_form";
     }
 
-    @RequestMapping(value = "/admin/users/enable_ships/{userId}", method = RequestMethod.POST)
-    public String enableShips(@PathVariable("userId") Long userId, @RequestParam("enabledShips[]") Long[] enabledShips) {
-        User user = userRepositoryService.getUserById(userId).map(u -> u).orElse(new User());
-        List<Ship> whiteListedShips = new ArrayList<>();
-        for (Long id: enabledShips) {
-            whiteListedShips.add(shipRepositoryService.getShipById(id).get());
-        }
-        user.setEnabledShips(whiteListedShips);
-        userRepositoryService.save(user);
+//    @RequestMapping(value = "/admin/users/enable_ships/{userId}", method = RequestMethod.POST)
+//    public String enableShips(@PathVariable("userId") Long userId, @RequestParam("enabledShips[]") Long[] enabledShips) {
+//        User user = userRepositoryService.getUserById(userId).map(u -> u).orElse(new User());
+//        List<Ship> whiteListedShips = new ArrayList<>();
+//        for (Long id : enabledShips) {
+//            whiteListedShips.add(shipRepositoryService.getShipById(id).get());
+//        }
+//        user.setEnabledShips(whiteListedShips);
+//        userRepositoryService.save(user);
+//    }
+
+    @RequestMapping(value = "/admin/users/{userId}/enable_ships")
+    public String getShipWhitelistingForm(@PathVariable("userId") Long id, Model model) {
+        User user = userRepositoryService.getUserById(id).get();
+        model.addAttribute("user", user);
+        return "users/ship_whitelisting_form";
+    }
+
+    @RequestMapping(value = "/admin/users/{userId}/enable_ships", method = RequestMethod.POST)
+    public String enableShips(@PathVariable("userId") Long userId, @ModelAttribute("user") User user) {
+        User target = userRepositoryService.getUserById(userId).get();
+        target.setEnabledShips(user.getEnabledShips());
+        userRepositoryService.save(target);
         return "redirect:/admin/users";
     }
 

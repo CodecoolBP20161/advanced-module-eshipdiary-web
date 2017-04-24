@@ -30,7 +30,9 @@ function shipActionButtons( data, type, row ) {
     var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/admin/ships/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipDeleteModal" role="button" onclick="shipDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setShipStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
-    return editButton + deleteButton + statusChangeButton;
+    var availableUsersButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#userWhitelistingModal" role="button" ' +
+        'onclick="userWhitelistingModal(\'/admin/ships/'+row.id+'/enable_users\', \''+row.name+'\')">Engedélyezett tagok</a>';
+    return editButton + deleteButton + statusChangeButton + availableUsersButton;
 }
 
 function setShipStatus(link, shouldBeActive) {
@@ -100,5 +102,16 @@ function submitShip(id){
         },
         dataType: 'json',
         contentType : 'application/json'
+    });
+}
+
+function userWhitelistingModal(link, name){
+    document.getElementById('userWhitelistingModalLabel').innerHTML = name + ' felhasználókhoz rendelése';
+    $.ajax({
+        url: link,
+        success: function(result){
+            document.getElementById('user-whitelistig-modal-body').innerHTML = result;
+            multipleSelect();
+        },
     });
 }

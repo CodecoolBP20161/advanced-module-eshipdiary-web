@@ -20,7 +20,6 @@ $(document).ready( function () {
         ]
     });
 });
-
 function userActionButtons( data, type, row ) {
     var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/admin/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var shipButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/admin/ships/user/'+row.id+'\', \'Új hajó\');">Hajó</a>';
@@ -30,7 +29,9 @@ function userActionButtons( data, type, row ) {
         current = deleteButton(row);
         current += row.member ? statusButton(row) : '';
     }
-    var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#enableShipsModal" role="button" onclick="enableShipModal(\''+row.id+'\');" >Engedélyezett hajók</a>';
+    // var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#enableShipsModal" role="button" onclick="enableShipModal(\''+row.id+'\');" >Engedélyezett hajók</a>';
+    var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipWhitelistingModal" role="button" ' +
+        'onclick="shipWhitelistingModal(\'/admin/users/'+row.id+'/enable_ships\', \''+row.name+'\')">Engedélyezett hajók</a>';
     return detailsButton + current + shipButton + oarButton + availableShipsButton;
 }
 
@@ -75,6 +76,17 @@ function deleteModal(link, name){
     });
 }
 
+function shipWhitelistingModal(link, name) {
+    document.getElementById('shipWhitelistingModalLabel').innerHTML = name + ' hajókhoz rendelése';
+    $.ajax({
+        url: link,
+        success: function(result){
+            document.getElementById('ship-whitelistig-modal-body').innerHTML = result;
+            multipleSelect();
+        }
+    });
+}
+
 function reActivate(link, reactivateLink, name){
     $.ajax({
         type: 'PATCH',
@@ -97,14 +109,6 @@ function updateModal(link, name){
             }
         });
     }
-}
-
-function enableShipModal(userId) {
-    $('#enabled-ships').val('').multiselect({
-        nonSelectedText: ' ',
-        buttonWidth: '200%'
-    });
-    $('#enableShip').attr('action', '/admin/users/enable_ships/' + userId);
 }
 
 function validateForm(id){
@@ -134,4 +138,25 @@ function submitForm(id){
         dataType: 'json',
         contentType : 'application/json'
     });
+}
+
+
+function dataTableUrl(filter) {
+    var extra = "";
+    switch (filter) {
+        case "active":
+            extra = '/search/findAllActives';
+            break;
+        case "inactive":
+            extra = '/search/findAllInactives';
+            break;
+        case "nonMember":
+            extra = '/search/findAllNonMembers';
+            break;
+    }
+    var filterUrl = '/api/user'+ extra +'?projection=userOverview';
+    console.log(extra);
+    console.log(filterUrl);
+    $('#user-table').DataTable().ajax.url(filterUrl).load();
+
 }

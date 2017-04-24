@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Data
-@ToString(exclude = {"subTypes"})
+@ToString(exclude = {"subTypes", "oars"})
 public class ShipType {
 
     @Id
@@ -33,9 +33,10 @@ public class ShipType {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<SubType> subTypes;
 
-//    @Formula("(select count(*) from ship where ship.type_id = id)")
-//    int ships;
+    @OneToMany(mappedBy = "type")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Oar> oars;
 
     @Formula("(select count(*) from oar where oar.type_id = id)")
-    int oars;
+    int oarCount;
 }

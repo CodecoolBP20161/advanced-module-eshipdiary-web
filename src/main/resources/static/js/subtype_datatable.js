@@ -17,7 +17,7 @@ function subTypeButtons( data, type, row) {
 }
 
 function deleteSubType(subType){
-    if(subType.ships === 0) return '<li><a data-toggle="modal" data-target="#subTypeDeleteModal" role="button" onclick="subTypeDeleteModal(\'/api/subType/'+subType.id+'\', \''+subType.code+'\');">Törlés</a></li>';
+    if(subType.shipCount === 0) return '<li><a data-toggle="modal" data-target="#subTypeDeleteModal" role="button" onclick="subTypeDeleteModal(\'/api/subType/'+subType.id+'\', \''+subType.code+'\');">Törlés</a></li>';
     return '<li class="disabled"><a data-toggle="tooltip" title="Hozzátartozó hajó miatt nem törölhető!">Törlés</a></li>';
 }
 
