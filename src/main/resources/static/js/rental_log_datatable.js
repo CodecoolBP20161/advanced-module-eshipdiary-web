@@ -177,12 +177,11 @@ function addAdminComment(id) {
 
 function loadValidate() {
     $('#crew').on('change', function () {
-        this.setCustomValidity(validateCaptainPresence());
-        countSeats($('#shipsBySubType').val());
+        crewValidation();
         document.getElementById('oars').setCustomValidity(setMaxNumOfOars());
     });
     $('#cox').on('change', function () {
-        document.getElementById('crew').setCustomValidity(validateCaptainPresence());
+        crewValidation();
         removeCox(this.value);
     });
     $('#rentalPeriod').on('input', function () {
@@ -202,20 +201,20 @@ function loadValidate() {
     });
 }
 
+function crewValidation() {
+    var crew = $('#crew').val();
+    crew.push($('#cox').val());
+    if(!crew.includes($('#captain').val()) && $('#role').val()!=='ADMIN'){
+        document.getElementById('crew').setCustomValidity('Bejelentkezett felhasználó nincs a legénységben');
+    } else countSeats($('#shipsBySubType').val());
+}
+
 function setMaxNumOfOars() {
     return $('#crew').val().length !== $('#oars').val().length ? 'Nem egyezik a legénység és a lapátok száma.' : '';
 }
 
 function validateDistance(distance) {
     return distance < 1 ? 'A megadott távolság nem lehet kevesebb, mint 1 km' : '';
-}
-
-function validateCaptainPresence() {
-    var crew = $('#crew').val();
-    crew.push($('#cox').val());
-    if($('#role').val()!=='ADMIN' && !crew.includes($('#captain').val())) {
-        return 'Bejelentkezett felhasználó nincs a legénységben'
-    } else return ''
 }
 
 function validateRentalPeriod(rentalPeriod) {
@@ -338,7 +337,7 @@ function selectShipsByName() {
         enableCaseInsensitiveFiltering: true,
         filterPlaceholder: 'Keresés...',
         buttonWidth: '100%',
-        nonSelectedText: 'Hajó',
+        nonSelectedText: 'Hajó'
     })
 }
 
