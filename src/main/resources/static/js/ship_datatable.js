@@ -49,7 +49,7 @@ function setShipStatus(link, shouldBeActive) {
 
 function shipDeleteModal(link, name){
     document.getElementById('shipDeleteModalLabel').innerHTML = name + ' törlése';
-    document.getElementById('shipDelete').addEventListener('click', function(){
+    $('#shipDelete').off('click').on('click', function(){
         $.ajax({
             type: 'DELETE',
             url: link,

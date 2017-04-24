@@ -61,7 +61,7 @@ function setUserStatus(link, shouldBeActive) {
 
 function deleteModal(link, name){
     document.getElementById('deleteModalLabel').innerHTML = name + ' kiléptetése';
-    document.getElementById('userDelete').addEventListener('click', function(){
+    $('#userDelete').off('click').on('click', function(){
         $.ajax({
             type: 'PATCH',
             url: link,

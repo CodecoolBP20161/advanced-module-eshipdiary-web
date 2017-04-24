@@ -44,7 +44,7 @@ function setOarStatus(link, shouldBeActive) {
 
 function oarDeleteModal(link, name){
     document.getElementById('oarDeleteModalLabel').innerHTML = name + ' törlése';
-    document.getElementById('oarDelete').addEventListener('click', function(){
+    $('#oarDelete').off('click').on('click', function(){
         $.ajax({
             type: 'DELETE',
             url: link,

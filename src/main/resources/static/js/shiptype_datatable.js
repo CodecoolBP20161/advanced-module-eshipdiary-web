@@ -37,7 +37,7 @@ function deleteButton(row){
 
 function shipTypeDeleteModal(link, name){
     document.getElementById('shipTypeDeleteModalLabel').innerHTML = name + ' típus törlése';
-    document.getElementById('shipTypeDelete').addEventListener('click', function(){
+    $('#shipTypeDelete').off('click').on('click', function(){
         $.ajax({
             type: 'DELETE',
             url: link,

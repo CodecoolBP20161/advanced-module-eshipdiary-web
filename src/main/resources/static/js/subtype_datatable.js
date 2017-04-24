@@ -23,7 +23,7 @@ function deleteSubType(subType){
 
 function subTypeDeleteModal(link, name){
     document.getElementById('subTypeDeleteModalLabel').innerHTML = name + ' altípus törlése';
-    document.getElementById('subTypeDelete').addEventListener('click', function(){
+    $('#subTypeDelete').off('click').on('click', function(){
         $.ajax({
             type: 'DELETE',
             url: link,
