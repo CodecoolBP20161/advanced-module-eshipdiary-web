@@ -296,14 +296,15 @@ $.fn.build = function(data) {
     this.multiselect('setOptions');
     this.multiselect('rebuild');
     $.isEmptyObject(data) ? this.multiselect('disable') : this.multiselect('enable');
-    $('#rentalSubmit').prop('disabled', $("#rentalForm :disabled").length !== 0);
     if (this.attr('id') !== 'crew') displayCox();
+    enableSubmit();
 };
 
 $.fn.preFill = function() {
     var selected = this.val() === "0" ? null : this.val();
     $('option[value="0"]').remove();
     if(selected === null && this.attr('id') !== 'subTypesByType') this.prop('disabled', true);
+    enableSubmit();
     return selected;
 };
 
@@ -358,6 +359,10 @@ function displayCox() {
             data ? $('#coxSelect').show() : hideCox();
         }
     });
+}
+
+function enableSubmit() {
+    $('#rentalSubmit').prop('disabled', $("#rentalForm :disabled").length !== 0);
 }
 
 function enableNewRental() {
