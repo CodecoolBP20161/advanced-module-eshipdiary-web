@@ -33,7 +33,7 @@ function deleteButton(row){
 
 function shipSizeDeleteModal(link, name){
     document.getElementById('shipSizeDeleteModalLabel').innerHTML = name + ' méret törlése';
-    document.getElementById('shipSizeDelete').addEventListener('click', function(){
+    $('#shipSizeDelete').off('click').on('click', function(){
         $.ajax({
             type: 'DELETE',
             url: link,
