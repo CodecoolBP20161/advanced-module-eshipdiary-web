@@ -57,13 +57,13 @@ public class HomeControllerTest {
         authorities.add(new SimpleGrantedAuthority("ADMIN"));
         authentication = AnonymousAuthMock.withAddedAuth(authorities);
         when(securityContext.getAuthentication()).thenReturn(authentication);
-        mockMvc.perform(get("/")).andExpect(redirectedUrl("/users"));
+        mockMvc.perform(get("/")).andExpect(redirectedUrl("/admin/users"));
     }
 
     @Test
     public void indexWithNotAdmin() throws Exception {
         authentication = AnonymousAuthMock.withDefaultAuth();
         when(securityContext.getAuthentication()).thenReturn(authentication);
-        mockMvc.perform(get("/")).andExpect(view().name("index"));
+        mockMvc.perform(get("/")).andExpect(view().name("redirect:/rentals"));
     }
 }

@@ -6,9 +6,6 @@ import com.codecool.eshipdiary.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.rest.core.config.Projection;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.sql.Date;
 import java.util.List;
 
 @Projection(name="userOverview", types={User.class})
@@ -24,4 +21,5 @@ public interface UserOverviewProjection {
     String getIsActive();
     List<Ship> getShips();
     List<Oar> getOars();
+    boolean getMember();
 }

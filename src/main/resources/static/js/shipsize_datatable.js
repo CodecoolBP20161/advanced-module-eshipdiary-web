@@ -22,7 +22,7 @@ $(document).ready( function () {
 
 
 function shipSizeActionButtons( data, type, row ) {
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipSizeModal" role="button" onclick="shipSizeModal(\'/shipsizes/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipSizeModal" role="button" onclick="shipSizeModal(\'/admin/shipsizes/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     return editButton + deleteButton(row);
 }
 
@@ -58,7 +58,7 @@ function shipSizeModal(link, name){
 
 function validateShipSize(id){
     $.ajax({
-        url:'/shipsizes/' + id,
+        url:'/admin/shipsizes/' + id,
         type:'POST',
         data:$('#shipSizeForm').serialize(),
         success:function(result){
@@ -73,7 +73,7 @@ function submitShipSize(id){
     var data = $("#shipSizeForm").serializeObject();
     $.ajax({
         type: id == 0 ? 'POST' : 'PATCH',
-        url: id == 0 ? '/api/shipSize' : 'api/shipSize/' + id,
+        url: id == 0 ? '/api/shipSize' : '/api/shipSize/' + id,
         data: JSON.stringify(data),
         success: function (msg) {
             document.getElementById('shipSizeModalLabel').innerHTML = "";

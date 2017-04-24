@@ -1,7 +1,9 @@
 package com.codecool.eshipdiary.repository;
 
 
+import com.codecool.eshipdiary.model.Club;
 import com.codecool.eshipdiary.model.Oar;
+import com.codecool.eshipdiary.model.ShipType;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -18,4 +20,8 @@ public interface OarRepository extends CrudRepository<Oar, Long> {
     @RestResource(exported = true)
     @Query("select oar from Oar oar where oar.club = ?#{principal.club}")
     Iterable<Oar> findAll();
+    Iterable<Oar> findAllByType(ShipType type);
+    Iterable<Oar> findByActiveTrueAndOnWaterFalseAndClub(Club club);
+    Iterable<Oar> findByActiveTrueAndOnWaterFalseAndTypeAndClub(ShipType type, Club club);
+
 }

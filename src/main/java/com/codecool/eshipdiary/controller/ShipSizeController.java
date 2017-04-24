@@ -24,12 +24,12 @@ public class ShipSizeController {
     @Autowired
     ShipSizeRepositoryService shipSizeRepositoryService;
 
-    @RequestMapping(value = {"/shipsizes", "/shipsizes/**"})
+    @RequestMapping(value = {"/admin/shipsizes", "/admin/shipsizes/**"})
     public String getShipSizeTable() {
         return "shipsizes";
     }
 
-    @RequestMapping(value = "/shipsizes/{shipSizeId}", method = RequestMethod.OPTIONS)
+    @RequestMapping(value = "/admin/shipsizes/{shipSizeId}", method = RequestMethod.OPTIONS)
     public String updateShipSize(@PathVariable("shipSizeId") Long id, Model model){
         Optional<ShipSize> shipSize = shipSizeRepositoryService.getShipSizeById(id);
         model.addAttribute("shipSize", shipSize.isPresent() ? shipSize.get() : new ShipSize());
@@ -37,7 +37,7 @@ public class ShipSizeController {
         return "shipsizes/shipsize_form";
     }
 
-    @RequestMapping(value = "/shipsizes/{shipSizeId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/shipsizes/{shipSizeId}", method = RequestMethod.POST)
     public String saveShipSize(@PathVariable("shipSizeId") Long id, @ModelAttribute("shipSize") @Valid ShipSize shipSize, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateShipSize(" + id + ")");
         if(result.hasErrors()) {

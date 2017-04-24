@@ -4,11 +4,16 @@ $(document).ready( function () {
             "url": "https://cdn.datatables.net/plug-ins/1.10.13/i18n/Hungarian.json"
         },
         ajax: {
-            url: '/api/shipType',
+            url: '/api/shipType?projection=shipTypeOverview',
             dataSrc: '_embedded.shipType'
         },
         columns: [
             {data: 'name'},
+            {
+                sortable: false,
+                searchable: false,
+                render: subTypeButtons
+            },
             {
                 sortable: false,
                 searchable: false,
@@ -18,15 +23,16 @@ $(document).ready( function () {
     });
 });
 
-
 function shipTypeActionButtons( data, type, row ) {
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipTypeModal" role="button" onclick="shipTypeModal(\'/shiptypes/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
-    return editButton + deleteButton(row);
+    var subTypeButton = ' <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#subTypeModal" role="button" onclick="subTypeModal(\'/admin/subtypes/shiptype/'+row.id+'\', \'Új\');">Altípus</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipTypeModal" role="button" onclick="shipTypeModal(\'/admin/shiptypes/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
+    var oarButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/admin/oars/shiptype/'+row.id+'\', \'Új evező\');">Evező</a>';
+    return subTypeButton + editButton + deleteButton(row) + oarButton;
 }
 
 function deleteButton(row){
-    if(row.ships + row.oars === 0) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipTypeDeleteModal" role="button" onclick="shipTypeDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
-    return ' <button disabled class="btn btn-default btn-xs" data-toggle="tooltip" title="Hozzátartozó hajó/evező miatt nem törölhető!">Törlés</button>';
+    if(row.oarCount + row.subTypes.length === 0) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipTypeDeleteModal" role="button" onclick="shipTypeDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
+    return ' <button disabled class="btn btn-default btn-xs" data-toggle="tooltip" title="Hozzátartozó altípus/evező miatt nem törölhető!">Törlés</button>';
 }
 
 function shipTypeDeleteModal(link, name){
@@ -56,7 +62,7 @@ function shipTypeModal(link, name){
 
 function validateShipType(id){
     $.ajax({
-        url:'/shiptypes/' + id,
+        url:'/admin/shiptypes/' + id,
         type:'POST',
         data:$('#shipTypeForm').serialize(),
         success:function(result){
@@ -71,7 +77,7 @@ function submitShipType(id){
     var data = $("#shipTypeForm").serializeObject();
     $.ajax({
         type: id == 0 ? 'POST' : 'PATCH',
-        url: id == 0 ? '/api/shipType' : 'api/shipType/' + id,
+        url: id == 0 ? '/api/shipType' : '/api/shipType/' + id,
         data: JSON.stringify(data),
         success: function (msg) {
             document.getElementById('shipTypeModalLabel').innerHTML = "";

@@ -4,15 +4,14 @@ package com.codecool.eshipdiary.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
@@ -23,7 +22,7 @@ import java.util.UUID;
 
 
 @Data
-@ToString(exclude = {"ships", "oars", "passwordHash", "rentalLogs"})
+@ToString(exclude = {"ships", "oars", "passwordHash", "rentalLogs", "enabledShips"})
 @Entity
 @Table(name = "users")
 public class User {
@@ -75,6 +74,12 @@ public class User {
     @Column(nullable = false)
     private boolean active;
 
+    @Column
+    private boolean onWater;
+
+    @Column(nullable = false)
+    private boolean member;
+
     @JsonIgnore
     @ManyToOne
     private Club club;
@@ -95,6 +100,9 @@ public class User {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<RentalLog> rentalLogs;
 
+    @ManyToMany
+    private List<Ship> enabledShips;
+
     @PrePersist
     private void validate(){
         this.apiToken = UUID.randomUUID().toString();
@@ -112,6 +120,7 @@ public class User {
 
     public User(){
         this.active = true;
+        this.member = true;
     }
 
     public enum KnowledgeLevel {

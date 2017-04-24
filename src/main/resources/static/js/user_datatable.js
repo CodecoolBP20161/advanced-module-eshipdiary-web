@@ -20,12 +20,19 @@ $(document).ready( function () {
         ]
     });
 });
-
 function userActionButtons( data, type, row ) {
-    var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/users/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
-    var shipButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/ships/user/'+row.id+'\', \'Új hajó\');">Hajó</a>';
-    var oarButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/oars/user/'+row.id+'\', \'Új evező\');">Evező</a>';
-    return detailsButton + deleteButton(row) + statusButton(row) + shipButton + oarButton;
+    var detailsButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#updateModal" role="button" onclick="updateModal(\'/admin/users/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
+    var shipButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/admin/ships/user/'+row.id+'\', \'Új hajó\');">Hajó</a>';
+    var oarButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/admin/oars/user/'+row.id+'\', \'Új evező\');">Evező</a>';
+    var current = '';
+    if(document.getElementById("current").value !== row.id) {
+        current = deleteButton(row);
+        current += row.member ? statusButton(row) : '';
+    }
+    // var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#enableShipsModal" role="button" onclick="enableShipModal(\''+row.id+'\');" >Engedélyezett hajók</a>';
+    var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipWhitelistingModal" role="button" ' +
+        'onclick="shipWhitelistingModal(\'/admin/users/'+row.id+'/enable_ships\', \''+row.name+'\')">Engedélyezett hajók</a>';
+    return detailsButton + current + shipButton + oarButton + availableShipsButton;
 }
 
 function statusButton(row){
@@ -36,8 +43,9 @@ function statusButton(row){
 }
 
 function deleteButton(row){
-    if(row.ships.length + row.oars.length === 0) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
-    return ' <button disabled class="btn btn-default btn-xs" data-toggle="tooltip" title="Hozzátartozó hajó/evező miatt nem törölhető!">Törlés</button>';
+    if(row.member === true) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Kiléptetés</a>';
+    return ' <a class="btn btn-success btn-xs" role="button" data-toggle="modal" data-target="#updateModal" ' +
+        'onclick="reActivate(\''+row._links.self.href+'\', \'/admin/users/'+row.id+'\', \''+row.name+'\');">Beiratkozás</a>';
 }
 
 function setUserStatus(link, shouldBeActive) {
@@ -52,17 +60,43 @@ function setUserStatus(link, shouldBeActive) {
 }
 
 function deleteModal(link, name){
-    document.getElementById('deleteModalLabel').innerHTML = name + ' törlése';
+    document.getElementById('deleteModalLabel').innerHTML = name + ' kiléptetése';
     document.getElementById('userDelete').addEventListener('click', function(){
         $.ajax({
-            type: 'DELETE',
+            type: 'PATCH',
             url: link,
+            data: JSON.stringify({"active": false, "member": false}),
             success: function(msg){
                 $('#deleteModal').modal('hide');
                 $('#user-table').DataTable().ajax.reload( null, false );
-            }
+            },
+            dataType: 'json',
+            contentType : 'application/json'
         });
     });
+}
+
+function shipWhitelistingModal(link, name) {
+    document.getElementById('shipWhitelistingModalLabel').innerHTML = name + ' hajókhoz rendelése';
+    $.ajax({
+        url: link,
+        success: function(result){
+            document.getElementById('ship-whitelistig-modal-body').innerHTML = result;
+            multipleSelect();
+        }
+    });
+}
+
+function reActivate(link, reactivateLink, name){
+    $.ajax({
+        type: 'PATCH',
+        url: link,
+        data: JSON.stringify({"member": true}),
+        success: function(msg){$('#user-table').DataTable().ajax.reload( null, false );},
+        dataType: 'json',
+        contentType : 'application/json'
+    });
+    updateModal(reactivateLink, name);
 }
 
 function updateModal(link, name){
@@ -79,7 +113,7 @@ function updateModal(link, name){
 
 function validateForm(id){
     $.ajax({
-        url:'/users/' + id,
+        url:'/admin/users/' + id,
         type:'POST',
         data:$('#userForm').serialize(),
         success:function(result){
@@ -94,7 +128,7 @@ function submitForm(id){
     var data = $("#userForm").serializeObject();
     $.ajax({
         type: id == 0 ? 'POST' : 'PATCH',
-        url: id == 0 ? '/api/user' : 'api/user/' + id,
+        url: id == 0 ? '/api/user' : '/api/user/' + id,
         data: JSON.stringify(data),
         success: function (msg) {
             document.getElementById('updateModalLabel').innerHTML = "";
@@ -104,4 +138,25 @@ function submitForm(id){
         dataType: 'json',
         contentType : 'application/json'
     });
+}
+
+
+function dataTableUrl(filter) {
+    var extra = "";
+    switch (filter) {
+        case "active":
+            extra = '/search/findAllActives';
+            break;
+        case "inactive":
+            extra = '/search/findAllInactives';
+            break;
+        case "nonMember":
+            extra = '/search/findAllNonMembers';
+            break;
+    }
+    var filterUrl = '/api/user'+ extra +'?projection=userOverview';
+    console.log(extra);
+    console.log(filterUrl);
+    $('#user-table').DataTable().ajax.url(filterUrl).load();
+
 }

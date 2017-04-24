@@ -9,7 +9,7 @@ $(document).ready( function () {
         },
         columns: [
             {data: 'name'},
-            {data: 'shipType'},
+            {data: 'subType'},
             {data: 'maxSeat'},
             {data: 'category'},
             {data: 'owner'},
@@ -27,10 +27,12 @@ function shipActionButtons( data, type, row ) {
     var shouldBeActive = !(row.active);
     var activationLabel = shouldBeActive ? 'Aktiválás' : 'Inaktiválás';
     var buttonType = shouldBeActive ? 'success' : 'warning';
-    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/ships/'+row.id+'\', \''+row.name+'\');">Szerkesztés</a>';
+    var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipModal" role="button" onclick="shipModal(\'/admin/ships/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
     var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipDeleteModal" role="button" onclick="shipDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setShipStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
-    return editButton + deleteButton + statusChangeButton;
+    var availableUsersButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#userWhitelistingModal" role="button" ' +
+        'onclick="userWhitelistingModal(\'/admin/ships/'+row.id+'/enable_users\', \''+row.name+'\')">Engedélyezett tagok</a>';
+    return editButton + deleteButton + statusChangeButton + availableUsersButton;
 }
 
 function setShipStatus(link, shouldBeActive) {
@@ -72,7 +74,7 @@ function shipModal(link, name){
 
 function validateShip(id){
     $.ajax({
-        url:'/ships/' + id,
+        url:'/admin/ships/' + id,
         type:'POST',
         data:$('#shipForm').serialize(),
         success:function(result){
@@ -87,10 +89,10 @@ function submitShip(id){
     var data = $("#shipForm").serializeObject();
     data.owner = window.location.origin + "/api/user/" + data.owner;
     data.size = window.location.origin + "/api/shipSize/" + data.size;
-    data.type = window.location.origin + "/api/shipType/" + data.type;
+    data.subType = window.location.origin + "/api/subType/" + data.subType;
     $.ajax({
         type: id == 0 ? 'POST' : 'PATCH',
-        url: id == 0 ? '/api/ship' : 'api/ship/' + id,
+        url: id == 0 ? '/api/ship' : '/api/ship/' + id,
         data: JSON.stringify(data),
         success: function (msg) {
             document.getElementById('shipModalLabel').innerHTML = "";
@@ -100,5 +102,16 @@ function submitShip(id){
         },
         dataType: 'json',
         contentType : 'application/json'
+    });
+}
+
+function userWhitelistingModal(link, name){
+    document.getElementById('userWhitelistingModalLabel').innerHTML = name + ' felhasználókhoz rendelése';
+    $.ajax({
+        url: link,
+        success: function(result){
+            document.getElementById('user-whitelistig-modal-body').innerHTML = result;
+            multipleSelect();
+        },
     });
 }

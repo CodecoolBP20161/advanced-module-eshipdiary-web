@@ -2,11 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/imports :: imports"></head>
 <body>
+<input type="hidden" id="current" th:value="${current}" />
 <div th:replace="fragments/navbar :: navbar"></div>
 <div class="container">
     <h2>Tagok
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal"
-                onclick="updateModal('/users/0', 'Új tag');">Új tag felvétele</button>
+                onclick="updateModal('/admin/users/0', 'Új tag');">Új tag felvétele</button>
+        <div class="dropdown" id="filterUsersBy">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="filterUsersDD"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Tagok szűrése
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="filterUsersDD">
+                <li><a onclick="dataTableUrl('')">Összes</a></li>
+                <li><a onclick="dataTableUrl('active')">Aktív</a></li>
+                <li><a onclick="dataTableUrl('inactive')">Inaktív</a></li>
+                <li><a onclick="dataTableUrl('nonMember')">Kilépett</a></li>
+            </ul>
+        </div>
     </h2>
 
     <div th:replace="users/user_table :: user-table"></div>
@@ -14,6 +27,7 @@
     <div th:replace="users/user_delete :: user-delete"></div>
     <div th:replace="ships/ship_update :: ship-update"></div>
     <div th:replace="oars/oar_update :: oar-update"></div>
+    <div th:replace="users/ship_whitelisting_modal :: ship-whitelisting-modal"></div>
 
 </div>
 <script type="text/javascript" th:src="@{/js/user_datatable.js}"></script>

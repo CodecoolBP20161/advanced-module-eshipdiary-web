@@ -6,12 +6,13 @@
 <div class="container">
     <h2>Hajók
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipModal"
-                onclick="shipModal('/ships/0', 'Új hajó');">Új hajó felvétele</button>
+                onclick="shipModal('/admin/ships/0', 'Új hajó');">Új hajó felvétele</button>
     </h2>
 
     <div th:replace="ships/ship_table :: ship-table"></div>
     <div th:replace="ships/ship_update:: ship-update"></div>
     <div th:replace="ships/ship_delete :: ship-delete"></div>
+    <div th:replace="ships/user_whitelisting_modal :: user-whitelisting-modal"></div>
 
 </div>
 <script type="text/javascript" th:src="@{/js/ship_datatable.js}"></script>

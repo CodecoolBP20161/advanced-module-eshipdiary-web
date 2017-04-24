@@ -4,22 +4,20 @@
     <form id="logout" th:action="@{/logout}" method="post"></form>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
-            <div sec:authorize="hasAuthority('ADMIN')">
             <ul class="nav navbar-nav">
                 <li><img alt="Brand" th:src="@{/images/banner.png}" height="50px" /></li>
                 <li><a th:href="@{/rentals}">Hajónapló</a></li>
-                <li class="dropdown">
+                <li sec:authorize="hasAuthority('ADMIN')" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a th:href="@{/users}">Tagok</a></li>
-                        <li><a th:href="@{/ships}">Hajók</a></li>
-                        <li><a th:href="@{/shiptypes}">Hajótípusok</a></li>
-                        <li><a th:href="@{/shipsizes}">Hajóméretek</a></li>
-                        <li><a th:href="@{/oars}">Evezők</a></li>
+                        <li><a th:href="@{/admin/users}">Tagok</a></li>
+                        <li><a th:href="@{/admin/ships}">Hajók</a></li>
+                        <li><a th:href="@{/admin/shiptypes}">Hajótípusok</a></li>
+                        <li><a th:href="@{/admin/shipsizes}">Hajóméretek</a></li>
+                        <li><a th:href="@{/admin/oars}">Evezők</a></li>
                     </ul>
                 </li>
             </ul>
-            </div>
         <ul class="nav navbar-nav navbar-right">
             <li th:inline="text">
                 <a href="#">

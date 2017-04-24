@@ -1,7 +1,10 @@
 package com.codecool.eshipdiary.repository;
 
 
+import com.codecool.eshipdiary.model.Club;
 import com.codecool.eshipdiary.model.Ship;
+import com.codecool.eshipdiary.model.SubType;
+import com.codecool.eshipdiary.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -18,4 +21,7 @@ public interface ShipRepository extends CrudRepository<Ship, Long> {
     @RestResource(exported = true)
     @Query("select ship from Ship ship where ship.club = ?#{principal.club}")
     Iterable<Ship> findAll();
+    Iterable<Ship> findAllBySubType(SubType type);
+    Iterable<Ship> findByActiveTrueAndOnWaterFalseAndClubAndEnabledUsers(Club club, User user);
+    Iterable<Ship> findByActiveTrueAndOnWaterFalseAndSubTypeAndClubAndEnabledUsers(SubType type, Club club, User user);
 }

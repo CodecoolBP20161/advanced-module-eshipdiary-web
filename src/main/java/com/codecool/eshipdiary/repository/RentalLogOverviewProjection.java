@@ -11,10 +11,15 @@ public interface RentalLogOverviewProjection {
     String getCaptain();
     @Value("#{target.chosenShip != null ? target.chosenShip.name : 'nincs hajó'}")
     String getShip();
+    @Value("#{target.getFormattedDate(target.rentalStart)}")
     String getRentalStart();
-    String getRentalPeriod();
+    @Value("#{target.rentalEnd != null ? target.getFormattedDate(target.rentalEnd):''}")
+    String getRentalEnd();
     @Value("#{target.cox != null ? target.cox.lastName+' '+target.cox.firstName : 'nincs kormányos'}")
     String getCox();
-    String getDistance();
-    boolean getFinalized();
+    String getItinerary();
+    String getComment();
+    String getCrewNames();
+    @Value("#{(target.injuredShip != null) || (!target.injuredOars.isEmpty())}")
+    Boolean isInjury();
 }

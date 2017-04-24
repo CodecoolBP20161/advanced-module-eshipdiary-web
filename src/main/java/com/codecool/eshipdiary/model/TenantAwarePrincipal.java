@@ -15,4 +15,12 @@ public class TenantAwarePrincipal extends org.springframework.security.core.user
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.club = club;
     }
+
+    public Club getClub() {
+        return club;
+    }
+
+    public void setClub(Club club) {
+        this.club = club;
+    }
 }

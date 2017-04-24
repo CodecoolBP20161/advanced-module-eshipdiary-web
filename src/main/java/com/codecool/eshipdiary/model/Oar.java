@@ -6,7 +6,6 @@ import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -29,6 +28,9 @@ public class Oar {
 
     @Column(nullable = false)
     private boolean active;
+
+    @Column
+    private boolean onWater;
 
     @JsonIgnore
     @ManyToOne

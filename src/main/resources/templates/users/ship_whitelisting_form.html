@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<form th:object="${user}" th:action="${'/admin/users/' + user.id + '/enable_ships'}" method="post" class="form-horizontal" id="shipWhitelistingForm">
+    <div class="form-group" id="shipsToWhitelist">
+
+        <label class="control-label col-sm-3" th:for="enabledShips">Engedélyezett hajók</label>
+        <div class="col-sm-9">
+            <select th:field="*{enabledShips}" class="multi-select form-control" multiple="multiple">
+                <option th:each="ship : ${allShips}"
+                        th:value="${ship.id}"
+                        th:text="${ship.name}"
+                />
+            </select>
+        </div>
+
+    </div>
+</form>
+
+</html>

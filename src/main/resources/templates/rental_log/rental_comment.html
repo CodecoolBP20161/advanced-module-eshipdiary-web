@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<form th:object="${rental}" th:onsubmit="${submit}" class="form-horizontal" id="rentalForm">
-    <div class="form-group">
-        <label class="control-label col-sm-4" th:for="comment">Megjegyzés</label>
-        <div class="col-sm-8">
-            <textarea th:field="*{adminComment}" class="form-control" rows="3" placeholder="Megjegyzés..."></textarea>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="rentalModalLabel">Megjegyzés hozzáfűzése</h4>
+</div>
+
+<div class="modal-body">
+
+    <form th:object="${rental}" th:onsubmit="${submit}" class="form-horizontal" id="rentalForm">
+        <div class="form-group">
+            <label class="control-label col-sm-4" th:for="comment">Megjegyzés</label>
+            <div class="col-sm-8">
+                <textarea th:field="*{adminComment}" class="form-control" rows="3" placeholder="Megjegyzés..."></textarea>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="submit" id="rentalSubmit" class="btn btn-primary" form="rentalForm">Mentés</button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>
+</div>
 </html>

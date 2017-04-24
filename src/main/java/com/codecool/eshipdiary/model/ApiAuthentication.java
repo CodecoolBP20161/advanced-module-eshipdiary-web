@@ -36,7 +36,7 @@ public class ApiAuthentication implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return user.getUserName();
+        return user;
     }
 
     @Override
