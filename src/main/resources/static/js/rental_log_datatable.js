@@ -301,7 +301,7 @@ $.fn.build = function(data) {
 
 $.fn.preFill = function() {
     var selected = this.val() === "0" ? null : this.val();
-    $('option[value="0"]').remove();
+    $(this).find("option[value='0']").remove();
     if(selected === null && this.attr('id') !== 'subTypesByType') this.prop('disabled', true);
     enableSubmit();
     return selected;
