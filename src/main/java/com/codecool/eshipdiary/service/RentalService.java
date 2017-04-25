@@ -32,12 +32,12 @@ public class RentalService {
 
     public void saveIfItemsAreAvailable(RentalLog rentalLog) throws RentalCannotBeSaved {
         boolean everythingIsAvailable;
-        everythingIsAvailable = !rentalLog.getChosenShip().isOnWater();
+        everythingIsAvailable = !rentalLog.getChosenShip().isOnWater() && rentalLog.getChosenShip().isActive();
         for (Oar oar : rentalLog.getOars()) {
-            if (oar.isOnWater()) everythingIsAvailable = false;
+            if (oar.isOnWater() || !oar.isActive()) everythingIsAvailable = false;
         }
         for (User user : rentalLog.getCrew()) {
-            if (user.isOnWater()) everythingIsAvailable = false;
+            if (user.isOnWater() || !user.isActive()) everythingIsAvailable = false;
         }
         if (everythingIsAvailable) {
             rentalLogRepositoryService.save(rentalLog);
