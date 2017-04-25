@@ -75,6 +75,7 @@ public class RentalController {
         RentalLog originalRental = getRentalLogById(id);
         model.addAttribute("rental", originalRental);
         model.addAttribute("crewDetails", crewDetails(originalRental));
+        model.addAttribute("injuredOars", injuredOars(originalRental));
         return "rental_log/rental_details";
     }
 
@@ -99,10 +100,18 @@ public class RentalController {
 
     private String crewDetails(RentalLog rentalLog) {
         String result = "";
-        for (int i=0; i < rentalLog.getCrew().size(); i++){
+        for (int i = 0; i < rentalLog.getCrew().size(); i++){
             User user = rentalLog.getCrew().get(i);
             String oar = rentalLog.getOars().size() > i ? rentalLog.getOars().get(i).getName() : "nincs evező";
             result += user.getLastName() + ' ' + user.getFirstName() + " (evező: " + oar + ")\n";
+        }
+        return result;
+    }
+
+    private String injuredOars(RentalLog rentalLog) {
+        String result = "";
+        for (int i = 0; i < rentalLog.getInjuredOars().size(); i++){
+            result += " " + rentalLog.getInjuredOars().get(i).getName() + "\n";
         }
         return result;
     }
