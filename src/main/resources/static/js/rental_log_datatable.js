@@ -7,15 +7,8 @@ $(document).ready( function () {
             url: $('#role').val() ==='ADMIN' ? '/api/rental?projection=rentalOverview' : '/api/rental/search/findForPrincipal?projection=rentalOverview',
             dataSrc: '_embedded.rental'
         },
-        order: [[ 3, "desc" ]],
+        order: [[ 0, "desc" ]],
         columns: [
-            {   data: 'ship'
-            },
-            {   data: 'crewNames',
-                render: $.fn.dataTable.render.ellipsis(15, true, false)
-            },
-            {   data: 'cox'
-            },
             {
                 data: 'rentalStart',
                 searchable: false
@@ -23,6 +16,13 @@ $(document).ready( function () {
             {
                 data: 'rentalEnd',
                 searchable: false
+            },
+            {   data: 'ship'
+            },
+            {   data: 'crewNames',
+                render: $.fn.dataTable.render.ellipsis(15, true, false)
+            },
+            {   data: 'cox'
             },
             {
                 data: 'itinerary'
