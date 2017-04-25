@@ -81,19 +81,14 @@ public class RentalController {
 
     @RequestMapping(value = "/rentals/final/{rentalId}", method = RequestMethod.OPTIONS)
     public String rentalLogFinalize(@PathVariable("rentalId") Long id, Model model) {
-        RentalLog originalRental = getRentalLogById(id);
-        model.addAttribute("rentalId", originalRental.getId());
-        model.addAttribute("ship", originalRental.getChosenShip());
-        model.addAttribute("oars", originalRental.getOars());
-        model.addAttribute("comment", originalRental.getComment());
+        model.addAttribute("finalRental", getRentalLogById(id));
         model.addAttribute("link", "/rentals/final/" + id);
         return "rental_log/rental_finalize";
     }
 
     @RequestMapping(value = "/rentals/comment/{rentalId}", method = RequestMethod.OPTIONS)
     public String rentalLogComment(@PathVariable("rentalId") Long id, Model model) {
-        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
-        model.addAttribute("rental", rentalLog.isPresent() ? rentalLog.get() : new RentalLog());
+        model.addAttribute("rental", getRentalLogById(id));
         model.addAttribute("submit", "return addAdminComment(" + id + ")");
         return "rental_log/rental_comment";
     }
@@ -142,9 +137,8 @@ public class RentalController {
 
     @RequestMapping(value = "/rentals/reuse/{rentalId}", method = RequestMethod.OPTIONS)
     public String reuseRental(@PathVariable("rentalId") Long id, Model model) {
-        Optional<RentalLog> rentalLog = rentalLogRepositoryService.getRentalLogById(id);
-        Ship ship = rentalLog.get().getChosenShip();
-        SubType subType = ship.getSubType();
+        RentalLog rentalLog = getRentalLogById(id);
+        SubType subType = rentalLog.getChosenShip().getSubType();
         ShipType shipType = subType.getType();
         model.addAttribute("shipType", shipType.getId());
         model.addAttribute("sType", subType.getId());
@@ -152,7 +146,7 @@ public class RentalController {
         model.addAttribute("ships", shipRepositoryService.getAvailableShipsBySubType(subType));
         model.addAttribute("oarType", oarRepositoryService.getAvailableOarsByType(shipType));
         RentalLog newRental = rentalLog();
-        rentalService.copyCurrentlyAvailableItems(rentalLog.get(), newRental);
+        rentalService.copyCurrentlyAvailableItems(rentalLog, newRental);
         model.addAttribute("rental", newRental);
         model.addAttribute("link", "/rentals/save");
         return "rental_log/rental_form";

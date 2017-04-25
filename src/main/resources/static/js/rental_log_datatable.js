@@ -123,18 +123,26 @@ function confirmInjuries() {
         if (oarNum > 0 || shipBool) {
             $('#validateInjuriesCheck').prop('checked', false);
             $('#validateInjuriesLabel').show();
-            $('#rentalSubmit').prop('disabled', true);
+            $('#rentalSubmit').prop({
+                disabled: true,
+                title: 'Megerősítés szükséges'
+            });
         } else {
             $('#validateInjuriesLabel').hide();
             $('#validateInjuriesCheck').prop('checked', true);
             $('#rentalSubmit').removeAttr('disabled');
+            $('#rentalSubmit').removeAttr('title');
         }
     });
     $('#validateInjuriesCheck').change(function() {
         if ($('#validateInjuriesCheck').is(':checked')) {
             $('#rentalSubmit').removeAttr('disabled');
+            $('#rentalSubmit').removeAttr('title');
         } else {
-            $('#rentalSubmit').prop('disabled', true);
+            $('#rentalSubmit').prop({
+                disabled: true,
+                title: 'Megerősítés szükséges'
+            });
         }
     });
 }
