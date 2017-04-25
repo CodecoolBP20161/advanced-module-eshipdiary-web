@@ -1,5 +1,6 @@
 package com.codecool.eshipdiary.controller;
 
+import com.codecool.eshipdiary.exception.RentalCannotBeSaved;
 import com.codecool.eshipdiary.model.*;
 import com.codecool.eshipdiary.service.*;
 import org.slf4j.Logger;
@@ -120,13 +121,16 @@ public class RentalController {
     @RequestMapping(value = "/rentals/save", method = RequestMethod.POST)
     public String saveRental(@ModelAttribute RentalLog rentalLog) {
         LOG.debug("Trying to save RentalLog as: {}", rentalLog.toString());
-        rentalService.setOnWaterForInvolvedItemsIn(rentalLog, true);
-        rentalLogRepositoryService.save(rentalLog);
+        try {
+            rentalService.saveIfItemsAreAvailable(rentalLog);
+        } catch (RentalCannotBeSaved rentalCannotBeSaved) {
+            return "rental_log/rental_form";
+        }
         return "redirect:/rentals";
     }
 
     @RequestMapping(value = "/rentalEnabled")
-    public @ResponseBody Boolean rentalEnabled(){
+    public @ResponseBody Boolean rentalEnabled() {
         User currentUser = userRepositoryService.getCurrentUser();
         return currentUser.getRole().getName().equals("ADMIN") || !currentUser.isOnWater();
     }
