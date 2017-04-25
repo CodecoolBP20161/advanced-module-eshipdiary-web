@@ -6,11 +6,13 @@ import com.codecool.eshipdiary.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +69,8 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals", method = RequestMethod.OPTIONS)
-    public String rentalForm() {
+    public String rentalForm(Model model) {
+        model.addAttribute("submit", "return saveRental()");
         return "rental_log/rental_form";
     }
 
@@ -119,14 +122,15 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals/save", method = RequestMethod.POST)
-    public String saveRental(@ModelAttribute RentalLog rentalLog) {
+    @ResponseBody
+    public HttpStatus saveRental(@ModelAttribute RentalLog rentalLog) {
         LOG.debug("Trying to save RentalLog as: {}", rentalLog.toString());
         try {
             rentalService.saveIfItemsAreAvailable(rentalLog);
         } catch (RentalCannotBeSaved rentalCannotBeSaved) {
-            return "rental_log/rental_form";
+            return HttpStatus.CONFLICT;
         }
-        return "redirect:/rentals";
+        return HttpStatus.OK;
     }
 
     @RequestMapping(value = "/rentalEnabled")
@@ -149,7 +153,7 @@ public class RentalController {
         RentalLog newRental = rentalLog();
         rentalService.copyCurrentlyAvailableItems(rentalLog.get(), newRental);
         model.addAttribute("rental", newRental);
-        model.addAttribute("link", "/rentals/save");
+        model.addAttribute("submit", "return saveRental()");
         return "rental_log/rental_form";
     }
 
