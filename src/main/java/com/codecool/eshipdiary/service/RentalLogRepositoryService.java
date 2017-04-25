@@ -64,6 +64,5 @@ public class RentalLogRepositoryService {
         save(original);
 
         rentalService.setOnWaterForInvolvedItemsIn(original, false);
-
     }
 }
