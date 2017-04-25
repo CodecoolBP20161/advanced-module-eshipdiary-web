@@ -296,6 +296,7 @@ $.fn.build = function(data) {
     this.multiselect('rebuild');
     $.isEmptyObject(data) ? this.multiselect('disable') : this.multiselect('enable');
     if (this.attr('id') !== 'crew') displayCox();
+    crewValidation();
     enableSubmit();
 };
 
