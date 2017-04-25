@@ -6,7 +6,7 @@
 </div>
 
 <div class="modal-body">
-    <dl class="row" th:object="${rental}">
+    <dl class="row" th:object="${rental}" style="display: table">
         <dt class="col-sm-3">Kapitány</dt>
         <dd class="col-sm-9" th:text="*{captain.getLastName()+' '+captain.getFirstName()}">Kapitány</dd>
 
@@ -35,10 +35,16 @@
         <dd class="col-sm-9" th:text="*{distance+' km'}">Táv</dd>
 
         <dt class="col-sm-3">Megjegyzés</dt>
-        <dd class="col-sm-9" th:text="*{comment!=''?comment:'nincs'}" style="overflow:hidden; word-wrap: break-word">Megjegyzés</dd>
+        <dd class="col-sm-9" th:text="*{comment!=''?comment:'nincs'}" style="word-wrap: break-word">Megjegyzés</dd>
 
         <dt class="col-sm-3">Adminisztrátor megjegyzése</dt>
-        <dd class="col-sm-9" th:text="*{adminComment!=''?adminComment:'nincs'}" style="overflow:hidden; word-wrap: break-word">Adminisztrátor megjegyzése</dd>
+        <dd class="col-sm-9" th:text="*{adminComment!=null?adminComment:'nincs'}" style="word-wrap: break-word"></dd>
+
+        <dt class="col-sm-3" style="clear: left; float: left">Sérült hajó</dt>
+        <dd class="col-sm-9" th:text="*{injuredShip!=null?injuredShip.getName():'nincs'}" style="float: left">Sérült hajó</dd>
+
+        <dt class="col-sm-3" style="clear: left; float: left">Sérült lapátok</dt>
+        <dd class="col-sm-9" th:utext="${#strings.replace(#strings.escapeXml(injuredOars),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}" style="float: left">Sérült lapátok</dd>
     </dl>
 </div>
 
