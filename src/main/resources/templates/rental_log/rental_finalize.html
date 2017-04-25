@@ -11,22 +11,27 @@
         <div class="form-group">
             <label class="control-label col-sm-4">Megjegyzés</label>
             <div class="col-sm-8">
-                <textarea th:field="*{comment}" th:value="${comment}" th:text="${comment}"
-                          rows="3" class="form-control" placeholder="Megjegyzés..."></textarea>
+                <textarea th:field="*{comment}" rows="3" class="form-control" placeholder="Megjegyzés..."></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4">Távolság (km)</label>
+            <div class="col-sm-8">
+                <input th:field="*{distance}" type="number" class="form-control" min="1" required="required"/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4">Hajó sérülés</label>
             <div class="checkbox col-sm-8">
                 <label><input id="injuredShip" type="checkbox"
-                              th:field="*{injuredShip}"
-                              th:value="${ship.getId()}"
-                              th:text="${ship.getName()}"/></label>
+                      th:field="*{injuredShip}"
+                      th:value="*{chosenShip.getId()}"
+                      th:text="*{chosenShip.getName()}"/></label>
             </div>
             <label class="control-label col-sm-4">Lapát sérülés</label>
             <div class="col-sm-8">
                 <select th:field="*{injuredOars}" id="injuredOars" class="form-control" multiple="multiple">
-                    <option th:each="oar : ${oars}"
+                    <option th:each="oar : *{oars}"
                             th:value="${oar.getId()}"
                             th:text="${oar.getName()}"/>
                 </select>
