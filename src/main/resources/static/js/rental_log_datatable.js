@@ -7,6 +7,7 @@ $(document).ready( function () {
             url: $('#role').val() ==='ADMIN' ? '/api/rental?projection=rentalOverview' : '/api/rental/search/findForPrincipal?projection=rentalOverview',
             dataSrc: '_embedded.rental'
         },
+        order: [[ 3, "desc" ]],
         columns: [
             {   data: 'ship'
             },
