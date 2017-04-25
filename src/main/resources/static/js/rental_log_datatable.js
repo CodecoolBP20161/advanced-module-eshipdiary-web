@@ -175,6 +175,21 @@ function addAdminComment(id) {
     return false;
 }
 
+function saveRental() {
+    $.ajax({
+        type: 'POST',
+        url: '/rentals/save',
+        data: $("#rentalForm").serializeObject(),
+        success: function (msg) {
+            $('#rentalModal').modal('hide');
+            $('#rental-table').DataTable().ajax.reload(null, false);
+        },
+        error: function (msg) {
+            //TODO: eljut ide a program, de a modal mindenkepp eltunik...
+        }
+    })
+}
+
 function loadValidate() {
     $('#crew').on('change', function () {
         crewValidation();
