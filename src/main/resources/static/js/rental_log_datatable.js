@@ -175,25 +175,6 @@ function addAdminComment(id) {
     return false;
 }
 
-function validateRental() {
-    $.ajax({
-        type: 'POST',
-        url: '/rentals/save',
-        data: $("#rentalForm").serializeObject(),
-        success: function (result) {
-            $('#rentalModal').modal('hide');
-            $('#rental-table').DataTable().ajax.reload(null, false);
-        },
-        error: function (result) {
-            console.log(result)
-            document.getElementById('rentalUpdate').innerHTML = result;
-            $('#saveFailure').show();
-        }
-    });
-    return false;
-
-}
-
 function loadValidate() {
     $('#crew').on('change', function () {
         crewValidation();
