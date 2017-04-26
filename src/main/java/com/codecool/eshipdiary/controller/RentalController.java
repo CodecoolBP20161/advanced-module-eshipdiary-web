@@ -121,8 +121,12 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals/save", method = RequestMethod.POST)
-    public String saveRental(@ModelAttribute RentalLog rentalLog) {
+    public String saveRental(@ModelAttribute RentalLog rentalLog, Model model) {
+        try {
             rentalService.saveIfItemsAreAvailable(rentalLog);
+        } catch (RentalCannotBeSaved rentalCannotBeSaved) {
+            model.addAttribute("error", true);
+        }
         return "redirect:/rentals";
     }
 

@@ -9,7 +9,7 @@
     </div>
 
     <div class="modal-body">
-        <form th:object="${rental}" onsubmit="return validateRental()" class="form-horizontal" id="rentalForm">
+        <form th:object="${rental}" action="rentals/save" method="post" class="form-horizontal" id="rentalForm">
             <input type="hidden" th:field="*{club}"/>
             <input type="hidden" th:field="*{captain}"/>
             <div class="form-group">

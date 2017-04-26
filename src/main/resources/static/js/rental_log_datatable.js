@@ -180,11 +180,13 @@ function validateRental() {
         type: 'POST',
         url: '/rentals/save',
         data: $("#rentalForm").serializeObject(),
-        success: function (msg) {
+        success: function (result) {
             $('#rentalModal').modal('hide');
             $('#rental-table').DataTable().ajax.reload(null, false);
         },
-        error: function (msg) {
+        error: function (result) {
+            console.log(result)
+            document.getElementById('rentalUpdate').innerHTML = result;
             $('#saveFailure').show();
         }
     });
