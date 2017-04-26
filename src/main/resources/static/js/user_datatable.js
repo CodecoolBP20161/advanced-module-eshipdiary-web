@@ -29,7 +29,6 @@ function userActionButtons( data, type, row ) {
         current = deleteButton(row);
         current += row.member ? statusButton(row) : '';
     }
-    // var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#enableShipsModal" role="button" onclick="enableShipModal(\''+row.id+'\');" >Engedélyezett hajók</a>';
     var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#shipWhitelistingModal" role="button" ' +
         'onclick="shipWhitelistingModal(\'/admin/users/'+row.id+'/enable_ships\', \''+row.name+'\')">Engedélyezett hajók</a>';
     return detailsButton + current + shipButton + oarButton + availableShipsButton;
@@ -81,8 +80,37 @@ function shipWhitelistingModal(link, name) {
     $.ajax({
         url: link,
         success: function(result){
-            document.getElementById('ship-whitelistig-modal-body').innerHTML = result;
-            multipleSelect();
+            document.getElementById('ship-whitelisting-modal-body').innerHTML = result;
+            checkAllCorrespondingShips();
+            checkAllShips();
+        }
+    });
+}
+
+function checkAllCorrespondingShips() {
+    $('input[name=shipTypeCheckbox]').on('click', function () {
+        if (this.checked) {
+            $(this).parents('tr:first').find('input[type=checkbox]').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $(this).parents('tr:first').find('input[type=checkbox]').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+}
+
+function checkAllShips() {
+    $('input[name=enableAllShips]').on('click', function() {
+        if(this.checked) {
+            $(':checkbox').each(function() {
+                this.checked = true;
+            });
+        } else {
+            $(':checkbox').each(function() {
+                this.checked = false;
+            });
         }
     });
 }
@@ -155,8 +183,6 @@ function dataTableUrl(filter) {
             break;
     }
     var filterUrl = '/api/user'+ extra +'?projection=userOverview';
-    console.log(extra);
-    console.log(filterUrl);
     $('#user-table').DataTable().ajax.url(filterUrl).load();
 
 }

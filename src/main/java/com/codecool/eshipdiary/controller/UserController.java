@@ -2,10 +2,10 @@ package com.codecool.eshipdiary.controller;
 
 
 import com.codecool.eshipdiary.model.Ship;
+import com.codecool.eshipdiary.model.ShipType;
 import com.codecool.eshipdiary.model.User;
-import com.codecool.eshipdiary.service.EmailService;
-import com.codecool.eshipdiary.service.ShipRepositoryService;
-import com.codecool.eshipdiary.service.UserRepositoryService;
+import com.codecool.eshipdiary.repository.ShipRepository;
+import com.codecool.eshipdiary.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,21 @@ public class UserController {
     private UserRepositoryService userRepositoryService;
 
     @Autowired
-    private ShipRepositoryService shipRepositoryService;
+    private ShipTypeRepositoryService shipTypeRepositoryService;
 
     @Autowired
-    private EmailService emailService;
+    private ShipRepositoryService shipRepositoryService;
+
+    @ModelAttribute("allShipsByShipType")
+    public Map<ShipType, List<Ship>> getAllShipsByShipType() {
+        Map<ShipType, List<Ship>> shipsByShipType = new HashMap<>();
+
+        for(ShipType shipType: shipTypeRepositoryService.getAllShipType()) {
+            shipsByShipType.put(shipType, (List<Ship>) shipRepositoryService.getAllShipsByType(shipType));
+        }
+
+        return shipsByShipType;
+    }
 
     @ModelAttribute("allShips")
     public List<Ship> getAllShips() {
@@ -87,17 +98,6 @@ public class UserController {
         }
         return "users/user_form";
     }
-
-//    @RequestMapping(value = "/admin/users/enable_ships/{userId}", method = RequestMethod.POST)
-//    public String enableShips(@PathVariable("userId") Long userId, @RequestParam("enabledShips[]") Long[] enabledShips) {
-//        User user = userRepositoryService.getUserById(userId).map(u -> u).orElse(new User());
-//        List<Ship> whiteListedShips = new ArrayList<>();
-//        for (Long id : enabledShips) {
-//            whiteListedShips.add(shipRepositoryService.getShipById(id).get());
-//        }
-//        user.setEnabledShips(whiteListedShips);
-//        userRepositoryService.save(user);
-//    }
 
     @RequestMapping(value = "/admin/users/{userId}/enable_ships")
     public String getShipWhitelistingForm(@PathVariable("userId") Long id, Model model) {

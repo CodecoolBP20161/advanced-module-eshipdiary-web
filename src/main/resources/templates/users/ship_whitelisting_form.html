@@ -3,17 +3,35 @@
 
 <form th:object="${user}" th:action="${'/admin/users/' + user.id + '/enable_ships'}" method="post" class="form-horizontal" id="shipWhitelistingForm">
     <div class="form-group" id="shipsToWhitelist">
+        <div class="container col-sm-12">
+            <div class="checkbox">
+                <label><strong><input type="checkbox" name="enableAllShips"/>
+                    Összes hajó engedélyezése</strong></label>
+            </div>
+            <table class="table">
+                <tr th:each="type : ${allShipsByShipType}">
+                    <td class="container col col-sm-2">
+                        <div class="row">
+                            <div class="checkbox">
+                                <label><strong><input type="checkbox" name="shipTypeCheckbox"
+                                              th:value="${type.key.id}"
+                                              th:text="${type.key.name}"/></strong></label>
+                            </div>
+                        </div>
+                    </td>
 
-        <label class="control-label col-sm-3" th:for="enabledShips">Engedélyezett hajók</label>
-        <div class="col-sm-9">
-            <select th:field="*{enabledShips}" class="multi-select form-control" multiple="multiple">
-                <option th:each="ship : ${allShips}"
-                        th:value="${ship.id}"
-                        th:text="${ship.name}"
-                />
-            </select>
+                    <td class="container col col-sm-10" style="word-wrap: break-word">
+                        <div class="row">
+                            <div class="col col-sm-3 checkbox" th:each="ship : ${type.value}">
+                                <label><input type="checkbox" th:field="*{enabledShips}"
+                                              th:value="${ship.id}"
+                                              th:text="${ship.name}" /></label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
-
     </div>
 </form>
 

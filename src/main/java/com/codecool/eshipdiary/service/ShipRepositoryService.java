@@ -1,16 +1,16 @@
 package com.codecool.eshipdiary.service;
 
 
-import com.codecool.eshipdiary.model.Ship;
-import com.codecool.eshipdiary.model.SubType;
-import com.codecool.eshipdiary.model.TenantAwarePrincipal;
-import com.codecool.eshipdiary.model.User;
+import com.codecool.eshipdiary.model.*;
 import com.codecool.eshipdiary.repository.ShipRepository;
+import com.codecool.eshipdiary.repository.SubTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +19,9 @@ public class ShipRepositoryService {
 
     @Autowired
     ShipRepository shipRepository;
+
+    @Autowired
+    SubTypeRepository subTypeRepository;
 
     @Autowired
     UserRepositoryService userRepositoryService;
@@ -56,6 +59,13 @@ public class ShipRepositoryService {
         return false;
     }
 
+    public Iterable<Ship> getAllShipsByType(ShipType type) {
+        List<Ship> ships = new ArrayList<>();
+        for(SubType subType : subTypeRepository.findAllByType(type)) {
+            ships.addAll((List<Ship>) shipRepository.findAllBySubType(subType));
+        }
+        return ships;
+    }
 }
 
 
