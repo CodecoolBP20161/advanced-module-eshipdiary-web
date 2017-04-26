@@ -175,7 +175,7 @@ function addAdminComment(id) {
     return false;
 }
 
-function saveRental() {
+function validateRental() {
     $.ajax({
         type: 'POST',
         url: '/rentals/save',
@@ -185,9 +185,11 @@ function saveRental() {
             $('#rental-table').DataTable().ajax.reload(null, false);
         },
         error: function (msg) {
-            //TODO: eljut ide a program, de a modal mindenkepp eltunik...
+            $('#saveFailure').show();
         }
-    })
+    });
+    return false;
+
 }
 
 function loadValidate() {
