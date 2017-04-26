@@ -8,11 +8,12 @@
     <h2>Hajónapló
         <button id="newRental" type="button" class="btn btn-primary" data-toggle="modal" data-target="#rentalModal"
                          onclick="rentalModal('/rentals');">Hajóbérlés</button>
-        <div th:if="${error}" class="alert alert-warning alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Ajjaj!</strong> Nem sikerült
-        </div>
     </h2>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible col-md-8" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Hoppá! Sajnos nem tudtuk elmenteni a bérlést.</strong> Időközben valamelyik evező, a legénység egy tagja,
+        vagy a hajó már egy másik aktív bérlésben szerepel, vagy más okból inaktiválásra került.
+    </div>
 
     <div id="rentals_table">
         <div th:replace="rental_log/rental_table :: rental-table"></div>
