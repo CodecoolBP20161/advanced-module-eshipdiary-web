@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -121,11 +122,11 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals/save", method = RequestMethod.POST)
-    public String saveRental(@ModelAttribute RentalLog rentalLog, Model model) {
+    public String saveRental(@ModelAttribute RentalLog rentalLog, RedirectAttributes redirectAttributes) {
         try {
             rentalService.saveIfItemsAreAvailable(rentalLog);
         } catch (RentalCannotBeSaved rentalCannotBeSaved) {
-            model.addAttribute("error", true);
+            redirectAttributes.addFlashAttribute("error", true);
         }
         return "redirect:/rentals";
     }
