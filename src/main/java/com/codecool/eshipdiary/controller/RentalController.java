@@ -70,7 +70,6 @@ public class RentalController {
 
     @RequestMapping(value = "/rentals", method = RequestMethod.OPTIONS)
     public String rentalForm(Model model) {
-        model.addAttribute("submit", "return saveRental()");
         return "rental_log/rental_form";
     }
 
@@ -153,7 +152,6 @@ public class RentalController {
         RentalLog newRental = rentalLog();
         rentalService.copyCurrentlyAvailableItems(rentalLog.get(), newRental);
         model.addAttribute("rental", newRental);
-        model.addAttribute("submit", "return saveRental()");
         return "rental_log/rental_form";
     }
 

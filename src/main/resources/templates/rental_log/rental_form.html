@@ -8,7 +8,7 @@
     </div>
 
     <div class="modal-body">
-        <form th:object="${rental}" th:onsubmit="${submit}" method="post" class="form-horizontal" id="rentalForm">
+        <form th:object="${rental}" onsubmit="saveRental()" method="post" class="form-horizontal" id="rentalForm">
             <input type="hidden" th:field="*{club}"/>
             <input type="hidden" th:field="*{captain}"/>
             <div class="form-group">
