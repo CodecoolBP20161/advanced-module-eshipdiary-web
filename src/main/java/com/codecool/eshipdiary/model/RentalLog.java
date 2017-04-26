@@ -36,7 +36,7 @@ public class RentalLog {
     private Date rentalEnd;
 
     @Column
-    private int rentalPeriod = 8;
+    private int rentalPeriod;
 
     @ManyToOne
     private User cox;

@@ -45,6 +45,7 @@ public class RentalLogRepositoryService {
 
         if (finalDetails.getComment() != null) {
             original.setComment(finalDetails.getComment());
+            original.setDistance(finalDetails.getDistance());
         }
 
         if (finalDetails.getInjuredShip() != null) {

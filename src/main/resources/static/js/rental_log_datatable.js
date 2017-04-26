@@ -7,14 +7,8 @@ $(document).ready( function () {
             url: $('#role').val() ==='ADMIN' ? '/api/rental?projection=rentalOverview' : '/api/rental/search/findForPrincipal?projection=rentalOverview',
             dataSrc: '_embedded.rental'
         },
+        order: [[ 0, "desc" ]],
         columns: [
-            {   data: 'ship'
-            },
-            {   data: 'crewNames',
-                render: $.fn.dataTable.render.ellipsis(15, true, false)
-            },
-            {   data: 'cox'
-            },
             {
                 data: 'rentalStart',
                 searchable: false
@@ -22,6 +16,13 @@ $(document).ready( function () {
             {
                 data: 'rentalEnd',
                 searchable: false
+            },
+            {   data: 'ship'
+            },
+            {   data: 'crewNames',
+                render: $.fn.dataTable.render.ellipsis(15, true, false)
+            },
+            {   data: 'cox'
             },
             {
                 data: 'itinerary'
@@ -123,18 +124,26 @@ function confirmInjuries() {
         if (oarNum > 0 || shipBool) {
             $('#validateInjuriesCheck').prop('checked', false);
             $('#validateInjuriesLabel').show();
-            $('#rentalSubmit').prop('disabled', true);
+            $('#rentalSubmit').prop({
+                disabled: true,
+                title: 'Megerősítés szükséges'
+            });
         } else {
             $('#validateInjuriesLabel').hide();
             $('#validateInjuriesCheck').prop('checked', true);
             $('#rentalSubmit').removeAttr('disabled');
+            $('#rentalSubmit').removeAttr('title');
         }
     });
     $('#validateInjuriesCheck').change(function() {
         if ($('#validateInjuriesCheck').is(':checked')) {
             $('#rentalSubmit').removeAttr('disabled');
+            $('#rentalSubmit').removeAttr('title');
         } else {
-            $('#rentalSubmit').prop('disabled', true);
+            $('#rentalSubmit').prop({
+                disabled: true,
+                title: 'Megerősítés szükséges'
+            });
         }
     });
 }
@@ -296,6 +305,7 @@ $.fn.build = function(data) {
     this.multiselect('rebuild');
     $.isEmptyObject(data) ? this.multiselect('disable') : this.multiselect('enable');
     if (this.attr('id') !== 'crew') displayCox();
+    crewValidation();
     enableSubmit();
 };
 
