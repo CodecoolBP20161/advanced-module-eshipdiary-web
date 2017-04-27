@@ -102,15 +102,17 @@ function checkAllCorrespondingShips() {
 }
 
 function checkAllShips() {
-    $('input[name=enableAllShips]').on('click', function() {
-        if(this.checked) {
-            $(':checkbox').each(function() {
-                this.checked = true;
-            });
-        } else {
-            $(':checkbox').each(function() {
-                this.checked = false;
-            });
+    $("#select_all").change(function() {
+        $(".ship_checkbox").prop('checked', $(this).prop("checked"));
+    });
+
+    $('.ship_checkbox').change(function () {
+        if($(this).prop("checked") == false) {
+            $("#select_all").prop('checked', false);
+        }
+
+        if ($('.ship_checkbox:checked').length == $('.ship_checkbox').length ){
+            $("#select_all").prop('checked', true);
         }
     });
 }

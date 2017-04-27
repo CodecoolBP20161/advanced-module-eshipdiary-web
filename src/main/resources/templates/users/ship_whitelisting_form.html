@@ -5,7 +5,7 @@
     <div class="form-group" id="shipsToWhitelist">
         <div class="container col-sm-12">
             <div class="checkbox">
-                <label><strong><input type="checkbox" name="enableAllShips"/>
+                <label><strong><input type="checkbox" name="enableAllShips" id="select_all"/>
                     Összes hajó engedélyezése</strong></label>
             </div>
             <table class="table">
@@ -13,7 +13,7 @@
                     <td class="container col col-sm-2">
                         <div class="row">
                             <div class="checkbox">
-                                <label><strong><input type="checkbox" name="shipTypeCheckbox"
+                                <label><strong><input class="type_checkbox" type="checkbox" name="shipTypeCheckbox"
                                               th:value="${type.key.id}"
                                               th:text="${type.key.name}"/></strong></label>
                             </div>
@@ -23,7 +23,7 @@
                     <td class="container col col-sm-10" style="word-wrap: break-word">
                         <div class="row">
                             <div class="col col-sm-3 checkbox" th:each="ship : ${type.value}">
-                                <label><input type="checkbox" th:field="*{enabledShips}"
+                                <label><input class="ship_checkbox" type="checkbox" th:field="*{enabledShips}"
                                               th:value="${ship.id}"
                                               th:text="${ship.name}" /></label>
                             </div>
