@@ -1,9 +1,8 @@
 package com.codecool.eshipdiary.service;
 
-import com.codecool.eshipdiary.model.Club;
 import com.codecool.eshipdiary.model.Oar;
 import com.codecool.eshipdiary.model.ShipType;
-import com.codecool.eshipdiary.model.TenantAwarePrincipal;
+import com.codecool.eshipdiary.security.TenantAwarePrincipal;
 import com.codecool.eshipdiary.repository.OarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

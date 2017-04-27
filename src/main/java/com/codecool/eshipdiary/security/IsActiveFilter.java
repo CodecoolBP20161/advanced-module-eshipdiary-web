@@ -1,7 +1,6 @@
-package com.codecool.eshipdiary.filter;
+package com.codecool.eshipdiary.security;
 
 import com.codecool.eshipdiary.model.User;
-import com.codecool.eshipdiary.security.ApiAuthenticationFilter;
 import com.codecool.eshipdiary.service.UserRepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

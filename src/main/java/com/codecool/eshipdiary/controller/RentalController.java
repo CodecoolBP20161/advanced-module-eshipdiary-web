@@ -117,7 +117,7 @@ public class RentalController {
         LOG.debug("Trying to update RentalLog with (only non-null properties): {}", rentalFinalDetails.toString());
         RentalLog originalRental = getRentalLogById(id);
         LOG.debug("Existing rental to update is: {}", originalRental.toString());
-        rentalLogRepositoryService.finalize(originalRental, rentalFinalDetails);
+        rentalService.finalize(originalRental, rentalFinalDetails);
         return "redirect:/rentals";
     }
 
