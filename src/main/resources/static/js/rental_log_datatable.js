@@ -55,7 +55,9 @@ function rentalActionButtons( data, type, row ) {
     var isAdmin = document.getElementById("role").value === 'ADMIN';
     var comment = isAdmin ? ' <a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalCommentModal(\'/rentals/comment/'+row.id+'\');">Megjegyzés</a>' : '';
     var injury = row.injury ? ' <button class="btn btn-danger btn-xs">!</button>' : '';
-    var reuse = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalModal(\'/rentals/reuse/'+row.id+'\');">Újra</a>';
+    var reuseEnabled = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#rentalModal" role="button" onclick="rentalModal(\'/rentals/reuse/'+row.id+'\');">Újra</a>';
+    var isRentalEnabled = !document.getElementById('newRental').hasAttribute('disabled');
+    var reuse = isRentalEnabled ? reuseEnabled : '';
     return details + final + comment + injury + reuse;
 }
 
