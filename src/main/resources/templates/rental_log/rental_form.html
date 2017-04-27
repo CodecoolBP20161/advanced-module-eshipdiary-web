@@ -5,10 +5,11 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="rentalModalLabel">Hajóbérlés</h4>
+        <p id="saveFailure" style="display:none">A kiválasztott eszközök/tagok közül valamelyik épp elérhetetlen (pl. vízre vitték idő közben)</p>
     </div>
 
     <div class="modal-body">
-        <form th:object="${rental}" action="/rentals/save" method="post" class="form-horizontal" id="rentalForm">
+        <form th:object="${rental}" action="rentals/save" method="post" class="form-horizontal" id="rentalForm">
             <input type="hidden" th:field="*{club}"/>
             <input type="hidden" th:field="*{captain}"/>
             <div class="form-group">

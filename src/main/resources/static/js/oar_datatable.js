@@ -26,9 +26,13 @@ function oarActionButtons( data, type, row ) {
     var activationLabel = shouldBeActive ? 'Aktiválás' : 'Inaktiválás';
     var buttonType = shouldBeActive ? 'success' : 'warning';
     var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/admin/oars/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
-    var deleteButton = ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#oarDeleteModal" role="button" onclick="oarDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setOarStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
-    return editButton + deleteButton + statusChangeButton;
+    return editButton + deleteButton(row) + statusChangeButton;
+}
+
+function deleteButton(row) {
+    if(row.rentalCount === 0) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#oarDeleteModal" role="button" onclick="oarDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
+    return ' <button disabled class="btn btn-default btn-xs" data-toggle="tooltip" title="Hozzátartozó foglalás miatt nem törölhető!">Törlés</button>';
 }
 
 function setOarStatus(link, shouldBeActive) {

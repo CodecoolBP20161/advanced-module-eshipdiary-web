@@ -3,6 +3,7 @@ package com.codecool.eshipdiary.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
+import org.hibernate.annotations.Formula;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -70,6 +71,9 @@ public class Ship {
             return displayName;
         }
     }
+
+    @Formula("(select count(*) from rental_log where rental_log.chosen_ship_id = id)")
+    int rentalCount;
 
     public Ship() {
         this.setActive(true);
