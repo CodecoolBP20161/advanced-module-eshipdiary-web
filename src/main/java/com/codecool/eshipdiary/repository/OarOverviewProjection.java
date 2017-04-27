@@ -13,4 +13,5 @@ public interface OarOverviewProjection {
     boolean getActive();
     @Value("#{target.owner != null ? target.owner.lastName+' '+target.owner.firstName : target.club.name}")
     String getOwner();
+    int getRentalCount();
 }

@@ -17,4 +17,5 @@ public interface ShipOverviewProjection {
     String getOwner();
     @Value("#{target.category.displayName}")
     String getCategory();
+    int getRentalCount();
 }

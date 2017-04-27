@@ -3,6 +3,7 @@ package com.codecool.eshipdiary.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.Formula;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -35,6 +36,9 @@ public class Oar {
     @JsonIgnore
     @ManyToOne
     private Club club;
+
+    @Formula("(select count(*) from rental_log_oars where rental_log_oars.oars_id = id)")
+    int rentalCount;
 
     public Oar() {
         this.setActive(true);
