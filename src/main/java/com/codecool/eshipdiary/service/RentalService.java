@@ -1,6 +1,5 @@
 package com.codecool.eshipdiary.service;
 
-import com.codecool.eshipdiary.controller.RentalController;
 import com.codecool.eshipdiary.exception.RentalCannotBeSaved;
 import com.codecool.eshipdiary.model.Oar;
 import com.codecool.eshipdiary.model.RentalLog;
@@ -12,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class RentalService {
-    private static final Logger LOG = LoggerFactory.getLogger(RentalService.class);
 
     @Autowired
     RentalLogRepositoryService rentalLogRepositoryService;
@@ -32,7 +29,8 @@ public class RentalService {
 
     public void saveIfItemsAreAvailable(RentalLog rentalLog) throws RentalCannotBeSaved {
         boolean everythingIsAvailable;
-        everythingIsAvailable = !rentalLog.getChosenShip().isOnWater() && rentalLog.getChosenShip().isActive();
+        ArrayList<Ship> availableShips = (ArrayList<Ship>) shipRepositoryService.getAvailableShips();
+        everythingIsAvailable =  availableShips.contains(rentalLog.getChosenShip());
         for (Oar oar : rentalLog.getOars()) {
             if (oar.isOnWater() || !oar.isActive()) everythingIsAvailable = false;
         }
@@ -43,7 +41,7 @@ public class RentalService {
             rentalLogRepositoryService.save(rentalLog);
             setOnWaterForInvolvedItemsIn(rentalLog, true);
         }
-        else throw new RentalCannotBeSaved("Some of the items to save are in another active rental.");
+        else throw new RentalCannotBeSaved();
     }
 
     void setOnWaterForInvolvedItemsIn(RentalLog log, Boolean bool){
@@ -70,7 +68,7 @@ public class RentalService {
         newLog.setCrew(userRepositoryService.availableUsersFrom(oldLog.getCrew()));
         newLog.setOars(oarRepositoryService.availableOarsFrom(oldLog.getOars()));
 
-        if (shipRepositoryService.shipIsAvailable(oldLog.getChosenShip())) {
+        if (shipRepositoryService.isShipAvailable(oldLog.getChosenShip())) {
             newLog.setChosenShip(oldLog.getChosenShip());
         }
 
