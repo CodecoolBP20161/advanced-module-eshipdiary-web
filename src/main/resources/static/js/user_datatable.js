@@ -26,7 +26,7 @@ function userActionButtons( data, type, row ) {
     var oarButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#oarModal" role="button" onclick="oarModal(\'/admin/oars/user/'+row.id+'\', \'Új evező\');">Evező</a>';
     var current = '';
     if(document.getElementById("current").value !== row.id) {
-        current = deleteButton(row);
+        current = deleteUserButton(row);
         current += row.member ? statusButton(row) : '';
     }
     // var availableShipsButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#enableShipsModal" role="button" onclick="enableShipModal(\''+row.id+'\');" >Engedélyezett hajók</a>';
@@ -42,7 +42,7 @@ function statusButton(row){
     return ' <a class="btn btn-'+activationClass+' btn-xs" role="button" onclick="setUserStatus(\''+row._links.self.href+'\', ' + isActive + ')">' + activationLabel + '</a>';
 }
 
-function deleteButton(row){
+function deleteUserButton(row){
     if(row.member === true) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteModal" role="button" onclick="deleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Kiléptetés</a>';
     return ' <a class="btn btn-success btn-xs" role="button" data-toggle="modal" data-target="#updateModal" ' +
         'onclick="reActivate(\''+row._links.self.href+'\', \'/admin/users/'+row.id+'\', \''+row.name+'\');">Beiratkozás</a>';
