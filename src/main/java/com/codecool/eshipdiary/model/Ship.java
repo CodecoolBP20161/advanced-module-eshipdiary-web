@@ -31,7 +31,7 @@ public class Ship {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private SubType subType;
 
     @ManyToOne
