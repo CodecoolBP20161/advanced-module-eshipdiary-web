@@ -88,32 +88,55 @@ function shipWhitelistingModal(link, name) {
 }
 
 function checkAllCorrespondingShips() {
-    $('input[name=shipTypeCheckbox]').on('click', function () {
-        if (this.checked) {
-            $(this).parents('tr:first').find('input[type=checkbox]').each(function () {
-                this.checked = true;
-            });
-        } else {
-            $(this).parents('tr:first').find('input[type=checkbox]').each(function () {
-                this.checked = false;
-            });
-        }
-    });
+    // $(".type_checkbox").change(function () {
+    //     $(this).parents('tr').find(':checkbox').prop('checked', $(this).prop("checked"));
+    // });
+    //
+    // $(".type_checkbox").parents('tr').find('.ship_checkbox').change(function() {
+    //     if($(this).prop("checked") == false) {
+    //         $(this).parents('tr').find('.type_checkbox').prop('checked', false);
+    //     }
+    //     if($(".type_checkbox").parents('tr').find('.ship_checkbox:checked').length == $(this).length) {
+    //         $(this).parents('tr').find('.type_checkbox').prop('checked', true);
+    //     }
+    // });
 }
 
 function checkAllShips() {
     $("#select_all").change(function() {
+        $(".type_checkbox").prop('checked', $(this).prop("checked"));
         $(".ship_checkbox").prop('checked', $(this).prop("checked"));
     });
 
-    $('.ship_checkbox').change(function () {
+    $('.type_checkbox').change(function () {
+        $(this).parents('tr').find('.ship_checkbox').prop('checked', $(this).prop("checked"));
+
         if($(this).prop("checked") == false) {
             $("#select_all").prop('checked', false);
+        }
+
+        if ($('.type_checkbox:checked').length == $('.type_checkbox').length ){
+            $("#select_all").prop('checked', true);
+        }
+    });
+
+    $('.ship_checkbox').change(function () {
+        if ($(this).prop("checked") == false) {
+            $("#select_all").prop('checked', false);
+            $(this).parents('tr').find('.type_checkbox').prop('checked', false);
+            console.log($(this))
+            console.log($(this).parents('tr').find('.type_checkbox'))
         }
 
         if ($('.ship_checkbox:checked').length == $('.ship_checkbox').length ){
             $("#select_all").prop('checked', true);
         }
+
+        if($(this).siblings('.ship_checkbox:checked').length == $(this).siblings('.ship_checkbox').length) {
+            $(this).parents('tr').find('.type_checkbox').prop('checked', true);
+        }
+
+
     });
 }
 
