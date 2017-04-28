@@ -5,12 +5,12 @@ import com.codecool.eshipdiary.model.Oar;
 import com.codecool.eshipdiary.model.RentalLog;
 import com.codecool.eshipdiary.model.Ship;
 import com.codecool.eshipdiary.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 public class RentalService {
@@ -77,5 +77,32 @@ public class RentalService {
                 newLog.setCox(oldLog.getCox());
             }
         }
+    }
+
+    @Transactional
+    public void finalize(RentalLog original, RentalLog finalDetails) {
+        original.setRentalEnd(new Date());
+
+        if (finalDetails.getComment() != null) {
+            original.setComment(finalDetails.getComment());
+            original.setDistance(finalDetails.getDistance());
+        }
+
+        if (finalDetails.getInjuredShip() != null) {
+            Ship injuredShip = finalDetails.getInjuredShip();
+            injuredShip.setActive(false);
+            shipRepositoryService.save(injuredShip);
+            original.setInjuredShip(injuredShip);
+        }
+
+        if (finalDetails.getInjuredOars() != null) {
+            for (Oar oar : finalDetails.getInjuredOars()) {
+                oar.setActive(false);
+                oarRepositoryService.save(oar);
+            }
+            original.setInjuredOars(finalDetails.getInjuredOars());
+        }
+        rentalLogRepositoryService.save(original);
+        setOnWaterForInvolvedItemsIn(original, false);
     }
 }

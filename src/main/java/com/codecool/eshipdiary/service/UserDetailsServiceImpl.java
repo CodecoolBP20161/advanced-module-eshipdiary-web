@@ -1,6 +1,6 @@
 package com.codecool.eshipdiary.service;
 
-import com.codecool.eshipdiary.model.TenantAwarePrincipal;
+import com.codecool.eshipdiary.security.TenantAwarePrincipal;
 import com.codecool.eshipdiary.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

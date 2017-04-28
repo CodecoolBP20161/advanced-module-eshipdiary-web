@@ -3,7 +3,7 @@ package com.codecool.eshipdiary.service;
 
 import com.codecool.eshipdiary.model.Ship;
 import com.codecool.eshipdiary.model.SubType;
-import com.codecool.eshipdiary.model.TenantAwarePrincipal;
+import com.codecool.eshipdiary.security.TenantAwarePrincipal;
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;

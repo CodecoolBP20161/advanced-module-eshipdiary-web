@@ -6,14 +6,11 @@ import com.codecool.eshipdiary.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,7 +118,7 @@ public class RentalController {
         LOG.debug("Trying to update RentalLog with (only non-null properties): {}", rentalFinalDetails.toString());
         RentalLog originalRental = getRentalLogById(id);
         LOG.debug("Existing rental to update is: {}", originalRental.toString());
-        rentalLogRepositoryService.finalize(originalRental, rentalFinalDetails);
+        rentalService.finalize(originalRental, rentalFinalDetails);
         return "redirect:/rentals";
     }
 
