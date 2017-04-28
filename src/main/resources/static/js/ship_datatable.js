@@ -31,10 +31,10 @@ function shipActionButtons( data, type, row ) {
     var statusChangeButton = ' <a class="btn btn-'+buttonType+' btn-xs" role="button" onclick="setShipStatus(\''+row._links.self.href+'\', ' + shouldBeActive + ')">' + activationLabel + '</a>';
     var availableUsersButton = ' <a class="btn btn-default btn-xs" data-toggle="modal" data-target="#userWhitelistingModal" role="button" ' +
         'onclick="userWhitelistingModal(\'/admin/ships/'+row.id+'/enable_users\', \''+row.name+'\')">Engedélyezett tagok</a>';
-    return editButton + deleteButton(row) + statusChangeButton + availableUsersButton;
+    return editButton + deleteShipButton(row) + statusChangeButton + availableUsersButton;
 }
 
-function deleteButton(row){
+function deleteShipButton(row){
     if(row.rentalCount === 0) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipDeleteModal" role="button" onclick="shipDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     return ' <button disabled class="btn btn-default btn-xs" data-toggle="tooltip" title="Hozzátartozó foglalás miatt nem törölhető!">Törlés</button>';
 }
