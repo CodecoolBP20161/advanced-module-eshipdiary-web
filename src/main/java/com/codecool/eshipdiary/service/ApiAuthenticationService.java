@@ -1,6 +1,6 @@
 package com.codecool.eshipdiary.service;
 
-import com.codecool.eshipdiary.model.ApiAuthentication;
+import com.codecool.eshipdiary.security.ApiAuthentication;
 import com.codecool.eshipdiary.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;

@@ -1,10 +1,11 @@
 package com.codecool.eshipdiary.config;
 
 
-import com.codecool.eshipdiary.filter.ApiAuthenticationFilter;
-import com.codecool.eshipdiary.filter.IsActiveFilter;
+import com.codecool.eshipdiary.security.ApiAuthenticationFilter;
+import com.codecool.eshipdiary.security.IsActiveFilter;
 import com.codecool.eshipdiary.security.AjaxAuthHandler;
 import com.codecool.eshipdiary.security.AuthFailureHandler;
+import com.codecool.eshipdiary.security.SecurityEvaluationContextExtension;
 import com.codecool.eshipdiary.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,14 +1,15 @@
 package com.codecool.eshipdiary.controller;
 
+import com.codecool.eshipdiary.exception.RentalCannotBeSaved;
 import com.codecool.eshipdiary.model.*;
 import com.codecool.eshipdiary.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -66,7 +67,7 @@ public class RentalController {
     }
 
     @RequestMapping(value = "/rentals", method = RequestMethod.OPTIONS)
-    public String rentalForm() {
+    public String rentalForm(Model model) {
         return "rental_log/rental_form";
     }
 
@@ -117,20 +118,22 @@ public class RentalController {
         LOG.debug("Trying to update RentalLog with (only non-null properties): {}", rentalFinalDetails.toString());
         RentalLog originalRental = getRentalLogById(id);
         LOG.debug("Existing rental to update is: {}", originalRental.toString());
-        rentalLogRepositoryService.finalize(originalRental, rentalFinalDetails);
+        rentalService.finalize(originalRental, rentalFinalDetails);
         return "redirect:/rentals";
     }
 
     @RequestMapping(value = "/rentals/save", method = RequestMethod.POST)
-    public String saveRental(@ModelAttribute RentalLog rentalLog) {
-        LOG.debug("Trying to save RentalLog as: {}", rentalLog.toString());
-        rentalService.setOnWaterForInvolvedItemsIn(rentalLog, true);
-        rentalLogRepositoryService.save(rentalLog);
+    public String saveRental(@ModelAttribute RentalLog rentalLog, RedirectAttributes redirectAttributes) {
+        try {
+            rentalService.saveIfItemsAreAvailable(rentalLog);
+        } catch (RentalCannotBeSaved rentalCannotBeSaved) {
+            redirectAttributes.addFlashAttribute("error", true);
+        }
         return "redirect:/rentals";
     }
 
     @RequestMapping(value = "/rentalEnabled")
-    public @ResponseBody Boolean rentalEnabled(){
+    public @ResponseBody Boolean rentalEnabled() {
         User currentUser = userRepositoryService.getCurrentUser();
         return currentUser.getRole().getName().equals("ADMIN") || !currentUser.isOnWater();
     }
@@ -148,7 +151,6 @@ public class RentalController {
         RentalLog newRental = rentalLog();
         rentalService.copyCurrentlyAvailableItems(rentalLog, newRental);
         model.addAttribute("rental", newRental);
-        model.addAttribute("link", "/rentals/save");
         return "rental_log/rental_form";
     }
 

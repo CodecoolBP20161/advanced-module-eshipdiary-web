@@ -25,7 +25,13 @@ public class AdvancedModuleEshipdiaryWebApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository userRepository, ClubRepository clubRepository, ShipRepository shipRepository, RoleRepository roleRepository, OarRepository oarRepository, ShipTypeRepository shipTypeRepository) {
+    public CommandLineRunner demo(UserRepository userRepository,
+                                  ClubRepository clubRepository,
+                                  ShipRepository shipRepository,
+                                  RoleRepository roleRepository,
+                                  OarRepository oarRepository,
+                                  ShipTypeRepository shipTypeRepository,
+                                  SubTypeRepository subTypeRepository) {
         return (args) -> {
 
             if (!roleRepository.findAll().iterator().hasNext()) {
@@ -111,6 +117,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
                 kayak4seat.setCoxed(true);
                 kayak4seat.setMaxSeat(4);
                 kayak4seat.setType(kayak);
+                subTypeRepository.save(kayak4seat);
 
                 ship.setSubType(kayak4seat);
                 shipRepository.save(ship);
@@ -125,6 +132,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
                 canoe4seat.setCoxed(false);
                 canoe4seat.setMaxSeat(4);
                 canoe4seat.setType(canoe);
+                subTypeRepository.save(canoe4seat);
 
                 touringCanoe.setSubType(canoe4seat);
                 shipRepository.save(touringCanoe);
@@ -139,6 +147,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
                 canoe1seat.setCoxed(true);
                 canoe1seat.setMaxSeat(1);
                 canoe1seat.setType(canoe);
+                subTypeRepository.save(canoe1seat);
 
                 sprintCanoe.setSubType(canoe1seat);
                 shipRepository.save(sprintCanoe);

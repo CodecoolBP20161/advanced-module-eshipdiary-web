@@ -1,4 +1,4 @@
-package com.codecool.eshipdiary.filter;
+package com.codecool.eshipdiary.security;
 
 import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.service.UserRepositoryService;

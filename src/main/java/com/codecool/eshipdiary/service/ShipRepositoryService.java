@@ -2,6 +2,10 @@ package com.codecool.eshipdiary.service;
 
 
 import com.codecool.eshipdiary.model.*;
+import com.codecool.eshipdiary.model.Ship;
+import com.codecool.eshipdiary.model.SubType;
+import com.codecool.eshipdiary.security.TenantAwarePrincipal;
+import com.codecool.eshipdiary.model.User;
 import com.codecool.eshipdiary.repository.ShipRepository;
 import com.codecool.eshipdiary.repository.SubTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +56,8 @@ public class ShipRepositoryService {
         if(shipRepository.findOneById(id).isPresent()) shipRepository.delete(id);
     }
 
-    public boolean shipIsAvailable(Ship ship) {
-        if (ship.isActive() && !ship.isOnWater()) {
-            return true;
-        }
-        return false;
+    boolean isShipAvailable(Ship ship) {
+        return ship.isActive() && !ship.isOnWater();
     }
 
     public Iterable<Ship> getAllShipsByType(ShipType type) {

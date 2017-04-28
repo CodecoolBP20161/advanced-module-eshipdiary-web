@@ -23,10 +23,10 @@ $(document).ready( function () {
 
 function shipSizeActionButtons( data, type, row ) {
     var editButton = ' <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#shipSizeModal" role="button" onclick="shipSizeModal(\'/admin/shipsizes/'+row.id+'\', \''+row.name+'\');">Részletek</a>';
-    return editButton + deleteButton(row);
+    return editButton + deleteSizeButton(row);
 }
 
-function deleteButton(row){
+function deleteSizeButton(row){
     if(row.ships === 0) return ' <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#shipSizeDeleteModal" role="button" onclick="shipSizeDeleteModal(\''+row._links.self.href+'\', \''+row.name+'\');">Törlés</a>';
     return ' <button disabled class="btn btn-default btn-xs" data-toggle="tooltip" title="Hozzátartozó hajó miatt nem törölhető!">Törlés</button>';
 }

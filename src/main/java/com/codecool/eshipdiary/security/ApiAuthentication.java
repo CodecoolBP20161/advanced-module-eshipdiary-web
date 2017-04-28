@@ -1,5 +1,6 @@
-package com.codecool.eshipdiary.model;
+package com.codecool.eshipdiary.security;
 
+import com.codecool.eshipdiary.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

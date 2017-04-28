@@ -1,5 +1,6 @@
-package com.codecool.eshipdiary.model;
+package com.codecool.eshipdiary.security;
 
+import com.codecool.eshipdiary.model.Club;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
