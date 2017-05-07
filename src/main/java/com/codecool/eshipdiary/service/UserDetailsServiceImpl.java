@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = userRepositoryService.getUserByUserName(username);
-        LOG.info("User for authentication by name {} ", user.get().getUserName());
+        LOG.info("User for authentication by name {} ", user.get().getUsername());
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(user.get().getRole().getName()));
@@ -37,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
         return new TenantAwarePrincipal(
-                user.get().getUserName(),
+                user.get().getUsername(),
                 user.get().getPasswordHash(),
                 user.get().isActive(),
                 true,

@@ -46,7 +46,7 @@ public class User {
     @NotEmpty(message = "A mező nem lehet üres")
     @Size(min = 3, message = "A felhasználónév legalább 3 karakter")
     @Column(nullable = false, unique = true)
-    private String userName;
+    private String username;
 
     @NotEmpty(message = "A mező nem lehet üres")
     @Column(nullable = false, unique = true)
@@ -107,13 +107,13 @@ public class User {
     private void validate(){
         this.apiToken = UUID.randomUUID().toString();
         if(this.passwordHash == null){
-            this.setPasswordHash(this.userName);
+            this.setPasswordHash(this.username);
         }
     }
 
     public void setPasswordHash(String rawPassword) {
         if(rawPassword.equals("")){
-            rawPassword = this.userName;
+            rawPassword = this.username;
         }
         this.passwordHash = PASSWORD_ENCODER.encode(rawPassword);
     }

@@ -44,12 +44,12 @@ public class LoginController {
             User user = userRepositoryService.getUserByUserName(userName).get();
             if (User.PASSWORD_ENCODER.matches(password, user.getPasswordHash())) {
                 if (user.isActive()) {
-                    LOG.info("New login via api: {}", user.getUserName());
+                    LOG.info("New login via api: {}", user.getUsername());
                     data.put("token", user.getApiToken());
                     data.put("id", user.getId().toString());
                     return new ResponseEntity<>(data, HttpStatus.OK);
                 }
-                LOG.debug("Inactive user tried to log in via api: {}", user.getUserName());
+                LOG.debug("Inactive user tried to log in via api: {}", user.getUsername());
                 data.put("message", "Inaktív felhasználó.");
                 return new ResponseEntity<>(data, HttpStatus.FORBIDDEN);
             }

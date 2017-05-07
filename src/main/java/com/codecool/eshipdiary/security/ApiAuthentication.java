@@ -52,6 +52,6 @@ public class ApiAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return user.getUserName();
+        return user.getUsername();
     }
 }

@@ -67,13 +67,13 @@ public class UserController {
     @RequestMapping(value = "/admin/users/{userId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("userId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateForm(" + id + ")");
-        if(userRepositoryService.getUserByUserName(user.getUserName())
+        if(userRepositoryService.getUserByUserName(user.getUsername())
                 .filter(u -> !u.getId().equals(id))
                 .isPresent()){
             result.addError(new FieldError(
                     "user",
                     "userName",
-                    user.getUserName(),
+                    user.getUsername(),
                     true,
                     null,
                     null,

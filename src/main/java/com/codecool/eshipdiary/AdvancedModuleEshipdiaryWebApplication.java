@@ -55,7 +55,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
                 User ex = new User();
                 ex.setFirstName("bee");
                 ex.setLastName("admin");
-                ex.setUserName("admin");
+                ex.setUsername("admin");
                 ex.setBirthDate(Date.valueOf("1989-01-01"));
                 ex.setActive(true);
                 ex.setEmailAddress("admin@yahoo.com");
@@ -70,7 +70,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
                 User dek = new User();
                 dek.setFirstName("dnhe");
                 dek.setLastName("admin");
-                dek.setUserName("admin2");
+                dek.setUsername("admin2");
                 dek.setBirthDate(Date.valueOf("1989-01-01"));
                 dek.setActive(true);
                 dek.setEmailAddress("admin2@yahoo.com");
@@ -85,7 +85,7 @@ public class AdvancedModuleEshipdiaryWebApplication {
                 User user = new User();
                 user.setFirstName("first");
                 user.setLastName("user");
-                user.setUserName("user");
+                user.setUsername("user");
                 user.setBirthDate(Date.valueOf("1900-01-01"));
                 user.setActive(true);
                 user.setEmailAddress("user@yahoo.com");

@@ -74,7 +74,7 @@ public class PasswordResetController {
             User user = passwordTokenRepositoryService.getTokenByToken(token).get().getUser();
             user.setPasswordHash(password);
             userRepository.save(user);
-            LOG.info("Password has been reset for user: " + user.getUserName());
+            LOG.info("Password has been reset for user: " + user.getUsername());
         } catch (Exception e) {
             LOG.info("Invalid token: " + token);
         }
