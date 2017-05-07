@@ -27,8 +27,8 @@ public class UserRepositoryService {
         return Optional.ofNullable(userRepository.findOne(id));
     }
 
-    public Optional<User> getUserByUserName(String userName) {
-        return userRepository.findOneByUserName(userName);
+    public Optional<User> getUserByUsername(String userName) {
+        return userRepository.findOneByUsername(userName);
     }
 
     public Optional<User> getUserByApiToken(String token) {
@@ -47,7 +47,7 @@ public class UserRepositoryService {
         // - is active
         // - has no ongoing rental
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        Club club = userRepository.findByUserName(userName).getClub();
+        Club club = userRepository.findByUsername(userName).getClub();
         return userRepository.findByActiveTrueAndOnWaterFalseAndClub(club);
     }
 
@@ -60,7 +60,7 @@ public class UserRepositoryService {
 
     public User getCurrentUser() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        return getUserByUserName(userName).map(u -> u).orElse(new User());
+        return getUserByUsername(userName).map(u -> u).orElse(new User());
     }
 
     public boolean userIsAvailable(User user) {

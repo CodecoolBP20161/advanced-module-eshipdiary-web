@@ -40,13 +40,13 @@ public class ShipRepositoryService {
 
     public Iterable<Ship> getAvailableShips() {
         TenantAwarePrincipal tenantAwarePrincipal = (TenantAwarePrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepositoryService.getUserByUserName(tenantAwarePrincipal.getUsername()).get();
+        User user = userRepositoryService.getUserByUsername(tenantAwarePrincipal.getUsername()).get();
         return shipRepository.findByActiveTrueAndOnWaterFalseAndClubAndEnabledUsers(tenantAwarePrincipal.getClub(), user);
     }
 
     public Iterable<Ship> getAvailableShipsBySubType(SubType type) {
         TenantAwarePrincipal tenantAwarePrincipal = (TenantAwarePrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepositoryService.getUserByUserName(tenantAwarePrincipal.getUsername()).get();
+        User user = userRepositoryService.getUserByUsername(tenantAwarePrincipal.getUsername()).get();
         return shipRepository.findByActiveTrueAndOnWaterFalseAndSubTypeAndClubAndEnabledUsers(type, tenantAwarePrincipal.getClub(), user);
     }
 

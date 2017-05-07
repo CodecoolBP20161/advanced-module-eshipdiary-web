@@ -34,7 +34,7 @@ public class IsActiveFilter extends GenericFilterBean {
 
         Principal principal = httpServletRequest.getUserPrincipal();
         if (principal == null ||
-                userRepositoryService.getUserByUserName(principal.getName()).map(User::isActive).orElse(false)) {
+                userRepositoryService.getUserByUsername(principal.getName()).map(User::isActive).orElse(false)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             SecurityContextHolder.getContext().setAuthentication(null);

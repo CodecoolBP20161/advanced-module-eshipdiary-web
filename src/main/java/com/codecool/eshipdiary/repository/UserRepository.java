@@ -19,8 +19,8 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @RestResource(exported = true)
     @Query("select user from User user where user.club = ?#{principal.club}")
     Iterable<User> findAll();
-    User findByUserName(String userName);
-    Optional<User> findOneByUserName(String userName);
+    User findByUsername(String userName);
+    Optional<User> findOneByUsername(String userName);
     Optional<User> findOneByApiToken(String APIKey);
     Optional<User> findOneByEmailAddress(String emailAddress);
 

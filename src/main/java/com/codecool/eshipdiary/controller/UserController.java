@@ -4,7 +4,6 @@ package com.codecool.eshipdiary.controller;
 import com.codecool.eshipdiary.model.Ship;
 import com.codecool.eshipdiary.model.ShipType;
 import com.codecool.eshipdiary.model.User;
-import com.codecool.eshipdiary.repository.ShipRepository;
 import com.codecool.eshipdiary.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +51,7 @@ public class UserController {
     @RequestMapping(value = "/admin/users")
     public String getUserTable(Model model) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("current", userRepositoryService.getUserByUserName(userName).get().getId());
+        model.addAttribute("current", userRepositoryService.getUserByUsername(userName).get().getId());
         return "users";
     }
 
@@ -67,7 +66,7 @@ public class UserController {
     @RequestMapping(value = "/admin/users/{userId}", method = RequestMethod.POST)
     public String saveUser(@PathVariable("userId") Long id, @ModelAttribute("user") @Valid User user, BindingResult result, Model model) {
         model.addAttribute("validate", "return validateForm(" + id + ")");
-        if(userRepositoryService.getUserByUserName(user.getUsername())
+        if(userRepositoryService.getUserByUsername(user.getUsername())
                 .filter(u -> !u.getId().equals(id))
                 .isPresent()){
             result.addError(new FieldError(

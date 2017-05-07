@@ -109,7 +109,7 @@ public class HandlerBeforeCreation {
     private void determineClubOfCurrentUser() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         log.debug("Found principal: " + userName);
-        club = userRepository.findByUserName(userName).getClub();
+        club = userRepository.findByUsername(userName).getClub();
         log.debug("Current principal's club is " + club.getName());
         if (club == null) {
             Club newClub = new Club();
