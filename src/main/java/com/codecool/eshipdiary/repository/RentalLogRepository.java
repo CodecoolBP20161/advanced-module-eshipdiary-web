@@ -26,7 +26,7 @@ public interface RentalLogRepository extends CrudRepository<RentalLog, Long> {
                     "( u.id = rl.captain_id OR " +
                     "u.id = rl.cox_id OR " +
                     "cr.crew_id = u.id) AND " +
-                    "u.user_name = ?#{principal.userName} " +
+                    "u.user_name = ?#{principal.username} " +
                     "group by rl.id")
     Iterable<RentalLog> findForPrincipal();
 }

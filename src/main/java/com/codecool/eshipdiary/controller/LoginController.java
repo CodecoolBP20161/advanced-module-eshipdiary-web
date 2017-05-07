@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 @Controller
@@ -37,7 +38,7 @@ public class LoginController {
 
     @RequestMapping(value = "/api_login", produces = "application/json")
     public ResponseEntity<HashMap<String, String>> validateApiLogin(@RequestParam("username") String userName,
-                                                                @RequestParam("password") String password) {
+                                                                    @RequestParam("password") String password) {
         HashMap<String, String> data = new HashMap<>();
         if (userRepositoryService.getUserByUserName(userName).isPresent()) {
             User user = userRepositoryService.getUserByUserName(userName).get();

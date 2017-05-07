@@ -44,7 +44,7 @@ public class RentalService {
         else throw new RentalCannotBeSaved();
     }
 
-    void setOnWaterForInvolvedItemsIn(RentalLog log, Boolean bool){
+    private void setOnWaterForInvolvedItemsIn(RentalLog log, Boolean bool){
         log.getChosenShip().setOnWater(bool);
         shipRepositoryService.save(log.getChosenShip());
         if (log.getCox() != null) {
