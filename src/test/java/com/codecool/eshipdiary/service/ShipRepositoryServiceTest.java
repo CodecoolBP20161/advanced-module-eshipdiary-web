@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,11 +21,29 @@ public class ShipRepositoryServiceTest {
     ShipRepositoryService shipRepositoryService;
 
     @Test
-    public void testIsShipAvailable() throws Exception {
+    public void testIsShipAvailable_itIs() throws Exception {
         Ship ship = new Ship();
         ship.setActive(true);
         ship.setOnWater(false);
         Boolean available = shipRepositoryService.isShipAvailable(ship);
         assertTrue(available);
+    }
+
+    @Test
+    public void testIsShipAvailable_isTaken() throws Exception {
+        Ship ship = new Ship();
+        ship.setActive(true);
+        ship.setOnWater(true);
+        Boolean available = shipRepositoryService.isShipAvailable(ship);
+        assertFalse(available);
+    }
+
+    @Test
+    public void testIsShipAvailable_itInactive() throws Exception {
+        Ship ship = new Ship();
+        ship.setActive(false);
+        ship.setOnWater(false);
+        Boolean available = shipRepositoryService.isShipAvailable(ship);
+        assertFalse(available);
     }
 }
