@@ -56,7 +56,7 @@ public class ShipRepositoryService {
         if(shipRepository.findOneById(id).isPresent()) shipRepository.delete(id);
     }
 
-    boolean isShipAvailable(Ship ship) {
+    public boolean isShipAvailable(Ship ship) {
         return ship.isActive() && !ship.isOnWater();
     }
 
